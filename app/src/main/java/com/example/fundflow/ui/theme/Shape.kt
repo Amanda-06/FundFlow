@@ -1,4 +1,13 @@
 package com.example.fundflow.ui.theme
 
-class Shape {
-}
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Shapes
+import androidx.compose.ui.unit.dp
+
+val FundFlowShapes = Shapes(
+    extraSmall = RoundedCornerShape(4.dp),
+    small      = RoundedCornerShape(8.dp),
+    medium     = RoundedCornerShape(12.dp),
+    large      = RoundedCornerShape(16.dp),
+    extraLarge = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
+)
