@@ -1,4 +1,4 @@
 package com.example.fundflow.ui.components
 
-class CommonField {
+class ConfirmDeleteDialog {
 }

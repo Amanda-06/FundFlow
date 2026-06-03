@@ -1,4 +1,4 @@
 package com.example.fundflow.core.utils
 
-class DateUtils {
+class NotificationHelper {
 }
