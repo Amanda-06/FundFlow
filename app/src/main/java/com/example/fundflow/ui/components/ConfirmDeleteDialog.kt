@@ -1,61 +1,85 @@
 package com.example.fundflow.ui.components
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.DeleteForever
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
+import com.example.fundflow.ui.theme.*
+
 
 @Composable
 fun ConfirmDeleteDialog(
-    count     : Int = 1,
-    itemName  : String = "data",
-    onConfirm : () -> Unit,
-    onDismiss : () -> Unit
+    title: String = "Hapus Data?",
+    message: String = "Tindakan ini tidak dapat dibatalkan.",
+    confirmLabel: String = "Hapus",
+    dismissLabel: String = "Batal",
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit
 ) {
-    val message = if (count == 1)
-        "Yakin ingin menghapus $itemName ini? Tindakan ini tidak bisa dibatalkan."
-    else
-        "Yakin ingin menghapus $count $itemName? Tindakan ini tidak bisa dibatalkan."
-
     AlertDialog(
         onDismissRequest = onDismiss,
         icon = {
             Icon(
-                imageVector        = Icons.Default.Delete,
+                imageVector        = Icons.Default.DeleteForever,
                 contentDescription = null,
-                tint               = MaterialTheme.colorScheme.error
+                tint               = ExpenseRed
             )
         },
         title = {
             Text(
-                text  = "Hapus $itemName",
-                style = MaterialTheme.typography.titleMedium
+                text  = title,
+                style = MaterialTheme.typography.headlineSmall,
+                color = TextDark
             )
         },
         text = {
             Text(
                 text  = message,
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.bodyMedium,
+                color = TextLight
             )
         },
         confirmButton = {
             Button(
                 onClick = onConfirm,
                 colors  = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.error,
-                    contentColor   = MaterialTheme.colorScheme.onError
+                    containerColor = ExpenseRed,
+                    contentColor   = Color.White
                 )
             ) {
-                Text("Hapus")
+                Text(text = confirmLabel, style = MaterialTheme.typography.labelLarge)
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text("Batal")
+            OutlinedButton(onClick = onDismiss) {
+                Text(text = dismissLabel, style = MaterialTheme.typography.labelLarge, color = TextDark)
             }
         },
-        shape = MaterialTheme.shapes.large
+        containerColor = CardWhite,
+        iconContentColor = ExpenseRed,
+        titleContentColor = TextDark
     )
 }
 
-
+@Composable
+fun ConfirmBatchDeleteDialog(
+    itemCount: Int,
+    itemName: String = "data",
+    extraWarning: String? = null,
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit
+) {
+    val message = buildString {
+        append("$itemCount $itemName yang dipilih akan dihapus secara permanen.")
+        if (extraWarning != null) {
+            append("\n\n$extraWarning")
+        }
+    }
+    ConfirmDeleteDialog(
+        title   = "Hapus $itemCount ${itemName.replaceFirstChar { it.uppercase() }}?",
+        message = message,
+        onConfirm = onConfirm,
+        onDismiss = onDismiss
+    )
+}

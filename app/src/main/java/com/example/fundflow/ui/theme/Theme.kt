@@ -1,69 +1,81 @@
 package com.example.fundflow.ui.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
 
 private val LightColorScheme = lightColorScheme(
-    primary          = Green500,
-    onPrimary        = White,
-    primaryContainer = Green100,
-    onPrimaryContainer = Green700,
+    primary          = PrimaryLime,
+    onPrimary        = TextDark,
+    primaryContainer = HeaderGreen,
+    onPrimaryContainer = TextDark,
 
-    secondary        = Green400,
-    onSecondary      = White,
-    secondaryContainer = Green50,
-    onSecondaryContainer = Green600,
+    secondary        = IuranBlue,
+    onSecondary      = CardWhite,
+    secondaryContainer = IuranBlue.copy(alpha = 0.12f),
+    onSecondaryContainer = IuranBlue,
 
-    error            = Red500,
-    onError          = White,
-    errorContainer   = Red100,
-    onErrorContainer = Red500,
+    tertiary         = ReportOrange,
+    onTertiary       = CardWhite,
 
-    background       = Gray50,
-    onBackground     = Gray900,
+    background       = AppBackground,
+    onBackground     = TextDark,
 
-    surface          = White,
-    onSurface        = Gray900,
-    surfaceVariant   = Gray100,
-    onSurfaceVariant = Gray600,
+    surface          = CardWhite,
+    onSurface        = TextDark,
+    surfaceVariant   = SurfaceGray,
+    onSurfaceVariant = TextLight,
 
-    outline          = Gray300,
-    outlineVariant   = Gray200,
+    outline          = BorderGray,
+    outlineVariant   = ChipUnselected,
+
+    error            = ExpenseRed,
+    onError          = CardWhite,
+    errorContainer   = ExpenseRed.copy(alpha = 0.12f),
+    onErrorContainer = ExpenseRed,
+
+    inverseSurface   = NavBackground,
+    inverseOnSurface = CardWhite,
 )
 
 private val DarkColorScheme = darkColorScheme(
-    primary          = Green400,
-    onPrimary        = Gray900,
-    primaryContainer = Green700,
-    onPrimaryContainer = Green100,
+    primary          = PrimaryLime,
+    onPrimary        = TextDark,
+    primaryContainer = PrimaryLimeDark,
+    onPrimaryContainer = DarkTextPrimary,
 
-    secondary        = Green400,
-    onSecondary      = Gray900,
-    secondaryContainer = Green700,
-    onSecondaryContainer = Green100,
+    secondary        = IuranBlue,
+    onSecondary      = DarkTextPrimary,
+    secondaryContainer = IuranBlue.copy(alpha = 0.20f),
+    onSecondaryContainer = IuranBlue,
 
-    error            = Red400,
-    onError          = Gray900,
-    errorContainer   = Color(0xFF5C1A1A),
-    onErrorContainer = Red400,
+    tertiary         = ReportOrange,
+    onTertiary       = DarkTextPrimary,
 
     background       = DarkBackground,
-    onBackground     = Gray100,
+    onBackground     = DarkTextPrimary,
 
     surface          = DarkSurface,
-    onSurface        = Gray100,
-    surfaceVariant   = DarkSurface2,
-    onSurfaceVariant = Gray400,
+    onSurface        = DarkTextPrimary,
+    surfaceVariant   = DarkCard,
+    onSurfaceVariant = DarkTextSecondary,
 
-    outline          = Gray700,
-    outlineVariant   = Gray800,
+    outline          = DarkBorder,
+    outlineVariant   = DarkBorder,
+
+    error            = ExpenseRed,
+    onError          = DarkTextPrimary,
+    errorContainer   = ExpenseRed.copy(alpha = 0.20f),
+    onErrorContainer = ExpenseRed,
+
+    inverseSurface   = DarkTextPrimary,
+    inverseOnSurface = DarkBackground,
 )
 
 @Composable
 fun FundFlowTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    darkTheme: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme

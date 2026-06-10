@@ -9,5 +9,5 @@ val FundFlowShapes = Shapes(
     small      = RoundedCornerShape(8.dp),
     medium     = RoundedCornerShape(12.dp),
     large      = RoundedCornerShape(16.dp),
-    extraLarge = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
+    extraLarge = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)
 )
