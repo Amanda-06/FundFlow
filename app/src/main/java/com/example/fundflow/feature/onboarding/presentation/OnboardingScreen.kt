@@ -1,13 +1,15 @@
 // ============================================================
-// feature/onboarding/presentation/OnboardingScreen.kt
+// feature/onboarding/presentation/OnboardingScreen.kt  (FIXED)
 // ============================================================
 package com.example.fundflow.feature.onboarding.presentation
 
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBalance
 import androidx.compose.material.icons.filled.Assessment
@@ -24,9 +26,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.fundflow.ui.theme.*
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
 import kotlinx.coroutines.launch
 
 // ── Data model untuk setiap slide onboarding ─────────────────
@@ -58,11 +57,17 @@ private val pages = listOf(
     )
 )
 
+/**
+ * Halaman Onboarding.
+ *
+ * Hanya ada SATU tombol aksi ("Masuk") yang mengarah ke LoginScreen.
+ * Alur ke RegisterStep1 cukup melalui link "Daftar Sekarang" yang
+ * sudah tersedia di LoginScreen — tidak perlu duplikasi tombol di sini.
+ */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OnboardingScreen(
     onNavigateToLogin: () -> Unit,
-    onNavigateToRegister: () -> Unit,
     viewModel: OnboardingViewModel = hiltViewModel()
 ) {
     val pagerState = rememberPagerState(pageCount = { pages.size })
@@ -114,7 +119,10 @@ fun OnboardingScreen(
                 .padding(horizontal = 24.dp)
         ) {
             if (isLastPage) {
-                // Halaman terakhir → tampilkan dua tombol aksi
+                // Halaman terakhir → satu tombol "Masuk" -> LoginScreen.
+                // Link ke RegisterStep1 sudah ada di LoginScreen
+                // ("Belum punya akun? Daftar Sekarang"), jadi tidak
+                // perlu tombol terpisah di sini.
                 Button(
                     onClick = {
                         viewModel.markOnboardingDone()
@@ -130,31 +138,13 @@ fun OnboardingScreen(
                     shape = MaterialTheme.shapes.medium
                 ) {
                     Text(
-                        text       = "Mulai",
+                        text       = "Masuk",
                         fontWeight = FontWeight.SemiBold,
                         style      = MaterialTheme.typography.titleMedium
                     )
                 }
-                Spacer(Modifier.height(12.dp))
-                OutlinedButton(
-                    onClick = {
-                        viewModel.markOnboardingDone()
-                        onNavigateToRegister()
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(52.dp),
-                    shape = MaterialTheme.shapes.medium
-                ) {
-                    Text(
-                        text       = "Daftar Akun Baru",
-                        color      = TextDark,
-                        fontWeight = FontWeight.Medium,
-                        style      = MaterialTheme.typography.titleMedium
-                    )
-                }
             } else {
-                // Halaman lain → tombol Lanjut + Skip
+                // Halaman lain → tombol Lanjut + Lewati
                 Row(
                     modifier              = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,

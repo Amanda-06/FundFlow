@@ -1,33 +1,58 @@
+// ============================================================
+// MainActivity.kt
+// ============================================================
 package com.example.fundflow
 
 import android.content.Context
 import android.content.res.Configuration
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import com.example.fundflow.core.datastore.SettingsDataStore
-import com.example.fundflow.appNavigation.AppNavGraph
-import com.example.fundflow.navigation.BottomNavBar
-import com.example.fundflow.navigation.Screen
+import com.example.fundflow.navigation.AppNavGraph
 import com.example.fundflow.ui.theme.FundFlowTheme
+import dagger.hilt.EntryPoint
+import dagger.hilt.InstallIn
 import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.EntryPointAccessors
+import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import java.util.Locale
 import javax.inject.Inject
 
 /**
- * Single Activity Utama untuk FundFlow.
- * Sudah menggabungkan manajemen Tema (DataStore), Bahasa (Locale), Window Edge-to-Edge,
- * serta Kontrol Visibilitas Bottom Navigation Bar secara aman.
+ * EntryPoint untuk mengakses singleton [SettingsDataStore] dari
+ * attachBaseContext(), di mana injeksi Hilt standar (@Inject field)
+ * belum tersedia karena super.onCreate() belum dipanggil.
+ *
+ * Menggunakan EntryPointAccessors memastikan kita mendapatkan
+ * INSTANCE SINGLETON yang sama dengan yang di-provide AppModule —
+ * bukan instance baru (yang akan menyebabkan crash "multiple
+ * DataStores active for the same file").
+ */
+@EntryPoint
+@InstallIn(SingletonComponent::class)
+interface SettingsDataStoreEntryPoint {
+    fun settingsDataStore(): SettingsDataStore
+}
+
+/**
+ * Single Activity untuk seluruh aplikasi FundFlow.
+ *
+ * Tanggung jawab:
+ * 1. Menerapkan locale (bahasa ID/EN) sebelum Activity ter-attach,
+ *    dibaca dari singleton [SettingsDataStore] via EntryPointAccessors.
+ * 2. Membaca preferensi tema (dark/light) secara reaktif dan
+ *    meneruskannya ke [FundFlowTheme].
+ * 3. Menyediakan fungsi [recreateActivity] yang dipanggil dari
+ *    SettingsScreen setelah pengguna mengganti bahasa, agar seluruh
+ *    string resource ter-refresh sesuai locale baru.
+ * 4. Memanggil [AppNavGraph] sebagai entry point navigasi.
  */
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -36,74 +61,61 @@ class MainActivity : ComponentActivity() {
     lateinit var settingsDataStore: SettingsDataStore
 
     override fun attachBaseContext(newBase: Context) {
-        // [FITUR BAHASA] Mengambil preferensi bahasa secara sinkronus via SharedPreferences 
-        // sebelum activity ter-attach demi kelancaran i18n string resource di awal startup.
-        val lang = newBase.getSharedPreferences("fundflow_lang", Context.MODE_PRIVATE)
-            .getString("language", "id") ?: "id"
-        super.attachBaseContext(applyLocale(newBase, lang))
+        // Ambil instance SINGLETON SettingsDataStore via Hilt EntryPoint
+        // (aman dipanggil sebelum proses injeksi @AndroidEntryPoint selesai).
+        val savedLanguage = runCatching {
+            val entryPoint = EntryPointAccessors.fromApplication(
+                newBase.applicationContext,
+                SettingsDataStoreEntryPoint::class.java
+            )
+            runBlocking { entryPoint.settingsDataStore().language.first() }
+        }.getOrDefault("id")
+
+        super.attachBaseContext(applyLocale(newBase, savedLanguage))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // [FITUR TAMPILAN] Mengaktifkan tampilan penuh menembus status bar & navigation bar bawaan HP
         enableEdgeToEdge()
 
         setContent {
-            // [FITUR TEMA] Mengamati preferensi tema dari DataStore secara lifecycle-aware
+            // Observe preferensi tema secara reaktif dari DataStore
             val isDarkTheme by settingsDataStore.isDarkTheme
                 .collectAsStateWithLifecycle(initialValue = false)
 
             FundFlowTheme(darkTheme = isDarkTheme) {
-                // Inisialisasi NavController di level Activity agar bisa di-share ke Scaffold & AppNavGraph
-                val navController = rememberNavController()
-
-                // POIN 3: Memantau state navigasi secara real-time
-                val navBackStackEntry by navController.currentBackStackEntryAsState()
-                val currentRoute = navBackStackEntry?.destination?.route
-
-                // POIN 2: Menentukan halaman mana saja yang berhak menampilkan Bottom Bar
-                val bottomBarScreens = listOf(
-                    Screen.Home.route,
-                    Screen.Iuran.route,
-                    Screen.Pemasukan.route,
-                    Screen.Pengeluaran.route,
-                    Screen.Laporan.route
+                AppNavGraph(
+                    onLanguageChanged = { recreateActivity() }
                 )
-                val showBottomBar = currentRoute in bottomBarScreens
-
-                // Struktur Layout Utama Material 3
-                Scaffold(
-                    bottomBar = {
-                        if (showBottomBar) {
-                            BottomNavBar(navController = navController)
-                        }
-                    }
-                ) { innerPadding ->
-                    // POIN 1: Manajemen Padding (innerPadding) agar konten tidak tertutup oleh BottomBar
-                    Surface(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(innerPadding) // <--- Mengonsumsi padding Scaffold di sini
-                    ) {
-                        // Memanggil Grafik Navigasi dan mengoper navController yang sudah di-hoist
-                        AppNavGraph(navController = navController)
-                    }
-                }
             }
         }
     }
 
+    /**
+     * Recreate Activity — dipanggil setelah bahasa diganti di SettingsScreen
+     * agar attachBaseContext() dipanggil ulang dengan locale baru,
+     * sehingga seluruh teks UI ter-refresh ke bahasa yang baru dipilih.
+     */
+    private fun recreateActivity() {
+        recreate()
+    }
+
     companion object {
         /**
-         * Fungsi utilitas untuk menerapkan konfigurasi bahasa kustom ke Context.
-         * Dipanggil dari attachBaseContext dan SettingsScreen (diikuti recreate()).
+         * Terapkan [languageCode] ("id" | "en") ke [context] dan
+         * kembalikan context baru dengan konfigurasi locale yang sudah diperbarui.
          */
         fun applyLocale(context: Context, languageCode: String): Context {
             val locale = Locale(languageCode)
             Locale.setDefault(locale)
-            val config = Configuration(context.resources.configuration).apply {
-                setLocale(locale)
+
+            val config = Configuration(context.resources.configuration)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                config.setLocale(locale)
+                config.setLayoutDirection(locale)
+            } else {
+                @Suppress("DEPRECATION")
+                config.locale = locale
             }
             return context.createConfigurationContext(config)
         }
