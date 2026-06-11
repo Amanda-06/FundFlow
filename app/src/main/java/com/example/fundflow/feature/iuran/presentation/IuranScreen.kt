@@ -17,6 +17,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -28,6 +29,7 @@ import com.example.fundflow.feature.iuran.domain.usecase.MonthOption
 import com.example.fundflow.ui.components.*
 import com.example.fundflow.ui.theme.*
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun IuranScreen(
     onNavigateToAnggota: () -> Unit,
@@ -116,7 +118,7 @@ fun IuranScreen(
                 )
             } else {
                 LazyColumn(
-                    contentPadding      = PaddingValues(horizontal = 16.dp, vertical = 4.dp, top = 100.dp),
+                    contentPadding      = PaddingValues(start = 16.dp, top = 100.dp, end = 16.dp, bottom = 4.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     items(uiState.filteredList, key = { it.anggotaId }) { iuran ->
