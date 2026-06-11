@@ -1,6 +1,8 @@
 package com.example.fundflow.core.firebase
 
+import android.Manifest
 import android.util.Log
+import androidx.annotation.RequiresPermission
 import com.example.fundflow.core.util.NotificationHelper
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
@@ -48,6 +50,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
      * Dipanggil saat notifikasi diterima dalam kondisi app foreground.
      * Untuk background / killed, sistem Android menangani sendiri.
      */
+    @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
         Log.d(TAG, "Pesan diterima dari: ${remoteMessage.from}")

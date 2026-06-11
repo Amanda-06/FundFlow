@@ -2,6 +2,8 @@ package com.example.fundflow.feature.auth.data.repository
 
 import com.example.fundflow.core.datastore.SettingsDataStore
 import com.example.fundflow.feature.auth.data.local.UserDao
+import com.example.fundflow.feature.auth.data.mapper.toDomain
+import com.example.fundflow.feature.auth.data.mapper.toUserEntity
 import com.example.fundflow.feature.auth.data.model.UserEntity
 import com.example.fundflow.feature.auth.data.remote.FirebaseAuthDataSource
 import com.example.fundflow.feature.auth.domain.model.User

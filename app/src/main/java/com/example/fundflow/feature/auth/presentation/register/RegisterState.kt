@@ -30,3 +30,4 @@ data class RegisterState(
     val isSuccess: Boolean            = false,
     val errorMessage: String?         = null
 )
+ 

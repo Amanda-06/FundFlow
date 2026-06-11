@@ -4,7 +4,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.fundflow.feature.anggota.data.local.AnggotaDao
-import com.example.fundflow.feature.anggota.data.local.AnggotaEntity
+import com.example.fundflow.feature.anggota.data.model.AnggotaEntity
 import com.example.fundflow.feature.auth.data.local.UserDao
 import com.example.fundflow.feature.auth.data.model.UserEntity
 import com.example.fundflow.feature.iuran.data.local.IuranDao

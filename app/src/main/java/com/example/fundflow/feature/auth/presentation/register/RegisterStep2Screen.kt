@@ -261,6 +261,7 @@ fun RegisterStep2Screen(
 }
 
 // ── Bottom Sheet picker bulan ─────────────────────────────────
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun MonthPickerSheet(
     options: List<Pair<String, String>>,
