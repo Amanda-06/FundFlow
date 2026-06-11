@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ═══════════════════════════════════════════════════════
+         APP
+    ═══════════════════════════════════════════════════════ -->
+    <string name="app_name">FundFlow</string>
+
+    <!-- ═══════════════════════════════════════════════════════
+         ONBOARDING
+    ═══════════════════════════════════════════════════════ -->
+    <string name="onboarding_title_1">Manage Your Organization\'s Finances</string>
+    <string name="onboarding_desc_1">Record dues, income, and expenses of your organization easily and systematically.</string>
+    <string name="onboarding_title_2">Monitor Member Status</string>
+    <string name="onboarding_desc_2">Track who has and hasn\'t paid their monthly dues in real-time.</string>
+    <string name="onboarding_title_3">Automatic Reports</string>
+    <string name="onboarding_desc_3">Generate financial reports automatically and export to PDF or Excel anytime.</string>
+    <string name="onboarding_skip">Skip</string>
+    <string name="onboarding_next">Next</string>
+    <string name="onboarding_start">Get Started</string>
+    <string name="onboarding_register">Create New Account</string>
+
+    <!-- ═══════════════════════════════════════════════════════
+         AUTH — LOGIN
+    ═══════════════════════════════════════════════════════ -->
+    <string name="login_welcome_title">Welcome Back</string>
+    <string name="login_welcome_subtitle">Sign in to your account to continue</string>
+    <string name="login_email_label">Email or Username</string>
+    <string name="login_password_label">Password</string>
+    <string name="login_forgot_password">Forgot password?</string>
+    <string name="login_button">Sign In</string>
+    <string name="login_no_account">Don\'t have an account?</string>
+    <string name="login_register_link">Sign Up Now</string>
+
+    <!-- ═══════════════════════════════════════════════════════
+         AUTH — REGISTER
+    ═══════════════════════════════════════════════════════ -->
+    <string name="register_title">Create Account</string>
+    <string name="register_subtitle">Create an account to start managing finances</string>
+    <string name="register_nama_lengkap">Full Name</string>
+    <string name="register_email">Email</string>
+    <string name="register_username">Username</string>
+    <string name="register_password">Password</string>
+    <string name="register_confirm_password">Confirm Password</string>
+    <string name="register_next">Next</string>
+    <string name="register_have_account">Already have an account?</string>
+    <string name="register_login_link">Sign In</string>
+
+    <string name="register_step2_title">Organization Setup</string>
+    <string name="register_step2_subtitle">Set up your organization\'s management period</string>
+    <string name="register_nama_organisasi">Organization Name</string>
+    <string name="register_periode_mulai">Start Month</string>
+    <string name="register_periode_mulai_placeholder">Select Month (e.g., March)</string>
+    <string name="register_periode_selesai">End Month</string>
+    <string name="register_periode_selesai_placeholder">Select Month (e.g., December)</string>
+    <string name="register_finish">Finish &amp; Start</string>
+
+    <!-- Validation messages -->
+    <string name="error_email_empty">Email cannot be empty</string>
+    <string name="error_email_invalid">Invalid email format</string>
+    <string name="error_password_empty">Password cannot be empty</string>
+    <string name="error_password_short">Password must be at least 6 characters</string>
+    <string name="error_confirm_password_empty">Please confirm your password</string>
+    <string name="error_confirm_password_mismatch">Passwords do not match</string>
+    <string name="error_nama_empty">Full name cannot be empty</string>
+    <string name="error_username_empty">Username cannot be empty</string>
+    <string name="error_username_short">Username must be at least 3 characters</string>
+    <string name="error_field_empty">%1$s cannot be empty</string>
+
+    <!-- ═══════════════════════════════════════════════════════
+         HOME (DASHBOARD)
+    ═══════════════════════════════════════════════════════ -->
+    <string name="home_greeting">Hello, %1$s 👋</string>
+    <string name="home_total_saldo">Total Balance</string>
+    <string name="home_pemasukan">Income</string>
+    <string name="home_pengeluaran">Expense</string>
+    <string name="home_status_iuran">This Month\'s Dues Status</string>
+    <string name="home_status_iuran_desc">%1$d of %2$d Members Paid</string>
+    <string name="home_tagih">Remind</string>
+    <string name="home_transaksi_terakhir">Recent Transactions</string>
+    <string name="home_belum_ada_transaksi">No transactions yet</string>
+    <string name="home_hari_libur_terdekat">Upcoming Holiday</string>
+
+    <!-- ═══════════════════════════════════════════════════════
+         IURAN (MEMBERSHIP DUES)
+    ═══════════════════════════════════════════════════════ -->
+    <string name="iuran_title">Member Dues</string>
+    <string name="iuran_lunas">Paid</string>
+    <string name="iuran_belum_bayar">Unpaid</string>
+    <string name="iuran_terkumpul">Collected</string>
+    <string name="iuran_search_hint">Search member name...</string>
+    <string name="iuran_filter_semua">All</string>
+    <string name="iuran_filter_lunas">Paid</string>
+    <string name="iuran_filter_belum_bayar">Unpaid</string>
+    <string name="iuran_detail_title">Dues Detail</string>
+    <string name="iuran_status_pembayaran">Payment Status</string>
+    <string name="iuran_sudah_bayar">Paid</string>
+    <string name="iuran_terlambat">Late (Penalty)</string>
+    <string name="iuran_detail_pembayaran">Payment Detail</string>
+    <string name="iuran_nominal">Amount</string>
+    <string name="iuran_metode_pembayaran">Payment Method</string>
+    <string name="iuran_tanggal_pembayaran">Payment Date</string>
+    <string name="iuran_catatan_opsional">Note (Optional)</string>
+    <string name="iuran_simpan">Save</string>
+    <string name="iuran_batal">Cancel</string>
+
+    <!-- ═══════════════════════════════════════════════════════
+         MEMBER MANAGEMENT
+    ═══════════════════════════════════════════════════════ -->
+    <string name="anggota_title">Member Management</string>
+    <string name="anggota_count">%1$d members</string>
+    <string name="anggota_empty_title">No members yet</string>
+    <string name="anggota_empty_message">Tap the + button to add your first member.</string>
+    <string name="anggota_add_title">Add Member</string>
+    <string name="anggota_edit_title">Edit Member</string>
+    <string name="anggota_nama_label">Member Name</string>
+    <string name="anggota_delete_title">Delete Member?</string>
+    <string name="anggota_delete_message">All dues records for this member across every month will also be permanently deleted.</string>
+    <string name="anggota_delete_batch_warning">All dues records for the selected members will also be deleted.</string>
+
+    <!-- ═══════════════════════════════════════════════════════
+         INCOME (PEMASUKAN)
+    ═══════════════════════════════════════════════════════ -->
+    <string name="pemasukan_title">Income</string>
+    <string name="pemasukan_total">Total Income</string>
+    <string name="pemasukan_search_hint">Search income...</string>
+    <string name="pemasukan_empty_title">No income recorded yet</string>
+    <string name="pemasukan_empty_message">Tap the + button to record your first income.</string>
+    <string name="pemasukan_detail_title">Income Detail</string>
+    <string name="pemasukan_edit_title">Edit Income</string>
+    <string name="pemasukan_deskripsi">Description</string>
+    <string name="pemasukan_deskripsi_hint">Enter income description</string>
+    <string name="pemasukan_sumber">Income Source</string>
+    <string name="pemasukan_sumber_hint">Select source (e.g., Member Dues)</string>
+    <string name="pemasukan_qty">Qty</string>
+    <string name="pemasukan_harga_satuan">Unit Price</string>
+    <string name="pemasukan_total_nominal">Total Amount</string>
+    <string name="pemasukan_metode_penerimaan">Receiving Method</string>
+    <string name="pemasukan_metode_hint">Select method (Cash/Transfer)</string>
+    <string name="pemasukan_tanggal">Date</string>
+    <string name="pemasukan_catatan_hint">Add a note...</string>
+    <string name="pemasukan_simpan">Save Income</string>
+    <string name="pemasukan_simpan_perubahan">Save Changes</string>
+    <string name="pemasukan_delete_title">Delete Income?</string>
+    <string name="pemasukan_delete_message">This income record will be permanently deleted.</string>
+    <string name="pemasukan_saved">Income saved successfully</string>
+
+    <!-- ═══════════════════════════════════════════════════════
+         EXPENSE (PENGELUARAN)
+    ═══════════════════════════════════════════════════════ -->
+    <string name="pengeluaran_title">Expense</string>
+    <string name="pengeluaran_total">Total Expense</string>
+    <string name="pengeluaran_search_hint">Search expense...</string>
+    <string name="pengeluaran_empty_title">No expenses recorded yet</string>
+    <string name="pengeluaran_empty_message">Tap the + button to record your first expense.</string>
+    <string name="pengeluaran_detail_title">Expense Detail</string>
+    <string name="pengeluaran_edit_title">Edit Expense</string>
+    <string name="pengeluaran_deskripsi_hint">Enter expense description</string>
+    <string name="pengeluaran_kategori">Category</string>
+    <string name="pengeluaran_kategori_hint">Select category</string>
+    <string name="pengeluaran_nama_program">Program Name (Optional)</string>
+    <string name="pengeluaran_nama_program_hint">e.g., National IT Seminar</string>
+    <string name="pengeluaran_nominal">Amount</string>
+    <string name="pengeluaran_metode_pembayaran">Payment Method</string>
+    <string name="pengeluaran_tambah">Add Expense</string>
+    <string name="pengeluaran_simpan_perubahan">Save Changes</string>
+    <string name="pengeluaran_delete_title">Delete Expense?</string>
+    <string name="pengeluaran_delete_message">This expense record will be permanently deleted.</string>
+    <string name="pengeluaran_saved">Expense saved successfully</string>
+
+    <!-- ═══════════════════════════════════════════════════════
+         REPORTS
+    ═══════════════════════════════════════════════════════ -->
+    <string name="laporan_title">Reports</string>
+    <string name="laporan_export_title">Export Report</string>
+    <string name="laporan_export_desc">Select a report type to preview and export to PDF or Excel</string>
+    <string name="laporan_jenis_laporan">REPORT TYPES</string>
+    <string name="laporan_iuran_bulanan">Monthly Dues Report</string>
+    <string name="laporan_iuran_bulanan_desc">Summary of member dues per month and overall total</string>
+    <string name="laporan_status_bayar">Payment Status Report</string>
+    <string name="laporan_status_bayar_desc">Payment status of all members from month to month</string>
+    <string name="laporan_detail_keuangan">Financial Detail Report</string>
+    <string name="laporan_detail_keuangan_desc">Complete summary of organization income and expenses</string>
+    <string name="laporan_rincian_iuran">Monthly Dues Breakdown</string>
+    <string name="laporan_bulan">Month</string>
+    <string name="laporan_jumlah">Amount (Rp)</string>
+    <string name="laporan_total">Total</string>
+    <string name="laporan_export_pdf">Export PDF</string>
+    <string name="laporan_export_excel">Export Excel</string>
+    <string name="laporan_export_success">Report exported successfully</string>
+    <string name="laporan_export_failed">Failed to export report</string>
+
+    <!-- ═══════════════════════════════════════════════════════
+         PROFILE
+    ═══════════════════════════════════════════════════════ -->
+    <string name="profile_title">Profile</string>
+    <string name="profile_role_bendahara">Treasurer</string>
+    <string name="profile_edit">Edit Profile</string>
+    <string name="profile_about">About FundFlow</string>
+    <string name="profile_help_center">Help Center</string>
+    <string name="profile_logout">Logout</string>
+    <string name="profile_logout_confirm_title">Sign Out?</string>
+    <string name="profile_logout_confirm_message">You\'ll need to sign in again to access your organization\'s financial data.</string>
+    <string name="profile_version">Version %1$s</string>
+
+    <!-- Edit Profile -->
+    <string name="edit_profile_title">Edit Profile</string>
+    <string name="edit_profile_nama">Full Name</string>
+    <string name="edit_profile_username">Username</string>
+    <string name="edit_profile_email">Email</string>
+    <string name="edit_profile_organisasi">Organization Name</string>
+    <string name="edit_profile_save">Save Changes</string>
+    <string name="edit_profile_saved">Profile updated successfully</string>
+
+    <!-- About FundFlow -->
+    <string name="about_title">About FundFlow</string>
+    <string name="about_app_desc">FundFlow is a mobile application designed to help organization treasurers manage finances in a structured, centralized, and efficient way — covering dues recording, income, expenses, and automatic reporting.</string>
+    <string name="about_developed_by">Developed by</string>
+    <string name="about_developer_names">Adinda Lestari &amp; Amanda Arva Safaray</string>
+    <string name="about_university">Lambung Mangkurat University</string>
+    <string name="about_version_label">App Version</string>
+
+    <!-- Help Center -->
+    <string name="help_title">Help Center</string>
+    <string name="help_faq_section">Frequently Asked Questions</string>
+    <string name="help_contact_section">Contact Us</string>
+    <string name="help_contact_email">Send Email</string>
+    <string name="help_faq_q1">How do I add a new member?</string>
+    <string name="help_faq_a1">Open the Dues page, tap the add (+) button at the bottom right to open Member Management, then tap add member.</string>
+    <string name="help_faq_q2">How do I record a dues payment?</string>
+    <string name="help_faq_a2">Open the Dues page, select the month, then tap a member\'s name to open the detail form and update the payment status.</string>
+    <string name="help_faq_q3">How do I export a report?</string>
+    <string name="help_faq_a3">Open the Reports page, select the desired report type, then tap Export PDF or Export Excel on the report preview.</string>
+    <string name="help_faq_q4">Is my data stored offline?</string>
+    <string name="help_faq_a4">Yes, FundFlow uses an offline-first approach so your data remains accessible without an internet connection and will sync once you\'re online.</string>
+    <string name="help_faq_q5">How do I change the app\'s language or theme?</string>
+    <string name="help_faq_a5">Open Settings via the gear icon on Home, then choose Language or Theme according to your preference.</string>
+
+    <!-- ═══════════════════════════════════════════════════════
+         SETTINGS
+    ═══════════════════════════════════════════════════════ -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_section_general">GENERAL</string>
+    <string name="settings_notifikasi">Notifications</string>
+    <string name="settings_notifikasi_desc">Reminders for dues payments and financial activities</string>
+    <string name="settings_bahasa">Language</string>
+    <string name="settings_bahasa_id">Bahasa Indonesia</string>
+    <string name="settings_bahasa_en">English</string>
+    <string name="settings_tema">Theme</string>
+    <string name="settings_tema_light">Light Mode</string>
+    <string name="settings_tema_dark">Dark Mode</string>
+    <string name="settings_section_organisasi">ORGANIZATION</string>
+    <string name="settings_periode_kas">Cash Period Settings</string>
+    <string name="settings_periode_kas_desc">Set up your organization\'s management period</string>
+    <string name="settings_pilih_bahasa">Select Language</string>
+    <string name="settings_pilih_tema">Select Theme</string>
+
+    <!-- Period Settings -->
+    <string name="periode_title">Period Settings</string>
+    <string name="periode_current">Current Period</string>
+    <string name="periode_mulai">Start Month</string>
+    <string name="periode_selesai">End Month</string>
+    <string name="periode_save">Save Period</string>
+    <string name="periode_saved">Cash period updated successfully</string>
+    <string name="periode_warning">Changing the cash period will affect the month range shown on the Dues and Reports pages.</string>
+
+    <!-- ═══════════════════════════════════════════════════════
+         COMMON / SHARED
+    ═══════════════════════════════════════════════════════ -->
+    <string name="common_loading">Loading...</string>
+    <string name="common_save">Save</string>
+    <string name="common_cancel">Cancel</string>
+    <string name="common_delete">Delete</string>
+    <string name="common_edit">Edit</string>
+    <string name="common_close">Close</string>
+    <string name="common_confirm">Confirm</string>
+    <string name="common_back">Back</string>
+    <string name="common_search">Search</string>
+    <string name="common_error_generic">Something went wrong. Please try again.</string>
+    <string name="common_no_internet">No internet connection. Please check your network.</string>
+    <string name="common_selected_count">%1$d / %2$d selected</string>
+    <string name="common_select_all">All</string>
+    <string name="common_delete_confirm_title">Delete Data?</string>
+    <string name="common_delete_confirm_message">This action cannot be undone.</string>
+
+    <!-- ═══════════════════════════════════════════════════════
+         BOTTOM NAVIGATION
+    ═══════════════════════════════════════════════════════ -->
+    <string name="nav_home">Home</string>
+    <string name="nav_iuran">Dues</string>
+    <string name="nav_pemasukan">Income</string>
+    <string name="nav_pengeluaran">Expense</string>
+    <string name="nav_laporan">Reports</string>
+
+    <!-- ═══════════════════════════════════════════════════════
+         NOTIFICATIONS
+    ═══════════════════════════════════════════════════════ -->
+    <string name="notif_channel_iuran_name">Dues Reminder</string>
+    <string name="notif_channel_iuran_desc">Reminder notifications for monthly dues payments</string>
+    <string name="notif_channel_general_name">General Notifications</string>
+    <string name="notif_channel_general_desc">General notifications from FundFlow</string>
+    <string name="notif_iuran_title">Dues Reminder</string>
+    <string name="notif_iuran_message">%1$d members have not paid their dues this month.</string>
+</resources>
