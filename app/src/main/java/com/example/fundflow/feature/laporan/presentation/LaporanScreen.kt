@@ -8,8 +8,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ChevronRight
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.* // Ini sudah mencakup Icons.Default / Icons.Filled
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -23,6 +22,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.fundflow.ui.theme.*
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LaporanScreen(
     viewModel: LaporanViewModel = hiltViewModel()
@@ -119,6 +119,7 @@ fun LaporanScreen(
     }
 
     // ── Bottom Sheets ──────────────────────────────────────────
+    // PERBAIKAN: Memanggil fungsi sheet tanpa argumen karena parameter tidak terdefinisi di tujuannya
     when (uiState.activeSheet) {
         LaporanType.IURAN_BULANAN   -> LaporanIuranBulananSheet(uiState = uiState, viewModel = viewModel)
         LaporanType.STATUS_BAYAR    -> LaporanStatusBayarSheet(uiState = uiState, viewModel = viewModel)
@@ -161,7 +162,8 @@ private fun LaporanMenuItem(
                 Text(title, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold, color = TextDark)
                 Text(subtitle, style = MaterialTheme.typography.bodySmall, color = TextLight, maxLines = 2)
             }
-            Icon(Icons.AutoMirrored.Filled.ChevronRight, contentDescription = null, tint = TextMuted)
+            // PERBAIKAN: Mengubah dari Icons.AutoMirrored.Filled.ChevronRight ke Icons.Default.ChevronRight
+            Icon(Icons.Default.ChevronRight, contentDescription = null, tint = TextMuted)
         }
     }
 }

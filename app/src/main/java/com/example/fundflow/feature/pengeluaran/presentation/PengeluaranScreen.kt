@@ -66,7 +66,7 @@ fun PengeluaranScreen(
     ) { padding ->
         LazyColumn(
             modifier       = Modifier.fillMaxSize().padding(padding),
-            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp, bottom = 80.dp),
+            contentPadding = PaddingValues(start = 16.dp, top = 8.dp, end = 16.dp, bottom = 80.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             // ── Kartu total pengeluaran ────────────────────────

@@ -1,11 +1,13 @@
+// ============================================================
+// feature/settings/presentation/SettingsScreen.kt
+// ============================================================
 package com.example.fundflow.feature.settings.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ChevronRight
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.* // Ini otomatis mencakup Icons.Default / Icons.Filled
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -181,7 +183,8 @@ private fun SettingsClickItem(
                 Text(title, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium, color = TextDark)
                 Text(value, style = MaterialTheme.typography.bodySmall, color = TextLight)
             }
-            Icon(Icons.AutoMirrored.Filled.ChevronRight, contentDescription = null, tint = TextMuted, modifier = Modifier.size(20.dp))
+            // PERBAIKAN: Mengubah dari Icons.AutoMirrored.Filled.ChevronRight ke Icons.Default.ChevronRight
+            Icon(Icons.Default.ChevronRight, contentDescription = null, tint = TextMuted, modifier = Modifier.size(20.dp))
         }
     }
 }
