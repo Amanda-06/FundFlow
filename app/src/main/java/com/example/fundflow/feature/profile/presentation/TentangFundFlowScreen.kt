@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.fundflow.ui.components.FundFlowTopBar
 import com.example.fundflow.ui.theme.*
@@ -85,7 +86,7 @@ fun TentangFundFlowScreen(
             InfoCard(
                 icon  = Icons.Default.Code,
                 title = "Dikembangkan oleh",
-                value = "Adinda Lestari & Amanda Arva Safaray"
+                value = "Adinda Lestari & Amanda Arva Safaraya"
             )
             Spacer(Modifier.height(10.dp))
             InfoCard(
@@ -139,5 +140,13 @@ private fun InfoCard(
                 Text(value, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium, color = TextDark)
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun TentangFundFlowScreenPreview() {
+    FundFlowTheme {
+        TentangFundFlowScreen(onNavigateBack = {})
     }
 }
