@@ -1,9 +1,10 @@
-package com.example.fundflow.navigation
+package com.example.fundflow.appNavigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.fundflow.navigation.Screen
 
 // Silakan import Screen & ViewModel masing-masing fitur setelah file presentasi dibuat.
 // Contoh: import com.example.fundflow.feature.home.presentation.HomeScreen

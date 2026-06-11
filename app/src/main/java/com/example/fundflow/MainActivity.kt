@@ -11,7 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.fundflow.navigation.AppNavGraph
+import com.example.fundflow.appNavigation.AppNavGraph
 import com.example.fundflow.navigation.BottomNavBar
 import com.example.fundflow.navigation.Screen
 import com.example.fundflow.ui.theme.FundFlowTheme
