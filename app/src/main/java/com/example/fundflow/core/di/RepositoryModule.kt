@@ -16,8 +16,6 @@ import com.example.fundflow.feature.pengeluaran.data.repository.PengeluaranRepos
 import com.example.fundflow.feature.pengeluaran.domain.repository.PengeluaranRepository
 import com.example.fundflow.feature.profile.data.repository.ProfileRepositoryImpl
 import com.example.fundflow.feature.profile.domain.repository.ProfileRepository
-import com.example.fundflow.feature.settings.data.repository.SettingsRepositoryImpl
-import com.example.fundflow.feature.settings.domain.repository.SettingsRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
