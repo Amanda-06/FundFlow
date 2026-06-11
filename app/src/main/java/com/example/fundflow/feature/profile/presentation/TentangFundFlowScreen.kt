@@ -20,7 +20,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.fundflow.ui.components.FundFlowTopBar
-import com.example.fundflow.ui.theme.*
+import com.example.fundflow.ui.theme.FundFlowTheme
+import com.example.fundflow.ui.theme.AppBackground
+import com.example.fundflow.ui.theme.HeaderGreen
+import com.example.fundflow.ui.theme.TextDark
+import com.example.fundflow.ui.theme.TextLight
+import com.example.fundflow.ui.theme.TextMuted
+import com.example.fundflow.ui.theme.CardWhite
+import com.example.fundflow.ui.theme.IuranBlue
 
 @Composable
 fun TentangFundFlowScreen(
@@ -146,6 +153,7 @@ private fun InfoCard(
 @Preview(showBackground = true)
 @Composable
 fun TentangFundFlowScreenPreview() {
+    // Explicitly using the theme for the preview
     FundFlowTheme {
         TentangFundFlowScreen(onNavigateBack = {})
     }
