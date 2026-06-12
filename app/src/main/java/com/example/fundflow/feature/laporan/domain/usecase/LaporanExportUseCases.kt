@@ -1,24 +1,3 @@
-// ============================================================
-// feature/laporan/domain/usecase/LaporanExportUseCases.kt
-// (FIXED — Export PDF/Excel + Auto-Open via FileProvider)
-//
-// !! PENTING !!
-// File ini MENGGANTIKAN class `ExportPdfUseCase` dan
-// `ExportExcelUseCase` yang ADA DI FILE `LaporanRepositoryUseCases.kt`.
-//
-// Langkah migrasi:
-// 1. Buka LaporanRepositoryUseCases.kt
-// 2. HAPUS seluruh class `ExportPdfUseCase` dan `ExportExcelUseCase`
-//    beserta komentar section "// ── Export PDF ──" dan
-//    "// ── Export Excel ──" (agar tidak duplicate class).
-// 3. Letakkan file INI (LaporanExportUseCases.kt) di folder yang sama:
-//    feature/laporan/domain/usecase/
-// 4. Pastikan import yang sudah tidak terpakai di
-//    LaporanRepositoryUseCases.kt (Context, PdfDocument, Paint,
-//    HSSFWorkbook, FileOutputStream, Environment, File, ApplicationContext,
-//    CurrencyFormatter) dihapus jika muncul warning "unused import"
-//    — TIDAK WAJIB, hanya housekeeping.
-// ============================================================
 package com.example.fundflow.feature.laporan.domain.usecase
 
 import android.content.Context
@@ -26,6 +5,7 @@ import android.content.Intent
 import android.graphics.Paint
 import android.graphics.pdf.PdfDocument
 import android.os.Environment
+import android.widget.Toast
 import androidx.core.content.FileProvider
 import com.example.fundflow.core.util.CurrencyFormatter
 import com.example.fundflow.feature.laporan.domain.model.LaporanDetailKeuangan
@@ -35,29 +15,16 @@ import java.io.File
 import java.io.FileOutputStream
 import javax.inject.Inject
 
-/**
- * Setelah file laporan (PDF/Excel) berhasil ditulis ke storage,
- * buka file tersebut melalui system chooser (ACTION_VIEW) menggunakan
- * FileProvider, agar user langsung melihat hasilnya (PDF viewer / Excel app)
- * — tanpa ini, user tidak punya cara untuk membuka file yang tersimpan
- * di app-private storage.
- *
- * PENTING — agar berfungsi, tambahkan ke AndroidManifest.xml di dalam
- * tag <application>:
- *
- * <provider
- *     android:name="androidx.core.content.FileProvider"
- *     android:authorities="${applicationId}.fileprovider"
- *     android:exported="false"
- *     android:grantUriPermissions="true">
- *     <meta-data
- *         android:name="android.support.FILE_PROVIDER_PATHS"
- *         android:resource="@xml/file_paths" />
- * </provider>
- *
- * dan buat res/xml/file_paths.xml (lihat file terpisah yang disediakan).
- */
 internal fun openExportedFile(context: Context, file: File, mimeType: String) {
+
+    // ── 1. Toast — SELALU muncul, ini bukti pasti file tersimpan ──
+    Toast.makeText(
+        context,
+        "Laporan tersimpan: ${file.name}",
+        Toast.LENGTH_LONG
+    ).show()
+
+    // ── 2. Coba buka file via system chooser (best-effort) ───────
     val uri = FileProvider.getUriForFile(
         context,
         "${context.packageName}.fileprovider",
@@ -77,8 +44,8 @@ internal fun openExportedFile(context: Context, file: File, mimeType: String) {
     try {
         context.startActivity(chooser)
     } catch (e: Exception) {
-        // Tidak ada aplikasi yang bisa membuka tipe file ini di emulator/device.
-        // File tetap tersimpan di app-private storage; abaikan agar tidak crash.
+        // Tidak ada aplikasi yang bisa membuka tipe file ini di emulator.
+        // Tidak masalah — Toast di langkah 1 sudah memberi konfirmasi.
     }
 }
 
