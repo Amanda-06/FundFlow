@@ -1,5 +1,5 @@
 // ============================================================
-// feature/home/presentation/HomeScreen.kt
+// feature/home/presentation/HomeScreen.kt  (FIXED)
 // ============================================================
 package com.example.fundflow.feature.home.presentation
 
@@ -38,6 +38,7 @@ import java.util.Locale
 fun HomeScreen(
     onNavigateToProfile: () -> Unit,
     onNavigateToSettings: () -> Unit,
+    onNavigateToIuran: () -> Unit,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -70,6 +71,7 @@ fun HomeScreen(
             IuranStatusCard(
                 lunasCount      = uiState.summary.iuranSummary.lunasCount,
                 belumBayarCount = uiState.summary.iuranSummary.belumBayarCount,
+                onTagihClick    = onNavigateToIuran,
                 modifier        = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
             )
         }
@@ -273,6 +275,7 @@ private fun SaldoCard(
 private fun IuranStatusCard(
     lunasCount: Int,
     belumBayarCount: Int,
+    onTagihClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -302,7 +305,10 @@ private fun IuranStatusCard(
                 )
             }
             Button(
-                onClick = {},
+                // FIX: sebelumnya onClick = {} (kosong, tidak melakukan apa-apa).
+                // Sekarang memanggil onTagihClick yang diteruskan dari
+                // MainScreen -> berpindah ke tab "Iuran" pada bottom nav.
+                onClick = onTagihClick,
                 colors  = ButtonDefaults.buttonColors(
                     containerColor = PrimaryLime,
                     contentColor   = TextDark

@@ -1,12 +1,10 @@
-// ============================================================
-// navigation/MainScreen.kt
-// ============================================================
 package com.example.fundflow.navigation
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -35,20 +33,46 @@ fun MainScreen(
 ) {
     val bottomNavController = rememberNavController()
 
+    /**
+     * Helper navigasi antar-tab — dipakai juga oleh BottomNavBar.
+     * Disamakan di sini agar perilaku "Tagih" (Home -> Iuran)
+     * konsisten dengan tap langsung di bottom nav (state tab lain
+     * tetap tersimpan via saveState/restoreState).
+     */
+    fun navigateToTab(route: String) {
+        bottomNavController.navigate(route) {
+            popUpTo(bottomNavController.graph.findStartDestination().id) {
+                saveState = true
+            }
+            launchSingleTop = true
+            restoreState    = true
+        }
+    }
+
     Scaffold(
         bottomBar = { FundFlowBottomNavBar(navController = bottomNavController) },
         containerColor = AppBackground
     ) { innerPadding ->
+        // ── FIX TOP PADDING ──────────────────────────────────────
+        // Hanya ambil padding BAWAH (untuk bottom nav bar) dari
+        // outer Scaffold. Padding ATAS (status bar) TIDAK diambil
+        // di sini karena setiap screen tab (Home via
+        // .statusBarsPadding(), atau Iuran/Pemasukan/Pengeluaran/
+        // Laporan via Scaffold+TopAppBar masing-masing) SUDAH
+        // menangani inset status bar sendiri. Jika top padding
+        // outer Scaffold ikut diterapkan di sini, hasilnya jarak
+        // ke status bar jadi DOBEL (terlalu jauh ke bawah).
         NavHost(
             navController    = bottomNavController,
             startDestination = Screen.Home.route,
-            modifier         = Modifier.padding(innerPadding)
+            modifier         = Modifier.padding(bottom = innerPadding.calculateBottomPadding())
         ) {
             // ── Tab: Home ───────────────────────────────────────
             composable(Screen.Home.route) {
                 HomeScreen(
                     onNavigateToProfile  = { rootNavController.navigate(Screen.Profile.route) },
-                    onNavigateToSettings = { rootNavController.navigate(Screen.Settings.route) }
+                    onNavigateToSettings = { rootNavController.navigate(Screen.Settings.route) },
+                    onNavigateToIuran    = { navigateToTab(Screen.Iuran.route) }
                 )
             }
 
