@@ -55,9 +55,24 @@ class SettingsViewModel @Inject constructor(
 
     fun onSelectLanguage(lang: String) {
         viewModelScope.launch {
+            // FIX BUG 1:
+            // Ambil bahasa SEBELUMNYA dari state saat ini, sebelum apapun diupdate.
+            // Ini harus dilakukan di sini (sebelum suspend call), bukan di dalam
+            // lambda it.copy() yang dieksekusi nanti — karena pada saat lambda
+            // dieksekusi, state bisa saja sudah berubah oleh observer DataStore.
+            val previousLanguage = _uiState.value.language
+
+            // Simpan ke DataStore (suspend — menunggu selesai)
             setLanguage(lang)
+
+            // Setelah DataStore selesai diupdate, tentukan apakah perlu restart.
+            // Bandingkan lang dengan previousLanguage (yang kita ambil di atas),
+            // BUKAN dengan it.language dari lambda (yang sudah bisa berubah).
             _uiState.update {
-                it.copy(showLanguageDialog = false, needsRestart = lang != it.language)
+                it.copy(
+                    showLanguageDialog = false,
+                    needsRestart       = lang != previousLanguage
+                )
             }
         }
     }

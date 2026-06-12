@@ -1,6 +1,3 @@
-// ============================================================
-// MainActivity.kt
-// ============================================================
 package com.example.fundflow
 
 import android.content.Context
@@ -8,6 +5,7 @@ import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.getValue
@@ -25,35 +23,12 @@ import kotlinx.coroutines.runBlocking
 import java.util.Locale
 import javax.inject.Inject
 
-/**
- * EntryPoint untuk mengakses singleton [SettingsDataStore] dari
- * attachBaseContext(), di mana injeksi Hilt standar (@Inject field)
- * belum tersedia karena super.onCreate() belum dipanggil.
- *
- * Menggunakan EntryPointAccessors memastikan kita mendapatkan
- * INSTANCE SINGLETON yang sama dengan yang di-provide AppModule —
- * bukan instance baru (yang akan menyebabkan crash "multiple
- * DataStores active for the same file").
- */
 @EntryPoint
 @InstallIn(SingletonComponent::class)
 interface SettingsDataStoreEntryPoint {
     fun settingsDataStore(): SettingsDataStore
 }
 
-/**
- * Single Activity untuk seluruh aplikasi FundFlow.
- *
- * Tanggung jawab:
- * 1. Menerapkan locale (bahasa ID/EN) sebelum Activity ter-attach,
- *    dibaca dari singleton [SettingsDataStore] via EntryPointAccessors.
- * 2. Membaca preferensi tema (dark/light) secara reaktif dan
- *    meneruskannya ke [FundFlowTheme].
- * 3. Menyediakan fungsi [recreateActivity] yang dipanggil dari
- *    SettingsScreen setelah pengguna mengganti bahasa, agar seluruh
- *    string resource ter-refresh sesuai locale baru.
- * 4. Memanggil [AppNavGraph] sebagai entry point navigasi.
- */
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
@@ -61,8 +36,6 @@ class MainActivity : ComponentActivity() {
     lateinit var settingsDataStore: SettingsDataStore
 
     override fun attachBaseContext(newBase: Context) {
-        // Ambil instance SINGLETON SettingsDataStore via Hilt EntryPoint
-        // (aman dipanggil sebelum proses injeksi @AndroidEntryPoint selesai).
         val savedLanguage = runCatching {
             val entryPoint = EntryPointAccessors.fromApplication(
                 newBase.applicationContext,
@@ -76,12 +49,35 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+
+        // FIX BUG 3:
+        // Baca isDarkTheme secara sinkron SATU KALI di sini, hanya untuk
+        // menentukan warna status bar awal di enableEdgeToEdge().
+        // Setelah ini, tema dikelola secara reaktif oleh StateFlow di setContent.
+        val initialDarkTheme = runBlocking {
+            settingsDataStore.isDarkTheme.first()
+        }
+
+        // Terapkan SystemBarStyle yang sesuai agar warna icon status bar
+        // (putih untuk dark mode, hitam untuk light mode) sudah benar sejak awal.
+        enableEdgeToEdge(
+            statusBarStyle = if (initialDarkTheme) {
+                SystemBarStyle.dark(android.graphics.Color.TRANSPARENT)
+            } else {
+                SystemBarStyle.light(
+                    android.graphics.Color.TRANSPARENT,
+                    android.graphics.Color.TRANSPARENT
+                )
+            }
+        )
 
         setContent {
-            // Observe preferensi tema secara reaktif dari DataStore
+            // Observe preferensi tema secara reaktif dari DataStore.
+            // Saat isDarkTheme berubah, FundFlowTheme akan recompose
+            // dan seluruh UI yang memakai MaterialTheme.colorScheme
+            // akan ikut berubah secara otomatis.
             val isDarkTheme by settingsDataStore.isDarkTheme
-                .collectAsStateWithLifecycle(initialValue = false)
+                .collectAsStateWithLifecycle(initialValue = initialDarkTheme)
 
             FundFlowTheme(darkTheme = isDarkTheme) {
                 AppNavGraph(
@@ -91,20 +87,11 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    /**
-     * Recreate Activity — dipanggil setelah bahasa diganti di SettingsScreen
-     * agar attachBaseContext() dipanggil ulang dengan locale baru,
-     * sehingga seluruh teks UI ter-refresh ke bahasa yang baru dipilih.
-     */
     private fun recreateActivity() {
         recreate()
     }
 
     companion object {
-        /**
-         * Terapkan [languageCode] ("id" | "en") ke [context] dan
-         * kembalikan context baru dengan konfigurasi locale yang sudah diperbarui.
-         */
         fun applyLocale(context: Context, languageCode: String): Context {
             val locale = Locale(languageCode)
             Locale.setDefault(locale)
