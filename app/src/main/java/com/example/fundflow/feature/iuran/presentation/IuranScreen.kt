@@ -11,7 +11,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -118,7 +117,7 @@ fun IuranScreen(
                 )
             } else {
                 LazyColumn(
-                    contentPadding      = PaddingValues(start = 16.dp, top = 100.dp, end = 16.dp, bottom = 4.dp),
+                    contentPadding      = PaddingValues(start = 16.dp, top = 4.dp, end = 16.dp, bottom = 16.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     items(uiState.filteredList, key = { it.anggotaId }) { iuran ->

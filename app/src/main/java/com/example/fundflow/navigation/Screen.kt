@@ -1,7 +1,10 @@
 // ============================================================
-// navigation/Screen.kt
+// navigation/Screen.kt  (FIXED — BottomNavItem +activeColor)
 // ============================================================
 package com.example.fundflow.navigation
+
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 
 /**
  * Daftar seluruh route navigasi dalam aplikasi FundFlow.
@@ -37,11 +40,14 @@ sealed class Screen(val route: String) {
 
 /**
  * Item untuk Bottom Navigation Bar.
- * Memetakan route ke label dan ikon yang sesuai.
+ * Memetakan route ke label, ikon, dan WARNA AKTIF khusus
+ * (sesuai tema semantik masing-masing fitur — Iuran biru,
+ * Pemasukan hijau, Pengeluaran merah, Laporan oranye, dst).
  */
 data class BottomNavItem(
     val route: String,
     val label: String,
-    val selectedIcon: androidx.compose.ui.graphics.vector.ImageVector,
-    val unselectedIcon: androidx.compose.ui.graphics.vector.ImageVector
+    val selectedIcon: ImageVector,
+    val unselectedIcon: ImageVector,
+    val activeColor: Color
 )
