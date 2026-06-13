@@ -1,5 +1,5 @@
 // ============================================================
-// navigation/BottomNavBar.kt  (FIXED)
+// navigation/BottomNavBar.kt
 // ============================================================
 package com.example.fundflow.navigation
 
@@ -9,17 +9,20 @@ import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.fundflow.R
 import com.example.fundflow.ui.theme.*
 
 /**
  * Daftar item bottom navigation sesuai 5 tab utama FundFlow.
- * Setiap item punya warna aktif sendiri sesuai tema semantik
- * masing-masing fitur (Iuran=biru, Pemasukan=hijau, dst).
+ * Label disimpan sebagai String statis hanya untuk fallback —
+ * label yang ditampilkan ke user diambil dari stringResource()
+ * di dalam composable agar mengikuti bahasa aktif aplikasi.
  */
 private val bottomNavItems = listOf(
     BottomNavItem(
@@ -60,23 +63,28 @@ private val bottomNavItems = listOf(
 )
 
 /**
+ * FIX: Mapping route → string resource ID.
+ * Label diselesaikan di dalam composable via stringResource()
+ * agar mengikuti locale aktif saat Activity recreate.
+ */
+private fun labelResForRoute(route: String): Int = when (route) {
+    Screen.Home.route        -> R.string.nav_home
+    Screen.Iuran.route       -> R.string.nav_iuran
+    Screen.Pemasukan.route   -> R.string.nav_pemasukan
+    Screen.Pengeluaran.route -> R.string.nav_pengeluaran
+    Screen.Laporan.route     -> R.string.nav_laporan
+    else                     -> R.string.nav_home
+}
+
+/**
  * Bottom Navigation Bar FundFlow.
- *
- * Perbaikan dari versi sebelumnya:
- * - Background PUTIH (CardWhite), bukan gelap (NavBackground)
- * - Setiap tab punya warna aktif sendiri (IuranBlue, IncomeGreen, ExpenseRed, ReportOrange)
- * - Tab tidak aktif berwarna abu-abu (GrayMedium)
- * - Label dipersingkat ("Masuk"/"Keluar") agar tidak wrap ke 2 baris
- * - TIDAK ada `Modifier.height(64.dp)` fixed — biarkan NavigationBar
- *   menghitung tinggi secara otomatis (termasuk inset gesture bar),
- *   sehingga tidak ada konten yang terpotong di bawah.
  *
  * @param navController NavController untuk graph bottom-nav (tabs only).
  */
 @Composable
 fun FundFlowBottomNavBar(navController: NavHostController) {
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentDestination = navBackStackEntry?.destination
+    val navBackStackEntry    by navController.currentBackStackEntryAsState()
+    val currentDestination   = navBackStackEntry?.destination
 
     NavigationBar(
         containerColor = CardWhite,
@@ -85,11 +93,14 @@ fun FundFlowBottomNavBar(navController: NavHostController) {
         bottomNavItems.forEach { item ->
             val isSelected = currentDestination?.hierarchy?.any { it.route == item.route } == true
 
+            // FIX: label diambil dari stringResource sesuai locale aktif,
+            // bukan dari field `label` yang nilainya hardcoded.
+            val resolvedLabel = stringResource(labelResForRoute(item.route))
+
             NavigationBarItem(
                 selected = isSelected,
                 onClick  = {
                     navController.navigate(item.route) {
-                        // Hindari menumpuk banyak salinan tab yang sama di back stack
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true
                         }
@@ -100,10 +111,10 @@ fun FundFlowBottomNavBar(navController: NavHostController) {
                 icon = {
                     Icon(
                         imageVector        = if (isSelected) item.selectedIcon else item.unselectedIcon,
-                        contentDescription = item.label
+                        contentDescription = resolvedLabel
                     )
                 },
-                label = { Text(item.label) },
+                label  = { Text(resolvedLabel) },
                 colors = NavigationBarItemDefaults.colors(
                     selectedIconColor   = item.activeColor,
                     selectedTextColor   = item.activeColor,

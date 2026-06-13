@@ -11,22 +11,20 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.core.os.ConfigurationCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.fundflow.R
 import com.example.fundflow.ui.components.FundFlowPrimaryButton
 import com.example.fundflow.ui.components.FundFlowTopBar
 import com.example.fundflow.ui.theme.*
 import java.time.Month
 import java.time.format.TextStyle
 import java.util.Locale
-
-private val MONTHS = (1..12).map { month ->
-    val num  = month.toString().padStart(2, '0')
-    val name = Month.of(month).getDisplayName(TextStyle.FULL, Locale("id", "ID")).replaceFirstChar { it.uppercase() }
-    num to name
-}
 
 @Composable
 fun PengaturanPeriodeScreen(
@@ -36,9 +34,11 @@ fun PengaturanPeriodeScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val snackbarState = remember { SnackbarHostState() }
 
+    // FIX: Lokalisasi teks pesan sukses di snackbar
+    val successMessage = stringResource(R.string.settings_period_success)
     LaunchedEffect(uiState.isSuccess) {
         if (uiState.isSuccess) {
-            snackbarState.showSnackbar("Periode kas berhasil diperbarui")
+            snackbarState.showSnackbar(successMessage)
             viewModel.resetSuccess()
         }
     }
@@ -50,15 +50,30 @@ fun PengaturanPeriodeScreen(
     var showSelesaiPicker by remember { mutableStateOf(false) }
     val currentYear = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR)
 
-    val monthOptions = buildList {
-        for (y in (currentYear - 1)..(currentYear + 2)) {
-            for ((num, name) in MONTHS) add("$y-$num" to "$name $y")
+    // FIX: Mendapatkan Locale sistem yang sedang aktif saat runtime agar nama bulan berubah secara dinamis
+    val configuration = LocalConfiguration.current
+    val currentLocale = remember(configuration) {
+        ConfigurationCompat.getLocales(configuration).get(0) ?: Locale.getDefault()
+    }
+
+    // Pembuatan daftar bulan disesuaikan dengan Locale dinamis perangkat
+    val monthOptions = remember(currentLocale) {
+        val monthsList = (1..12).map { month ->
+            val num  = month.toString().padStart(2, '0')
+            val name = Month.of(month).getDisplayName(TextStyle.FULL, currentLocale).replaceFirstChar { it.uppercase() }
+            num to name
+        }
+        buildList {
+            for (y in (currentYear - 1)..(currentYear + 2)) {
+                for ((num, name) in monthsList) add("$y-$num" to "$name $y")
+            }
         }
     }
 
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarState) },
-        topBar = { FundFlowTopBar(title = "Pengaturan Periode", onNavigateBack = onNavigateBack) },
+        // FIX: Lokalisasi judul TopBar
+        topBar = { FundFlowTopBar(title = stringResource(R.string.settings_period_title), onNavigateBack = onNavigateBack) },
         // FIX: reaktif terhadap tema
         containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
@@ -92,7 +107,8 @@ fun PengaturanPeriodeScreen(
                     )
                     Spacer(Modifier.width(10.dp))
                     Text(
-                        "Mengubah periode kas akan memengaruhi rentang bulan yang ditampilkan pada halaman Iuran dan Laporan.",
+                        // FIX: Lokalisasi teks informasi peringatan periode kas
+                        text  = stringResource(R.string.settings_period_info),
                         style = MaterialTheme.typography.bodySmall,
                         // FIX: reaktif terhadap tema
                         color = MaterialTheme.colorScheme.onSurface
@@ -102,13 +118,14 @@ fun PengaturanPeriodeScreen(
 
             // ── Periode Mulai ─────────────────────────────────
             Text(
-                "Periode Bulan Mulai",
+                // FIX: Lokalisasi label Periode Bulan Mulai
+                text       = stringResource(R.string.settings_period_label_start),
                 style      = MaterialTheme.typography.labelLarge,
                 fontWeight = FontWeight.Medium,
                 // FIX: reaktif terhadap tema
                 color      = MaterialTheme.colorScheme.onSurface
             )
-            val mulaiLabel = monthOptions.find { it.first == uiState.bulanMulai }?.second ?: "Pilih Bulan"
+            val mulaiLabel = monthOptions.find { it.first == uiState.bulanMulai }?.second ?: stringResource(R.string.settings_period_placeholder)
             OutlinedButton(
                 onClick  = { showMulaiPicker = true },
                 modifier = Modifier.fillMaxWidth().height(56.dp),
@@ -134,13 +151,14 @@ fun PengaturanPeriodeScreen(
 
             // ── Periode Selesai ───────────────────────────────
             Text(
-                "Periode Bulan Berakhir",
+                // FIX: Lokalisasi label Periode Bulan Berakhir
+                text       = stringResource(R.string.settings_period_label_end),
                 style      = MaterialTheme.typography.labelLarge,
                 fontWeight = FontWeight.Medium,
                 // FIX: reaktif terhadap tema
                 color      = MaterialTheme.colorScheme.onSurface
             )
-            val selesaiLabel = monthOptions.find { it.first == uiState.bulanSelesai }?.second ?: "Pilih Bulan"
+            val selesaiLabel = monthOptions.find { it.first == uiState.bulanSelesai }?.second ?: stringResource(R.string.settings_period_placeholder)
             OutlinedButton(
                 onClick  = { showSelesaiPicker = true },
                 modifier = Modifier.fillMaxWidth().height(56.dp),
@@ -167,7 +185,8 @@ fun PengaturanPeriodeScreen(
             Spacer(Modifier.height(8.dp))
 
             FundFlowPrimaryButton(
-                text      = "Simpan Periode",
+                // FIX: Lokalisasi teks tombol simpan periode
+                text      = stringResource(R.string.settings_period_btn_save),
                 onClick   = viewModel::onSave,
                 isLoading = uiState.isSaving
             )
@@ -203,7 +222,8 @@ private fun MonthPickerDialog(
         onDismissRequest = onDismiss,
         title = {
             Text(
-                "Pilih Bulan",
+                // FIX: Lokalisasi judul dialog
+                stringResource(R.string.settings_period_dialog_title),
                 style = MaterialTheme.typography.titleLarge,
                 // FIX: reaktif terhadap tema
                 color = MaterialTheme.colorScheme.onSurface
@@ -238,8 +258,8 @@ private fun MonthPickerDialog(
         },
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                // FIX: reaktif terhadap tema
-                Text("Tutup", color = MaterialTheme.colorScheme.onSurface)
+                // FIX: Lokalisasi teks tombol konfirmasi tutup
+                Text(stringResource(R.string.settings_period_dialog_close), color = MaterialTheme.colorScheme.onSurface)
             }
         },
         // FIX: reaktif terhadap tema

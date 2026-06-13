@@ -11,9 +11,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.example.fundflow.R
 import com.example.fundflow.feature.iuran.domain.model.Iuran
 import com.example.fundflow.feature.pemasukan.presentation.DatePickerField
 import com.example.fundflow.feature.pemasukan.presentation.DropdownField
@@ -30,10 +32,10 @@ fun IuranDetailSheet(
 
     FundFlowBottomSheet(onDismiss = viewModel::onDismissDetailSheet) {
         Text(
-            text       = "Detail Iuran",
+            text       = stringResource(R.string.iuran_detail_title),
             style      = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.SemiBold,
-            color      = MaterialTheme.colorScheme.onSurface // FIX: was TextDark
+            color      = MaterialTheme.colorScheme.onSurface
         )
 
         Spacer(Modifier.height(16.dp))
@@ -44,7 +46,7 @@ fun IuranDetailSheet(
                     modifier = Modifier
                         .size(36.dp)
                         .background(
-                            MaterialTheme.colorScheme.inverseSurface, // FIX: was NavBackground
+                            MaterialTheme.colorScheme.inverseSurface,
                             MaterialTheme.shapes.extraLarge
                         ),
                     contentAlignment = Alignment.Center
@@ -52,7 +54,7 @@ fun IuranDetailSheet(
                     Icon(
                         Icons.Default.Person,
                         contentDescription = null,
-                        tint     = MaterialTheme.colorScheme.inverseOnSurface, // FIX: was CardWhite
+                        tint     = MaterialTheme.colorScheme.inverseOnSurface,
                         modifier = Modifier.size(18.dp)
                     )
                 }
@@ -61,7 +63,7 @@ fun IuranDetailSheet(
                     iuran.namaAnggota,
                     style      = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
-                    color      = MaterialTheme.colorScheme.onSurface // FIX: was TextDark
+                    color      = MaterialTheme.colorScheme.onSurface
                 )
             }
         }
@@ -73,22 +75,22 @@ fun IuranDetailSheet(
             verticalArrangement = Arrangement.spacedBy(14.dp)
         ) {
             Text(
-                "Status Pembayaran",
+                stringResource(R.string.iuran_status_pembayaran),
                 style      = MaterialTheme.typography.labelLarge,
                 fontWeight = FontWeight.Medium,
-                color      = MaterialTheme.colorScheme.onSurface // FIX: was TextDark
+                color      = MaterialTheme.colorScheme.onSurface
             )
 
             FundFlowSurfaceCard {
                 Column {
                     SwitchRow(
-                        label           = "Sudah Bayar",
+                        label           = stringResource(R.string.iuran_sudah_bayar),
                         checked         = uiState.formStatusBayar,
                         onCheckedChange = viewModel::onToggleStatusBayar
                     )
                     Spacer(Modifier.height(4.dp))
                     SwitchRow(
-                        label           = "Terlambat (Denda)",
+                        label           = stringResource(R.string.iuran_terlambat),
                         checked         = uiState.formTerlambat,
                         enabled         = uiState.formStatusBayar,
                         onCheckedChange = viewModel::onToggleTerlambat
@@ -98,30 +100,30 @@ fun IuranDetailSheet(
 
             if (uiState.formStatusBayar) {
                 Text(
-                    "Detail Pembayaran",
+                    stringResource(R.string.iuran_detail_pembayaran),
                     style      = MaterialTheme.typography.labelLarge,
                     fontWeight = FontWeight.Medium,
-                    color      = MaterialTheme.colorScheme.onSurface // FIX: was TextDark
+                    color      = MaterialTheme.colorScheme.onSurface
                 )
 
                 FundFlowTextField(
                     value           = uiState.formNominal,
                     onValueChange   = viewModel::onFormNominalChange,
-                    label           = "Nominal",
-                    placeholder     = "Rp 0",
+                    label           = stringResource(R.string.iuran_nominal),
+                    placeholder     = stringResource(R.string.iuran_nominal_hint),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                 )
 
                 DropdownField(
-                    label        = "Metode Pembayaran",
+                    label        = stringResource(R.string.iuran_metode_pembayaran),
                     selectedItem = uiState.formMetode,
                     items        = Iuran.METODE_OPTIONS,
-                    placeholder  = "Pilih metode",
+                    placeholder  = stringResource(R.string.iuran_metode_hint),
                     onItemSelect = viewModel::onFormMetodeChange
                 )
 
                 DatePickerField(
-                    label        = "Tanggal Pembayaran",
+                    label        = stringResource(R.string.iuran_tanggal_pembayaran),
                     value        = uiState.formTanggalBayar,
                     onDateSelect = viewModel::onFormTanggalBayarChange
                 )
@@ -130,8 +132,8 @@ fun IuranDetailSheet(
             FundFlowTextField(
                 value         = uiState.formCatatan,
                 onValueChange = viewModel::onFormCatatanChange,
-                label         = "Catatan (Opsional)",
-                placeholder   = "Tambahkan catatan...",
+                label         = stringResource(R.string.iuran_catatan_opsional),
+                placeholder   = stringResource(R.string.pemasukan_catatan_hint),
                 singleLine    = false,
                 maxLines      = 3
             )
@@ -140,7 +142,7 @@ fun IuranDetailSheet(
 
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                 FundFlowSecondaryButton(
-                    text     = "Batal",
+                    text     = stringResource(R.string.iuran_batal),
                     onClick  = viewModel::onDismissDetailSheet,
                     modifier = Modifier.weight(1f)
                 )
@@ -153,7 +155,7 @@ fun IuranDetailSheet(
                     ),
                     shape = MaterialTheme.shapes.medium
                 ) {
-                    Text("Simpan", fontWeight = FontWeight.SemiBold)
+                    Text(stringResource(R.string.iuran_simpan), fontWeight = FontWeight.SemiBold)
                 }
             }
         }
@@ -175,7 +177,6 @@ private fun SwitchRow(
         Text(
             label,
             style = MaterialTheme.typography.bodyMedium,
-            // FIX: was TextDark / TextMuted (hardcoded)
             color = if (enabled) MaterialTheme.colorScheme.onSurface
             else MaterialTheme.colorScheme.onSurfaceVariant
         )
@@ -184,10 +185,10 @@ private fun SwitchRow(
             onCheckedChange = onCheckedChange,
             enabled         = enabled,
             colors = SwitchDefaults.colors(
-                checkedThumbColor   = MaterialTheme.colorScheme.surface, // FIX: was Color.White
+                checkedThumbColor   = MaterialTheme.colorScheme.surface,
                 checkedTrackColor   = PrimaryLime,
-                uncheckedThumbColor = MaterialTheme.colorScheme.surface, // FIX: was Color.White
-                uncheckedTrackColor = MaterialTheme.colorScheme.outline  // FIX: was BorderGray
+                uncheckedThumbColor = MaterialTheme.colorScheme.surface,
+                uncheckedTrackColor = MaterialTheme.colorScheme.outline
             )
         )
     }

@@ -1,5 +1,4 @@
 // feature/pengeluaran/presentation/PengeluaranDetailSheet.kt
-// ============================================================
 package com.example.fundflow.feature.pengeluaran.presentation
 
 import androidx.compose.foundation.layout.*
@@ -12,11 +11,13 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringArrayResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.example.fundflow.R
 import com.example.fundflow.core.util.CurrencyFormatter
-import com.example.fundflow.feature.pengeluaran.domain.model.Pengeluaran
 import com.example.fundflow.feature.pemasukan.presentation.DatePickerField
 import com.example.fundflow.feature.pemasukan.presentation.DropdownField
 import com.example.fundflow.feature.pemasukan.presentation.LabelSection
@@ -31,20 +32,25 @@ fun PengeluaranDetailSheet(
 ) {
     val isEdit = uiState.editTarget != null
 
+    // FIX: Mengambil list opsi langsung dari resource string array agar mendukung multi-bahasa
+    val kategoriOptions = stringArrayResource(R.array.pengeluaran_kategori_options).toList()
+    val metodeOptions   = stringArrayResource(R.array.pengeluaran_metode_options).toList()
+
     FundFlowBottomSheet(onDismiss = viewModel::onDismissSheet) {
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Text(
-                text       = if (isEdit) "Edit Pengeluaran" else "Detail Pengeluaran",
+                text       = if (isEdit) stringResource(R.string.pengeluaran_edit_title)
+                else        stringResource(R.string.pengeluaran_detail_title),
                 style      = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.SemiBold,
-                color      = MaterialTheme.colorScheme.onSurface, // FIX: was TextDark
+                color      = MaterialTheme.colorScheme.onSurface,
                 modifier   = Modifier.weight(1f)
             )
             IconButton(onClick = viewModel::onDismissSheet) {
                 Icon(
                     Icons.Default.Close,
-                    contentDescription = "Tutup",
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant // FIX: was TextLight
+                    contentDescription = stringResource(R.string.common_close),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }
@@ -58,17 +64,17 @@ fun PengeluaranDetailSheet(
             FundFlowTextField(
                 value         = uiState.formDeskripsi,
                 onValueChange = viewModel::onFormDeskripsiChange,
-                label         = "Deskripsi",
-                placeholder   = "Masukkan deskripsi pengeluaran",
+                label         = stringResource(R.string.pengeluaran_deskripsi),
+                placeholder   = stringResource(R.string.pengeluaran_deskripsi_hint),
                 isError       = uiState.formDeskripsiError != null,
                 errorMessage  = uiState.formDeskripsiError
             )
 
             DropdownField(
-                label        = "Kategori",
+                label        = stringResource(R.string.pengeluaran_kategori),
                 selectedItem = uiState.formKategori,
-                items        = Pengeluaran.KATEGORI_OPTIONS,
-                placeholder  = "Pilih kategori",
+                items        = kategoriOptions, // FIX: Menggunakan opsi multi-bahasa
+                placeholder  = stringResource(R.string.pengeluaran_kategori_hint),
                 onItemSelect = viewModel::onFormKategoriChange,
                 isError      = uiState.formKategoriError != null,
                 errorMessage = uiState.formKategoriError
@@ -77,23 +83,23 @@ fun PengeluaranDetailSheet(
             FundFlowTextField(
                 value         = uiState.formNamaProgram,
                 onValueChange = viewModel::onFormNamaProgramChange,
-                label         = "Nama Program Kerja (Opsional)",
-                placeholder   = "Misal: Seminar Nasional IT"
+                label         = stringResource(R.string.pengeluaran_nama_program),
+                placeholder   = stringResource(R.string.pengeluaran_nama_program_hint)
             )
 
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                 FundFlowTextField(
                     value           = uiState.formQuantity,
                     onValueChange   = viewModel::onFormQuantityChange,
-                    label           = "Qty",
+                    label           = stringResource(R.string.pemasukan_qty),
                     modifier        = Modifier.weight(0.4f),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                 )
                 FundFlowTextField(
                     value           = uiState.formHargaSatuan,
                     onValueChange   = viewModel::onFormHargaSatuanChange,
-                    label           = "Harga Satuan",
-                    placeholder     = "Rp 0",
+                    label           = stringResource(R.string.pemasukan_harga_satuan),
+                    placeholder     = stringResource(R.string.iuran_nominal_hint),
                     modifier        = Modifier.weight(0.6f),
                     isError         = uiState.formHargaSatuanError != null,
                     errorMessage    = uiState.formHargaSatuanError,
@@ -101,7 +107,7 @@ fun PengeluaranDetailSheet(
                 )
             }
 
-            LabelSection(label = "Nominal") {
+            LabelSection(label = stringResource(R.string.pengeluaran_nominal)) {
                 Column {
                     Text(
                         CurrencyFormatter.format(uiState.formTotalNominal),
@@ -114,23 +120,23 @@ fun PengeluaranDetailSheet(
                     Text(
                         "$qty x ${CurrencyFormatter.format(harga)}",
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant // FIX: was TextLight
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }
 
             DropdownField(
-                label        = "Metode Pembayaran",
+                label        = stringResource(R.string.pengeluaran_metode_pembayaran),
                 selectedItem = uiState.formMetode,
-                items        = Pengeluaran.METODE_OPTIONS,
-                placeholder  = "Pilih metode",
+                items        = metodeOptions, // FIX: Menggunakan opsi multi-bahasa
+                placeholder  = stringResource(R.string.iuran_metode_hint),
                 onItemSelect = viewModel::onFormMetodeChange,
                 isError      = uiState.formMetodeError != null,
                 errorMessage = uiState.formMetodeError
             )
 
             DatePickerField(
-                label        = "Tanggal",
+                label        = stringResource(R.string.pemasukan_tanggal),
                 value        = uiState.formTanggal,
                 onDateSelect = viewModel::onFormTanggalChange,
                 isError      = uiState.formTanggalError != null,
@@ -140,8 +146,8 @@ fun PengeluaranDetailSheet(
             FundFlowTextField(
                 value         = uiState.formCatatan,
                 onValueChange = viewModel::onFormCatatanChange,
-                label         = "Catatan (Opsional)",
-                placeholder   = "Tambahkan...",
+                label         = stringResource(R.string.iuran_catatan_opsional),
+                placeholder   = stringResource(R.string.pemasukan_catatan_hint),
                 singleLine    = false,
                 maxLines      = 3
             )
@@ -149,7 +155,8 @@ fun PengeluaranDetailSheet(
             Spacer(Modifier.height(8.dp))
 
             FundFlowPrimaryButton(
-                text    = if (isEdit) "Simpan Perubahan" else "Tambah Pengeluaran",
+                text    = if (isEdit) stringResource(R.string.pengeluaran_simpan_perubahan)
+                else        stringResource(R.string.pengeluaran_tambah),
                 onClick = viewModel::onSave
             )
         }

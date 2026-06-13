@@ -14,11 +14,15 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringArrayResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.core.os.ConfigurationCompat
+import com.example.fundflow.R
 import com.example.fundflow.core.util.CurrencyFormatter
-import com.example.fundflow.feature.pemasukan.domain.model.Pemasukan
 import com.example.fundflow.ui.components.*
 import com.example.fundflow.ui.theme.*
 import java.time.LocalDate
@@ -33,23 +37,28 @@ fun PemasukanDetailSheet(
 ) {
     val isEdit = uiState.editTarget != null
 
+    // Mengambil list opsi langsung dari resource string array agar mendukung multi-bahasa
+    val sumberOptions = stringArrayResource(R.array.pemasukan_sumber_options).toList()
+    val metodeOptions = stringArrayResource(R.array.pemasukan_metode_options).toList()
+
     FundFlowBottomSheet(onDismiss = viewModel::onDismissSheet) {
         Row(
             modifier          = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text       = if (isEdit) "Edit Pemasukan" else "Detail Pemasukan",
+                text       = if (isEdit) stringResource(R.string.pemasukan_edit_title)
+                else        stringResource(R.string.pemasukan_detail_title),
                 style      = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.SemiBold,
-                color      = MaterialTheme.colorScheme.onSurface, // FIX: was TextDark
+                color      = MaterialTheme.colorScheme.onSurface,
                 modifier   = Modifier.weight(1f)
             )
             IconButton(onClick = viewModel::onDismissSheet) {
                 Icon(
                     Icons.Default.Close,
-                    contentDescription = "Tutup",
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant // FIX: was TextLight
+                    contentDescription = stringResource(R.string.common_close),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }
@@ -63,72 +72,45 @@ fun PemasukanDetailSheet(
             FundFlowTextField(
                 value         = uiState.formDeskripsi,
                 onValueChange = viewModel::onFormDeskripsiChange,
-                label         = "Deskripsi",
-                placeholder   = "Masukkan deskripsi pemasukan",
+                label         = stringResource(R.string.pemasukan_deskripsi),
+                placeholder   = stringResource(R.string.pemasukan_deskripsi_hint),
                 isError       = uiState.formDeskripsiError != null,
                 errorMessage  = uiState.formDeskripsiError
             )
 
             DropdownField(
-                label        = "Sumber Pemasukan",
+                label        = stringResource(R.string.pemasukan_sumber),
                 selectedItem = uiState.formSumber,
-                items        = Pemasukan.SUMBER_OPTIONS,
-                placeholder  = "Pilih sumber (misal: Iuran Anggota)",
+                items        = sumberOptions,
+                placeholder  = stringResource(R.string.pemasukan_sumber_hint),
                 onItemSelect = viewModel::onFormSumberChange,
                 isError      = uiState.formSumberError != null,
                 errorMessage = uiState.formSumberError
             )
 
-            Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                FundFlowTextField(
-                    value           = uiState.formQty,
-                    onValueChange   = viewModel::onFormQtyChange,
-                    label           = "Qty",
-                    modifier        = Modifier.weight(0.4f),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-                )
-                FundFlowTextField(
-                    value           = uiState.formHargaSatuan,
-                    onValueChange   = viewModel::onFormHargaSatuanChange,
-                    label           = "Harga Satuan",
-                    placeholder     = "Rp 0",
-                    modifier        = Modifier.weight(0.6f),
-                    isError         = uiState.formHargaSatuanError != null,
-                    errorMessage    = uiState.formHargaSatuanError,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-                )
-            }
-
-            LabelSection(label = "Total Nominal") {
-                Column {
-                    Text(
-                        text       = CurrencyFormatter.format(uiState.formTotalNominal),
-                        style      = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        color      = IncomeGreenDark // tetap — warna brand aksen
-                    )
-                    val qty   = uiState.formQty.toIntOrNull() ?: 1
-                    val harga = uiState.formHargaSatuan.toDoubleOrNull() ?: 0.0
-                    Text(
-                        text  = "$qty x ${CurrencyFormatter.format(harga)}",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant // FIX: was TextLight
-                    )
-                }
-            }
+            // REVISI: Qty dan Harga Satuan dihapus, diganti langsung dengan input Total Nominal
+            FundFlowTextField(
+                value           = uiState.formNominal,
+                onValueChange   = viewModel::onFormNominalChange,
+                label           = stringResource(R.string.pemasukan_total_nominal),
+                placeholder     = stringResource(R.string.iuran_nominal_hint),
+                isError         = uiState.formNominalError != null,
+                errorMessage    = uiState.formNominalError,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+            )
 
             DropdownField(
-                label        = "Metode Penerimaan",
+                label        = stringResource(R.string.pemasukan_metode_penerimaan),
                 selectedItem = uiState.formMetode,
-                items        = Pemasukan.METODE_OPTIONS,
-                placeholder  = "Pilih metode (Cash/Transfer)",
+                items        = metodeOptions,
+                placeholder  = stringResource(R.string.pemasukan_metode_hint),
                 onItemSelect = viewModel::onFormMetodeChange,
                 isError      = uiState.formMetodeError != null,
                 errorMessage = uiState.formMetodeError
             )
 
             DatePickerField(
-                label        = "Tanggal",
+                label        = stringResource(R.string.pemasukan_tanggal),
                 value        = uiState.formTanggal,
                 onDateSelect = viewModel::onFormTanggalChange,
                 isError      = uiState.formTanggalError != null,
@@ -138,8 +120,8 @@ fun PemasukanDetailSheet(
             FundFlowTextField(
                 value         = uiState.formCatatan,
                 onValueChange = viewModel::onFormCatatanChange,
-                label         = "Catatan (Opsional)",
-                placeholder   = "Tambahkan catatan...",
+                label         = stringResource(R.string.iuran_catatan_opsional),
+                placeholder   = stringResource(R.string.pemasukan_catatan_hint),
                 singleLine    = false,
                 maxLines      = 3
             )
@@ -147,7 +129,8 @@ fun PemasukanDetailSheet(
             Spacer(Modifier.height(8.dp))
 
             FundFlowPrimaryButton(
-                text    = if (isEdit) "Simpan Perubahan" else "Simpan Pemasukan",
+                text    = if (isEdit) stringResource(R.string.pemasukan_simpan_perubahan)
+                else        stringResource(R.string.pemasukan_simpan),
                 onClick = viewModel::onSavePemasukan
             )
         }
@@ -183,7 +166,7 @@ fun DropdownField(
                     Text(
                         placeholder,
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant // FIX: was TextMuted
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 },
                 trailingIcon  = { ExposedDropdownMenuDefaults.TrailingIcon(expanded) },
@@ -192,16 +175,16 @@ fun DropdownField(
                 shape         = MaterialTheme.shapes.small,
                 colors        = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor   = PrimaryLimeDark,
-                    unfocusedBorderColor = MaterialTheme.colorScheme.outline, // FIX: was BorderGray
+                    unfocusedBorderColor = MaterialTheme.colorScheme.outline,
                     errorBorderColor     = ExpenseRed,
                     focusedLabelColor    = PrimaryLimeDark,
-                    unfocusedLabelColor  = MaterialTheme.colorScheme.onSurfaceVariant // FIX: was TextLight
+                    unfocusedLabelColor  = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             )
             ExposedDropdownMenu(
                 expanded         = expanded,
                 onDismissRequest = { expanded = false },
-                modifier         = Modifier.background(MaterialTheme.colorScheme.surface) // FIX: was CardWhite
+                modifier         = Modifier.background(MaterialTheme.colorScheme.surface)
             ) {
                 items.forEach { item ->
                     DropdownMenuItem(
@@ -209,7 +192,7 @@ fun DropdownField(
                             Text(
                                 item,
                                 style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurface // FIX: was TextDark
+                                color = MaterialTheme.colorScheme.onSurface
                             )
                         },
                         onClick = { onItemSelect(item); expanded = false }
@@ -234,7 +217,7 @@ fun LabelSection(label: String, content: @Composable () -> Unit) {
         Text(
             label,
             style      = MaterialTheme.typography.labelLarge,
-            color      = MaterialTheme.colorScheme.onSurface, // FIX: was TextDark
+            color      = MaterialTheme.colorScheme.onSurface,
             fontWeight = FontWeight.Medium
         )
         Spacer(Modifier.height(6.dp))
@@ -253,9 +236,15 @@ fun DatePickerField(
 ) {
     var showPicker by remember { mutableStateOf(false) }
 
+    // Locale dinamis agar format nama bulan ikut berubah otomatis
+    val configuration = LocalConfiguration.current
+    val currentLocale = remember(configuration) {
+        ConfigurationCompat.getLocales(configuration).get(0) ?: Locale.getDefault()
+    }
+
     val displayValue = runCatching {
         val ld = LocalDate.parse(value)
-        ld.format(DateTimeFormatter.ofPattern("d MMMM yyyy", Locale("id", "ID")))
+        ld.format(DateTimeFormatter.ofPattern("d MMMM yyyy", currentLocale))
     }.getOrDefault(value)
 
     Column {
@@ -268,8 +257,8 @@ fun DatePickerField(
                 IconButton(onClick = { showPicker = true }) {
                     Icon(
                         Icons.Default.CalendarMonth,
-                        contentDescription = "Pilih tanggal",
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant // FIX: was TextLight
+                        contentDescription = stringResource(R.string.common_pilih_tanggal),
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             },
@@ -278,12 +267,12 @@ fun DatePickerField(
             shape    = MaterialTheme.shapes.small,
             colors   = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor   = PrimaryLimeDark,
-                unfocusedBorderColor = MaterialTheme.colorScheme.outline,      // FIX: was BorderGray
+                unfocusedBorderColor = MaterialTheme.colorScheme.outline,
                 errorBorderColor     = ExpenseRed,
                 focusedLabelColor    = PrimaryLimeDark,
-                unfocusedLabelColor  = MaterialTheme.colorScheme.onSurfaceVariant, // FIX: was TextLight
-                focusedTextColor     = MaterialTheme.colorScheme.onSurface,    // FIX: was TextDark
-                unfocusedTextColor   = MaterialTheme.colorScheme.onSurface     // FIX: was TextDark
+                unfocusedLabelColor  = MaterialTheme.colorScheme.onSurfaceVariant,
+                focusedTextColor     = MaterialTheme.colorScheme.onSurface,
+                unfocusedTextColor   = MaterialTheme.colorScheme.onSurface
             )
         )
         if (isError && errorMessage != null) {
@@ -311,11 +300,11 @@ fun DatePickerField(
                         onDateSelect(ld.toString())
                     }
                     showPicker = false
-                }) { Text("OK", color = PrimaryLimeDark) }
+                }) { Text(stringResource(R.string.common_ok), color = PrimaryLimeDark) }
             },
             dismissButton = {
                 TextButton(onClick = { showPicker = false }) {
-                    Text("Batal", color = MaterialTheme.colorScheme.onSurfaceVariant) // FIX: was TextLight
+                    Text(stringResource(R.string.common_cancel), color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
         ) {

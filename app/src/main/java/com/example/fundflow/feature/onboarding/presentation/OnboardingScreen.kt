@@ -1,5 +1,4 @@
-// ============================================================
-// feature/onboarding/presentation/OnboardingScreen.kt  (FIXED)
+// feature/onboarding/presentation/OnboardingScreen.kt
 // ============================================================
 package com.example.fundflow.feature.onboarding.presentation
 
@@ -28,7 +27,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.fundflow.ui.theme.*
 import kotlinx.coroutines.launch
 
-// ── Data model untuk setiap slide onboarding ─────────────────
 private data class OnboardingPage(
     val icon: ImageVector,
     val iconTint: Color,
@@ -39,31 +37,24 @@ private data class OnboardingPage(
 private val pages = listOf(
     OnboardingPage(
         icon        = Icons.Default.AccountBalance,
-        iconTint    = IuranBlue,
+        iconTint    = IuranBlue,   // tetap: warna semantik
         title       = "Kelola Keuangan Organisasi",
         description = "Catat iuran, pemasukan, dan pengeluaran\norganisasi kamu dengan mudah dan terstruktur."
     ),
     OnboardingPage(
         icon        = Icons.Default.GroupAdd,
-        iconTint    = IncomeGreen,
+        iconTint    = IncomeGreen,   // tetap: warna semantik
         title       = "Monitor Status Anggota",
         description = "Pantau siapa saja yang sudah dan belum\nmembayar iuran bulanan secara real-time."
     ),
     OnboardingPage(
         icon        = Icons.Default.Assessment,
-        iconTint    = ReportOrange,
+        iconTint    = ReportOrange,   // tetap: warna semantik
         title       = "Laporan Otomatis",
         description = "Hasilkan laporan keuangan secara otomatis\ndan ekspor ke PDF atau Excel kapan saja."
     )
 )
 
-/**
- * Halaman Onboarding.
- *
- * Hanya ada SATU tombol aksi ("Masuk") yang mengarah ke LoginScreen.
- * Alur ke RegisterStep1 cukup melalui link "Daftar Sekarang" yang
- * sudah tersedia di LoginScreen — tidak perlu duplikasi tombol di sini.
- */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OnboardingScreen(
@@ -77,7 +68,8 @@ fun OnboardingScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(AppBackground)
+            // FIX: reaktif terhadap tema
+            .background(MaterialTheme.colorScheme.background)
             .systemBarsPadding()
     ) {
         // ── Pager ─────────────────────────────────────────────
@@ -90,7 +82,7 @@ fun OnboardingScreen(
 
         // ── Dot Indicator ─────────────────────────────────────
         Row(
-            modifier            = Modifier.fillMaxWidth(),
+            modifier              = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
         ) {
             pages.forEachIndexed { index, _ ->
@@ -105,7 +97,8 @@ fun OnboardingScreen(
                         .height(8.dp)
                         .width(width)
                         .clip(CircleShape)
-                        .background(if (isSelected) PrimaryLime else BorderGray)
+                        // PrimaryLime tetap: warna brand. Unselected FIX: reaktif
+                        .background(if (isSelected) PrimaryLime else MaterialTheme.colorScheme.outline)
                 )
             }
         }
@@ -119,10 +112,6 @@ fun OnboardingScreen(
                 .padding(horizontal = 24.dp)
         ) {
             if (isLastPage) {
-                // Halaman terakhir → satu tombol "Masuk" -> LoginScreen.
-                // Link ke RegisterStep1 sudah ada di LoginScreen
-                // ("Belum punya akun? Daftar Sekarang"), jadi tidak
-                // perlu tombol terpisah di sini.
                 Button(
                     onClick = {
                         viewModel.markOnboardingDone()
@@ -132,8 +121,8 @@ fun OnboardingScreen(
                         .fillMaxWidth()
                         .height(52.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = PrimaryLime,
-                        contentColor   = TextDark
+                        containerColor = PrimaryLime,   // tetap: warna brand
+                        contentColor   = TextDark       // tetap: di atas PrimaryLime
                     ),
                     shape = MaterialTheme.shapes.medium
                 ) {
@@ -144,7 +133,6 @@ fun OnboardingScreen(
                     )
                 }
             } else {
-                // Halaman lain → tombol Lanjut + Lewati
                 Row(
                     modifier              = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -158,7 +146,8 @@ fun OnboardingScreen(
                     ) {
                         Text(
                             text  = "Lewati",
-                            color = TextLight,
+                            // FIX: reaktif terhadap tema
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                             style = MaterialTheme.typography.bodyMedium
                         )
                     }
@@ -169,8 +158,8 @@ fun OnboardingScreen(
                             }
                         },
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = PrimaryLime,
-                            contentColor   = TextDark
+                            containerColor = PrimaryLime,   // tetap: warna brand
+                            contentColor   = TextDark       // tetap
                         ),
                         shape = MaterialTheme.shapes.medium
                     ) {
@@ -197,7 +186,7 @@ private fun OnboardingPageContent(page: OnboardingPage) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        // Ikon dalam lingkaran
+        // Ikon dalam lingkaran — warna iconTint tetap: warna semantik per halaman
         Box(
             modifier = Modifier
                 .size(120.dp)
@@ -209,29 +198,29 @@ private fun OnboardingPageContent(page: OnboardingPage) {
                 imageVector        = page.icon,
                 contentDescription = null,
                 modifier           = Modifier.size(60.dp),
-                tint               = page.iconTint
+                tint               = page.iconTint   // tetap
             )
         }
 
         Spacer(Modifier.height(40.dp))
 
-        // Judul
         Text(
             text       = page.title,
             style      = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
-            color      = TextDark,
+            // FIX: reaktif terhadap tema
+            color      = MaterialTheme.colorScheme.onSurface,
             textAlign  = TextAlign.Center
         )
 
         Spacer(Modifier.height(16.dp))
 
-        // Deskripsi
         Text(
-            text      = page.description,
-            style     = MaterialTheme.typography.bodyLarge,
-            color     = TextLight,
-            textAlign = TextAlign.Center,
+            text       = page.description,
+            style      = MaterialTheme.typography.bodyLarge,
+            // FIX: reaktif terhadap tema
+            color      = MaterialTheme.colorScheme.onSurfaceVariant,
+            textAlign  = TextAlign.Center,
             lineHeight = MaterialTheme.typography.bodyLarge.lineHeight
         )
     }

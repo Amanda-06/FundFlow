@@ -1,4 +1,3 @@
-// ============================================================
 // feature/auth/presentation/login/LoginScreen.kt
 // ============================================================
 package com.example.fundflow.feature.auth.presentation.login
@@ -14,12 +13,14 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.fundflow.R
 import com.example.fundflow.ui.components.*
 import com.example.fundflow.ui.theme.*
 
@@ -31,7 +32,6 @@ fun LoginScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    // Navigasi setelah login berhasil
     LaunchedEffect(uiState.isSuccess) {
         if (uiState.isSuccess) {
             viewModel.resetSuccessState()
@@ -42,7 +42,8 @@ fun LoginScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(BackgroundKrem)
+            // FIX: reaktif terhadap tema (menggantikan BackgroundKrem yang hardcoded)
+            .background(MaterialTheme.colorScheme.background)
             .systemBarsPadding()
     ) {
         Column(
@@ -59,14 +60,17 @@ fun LoginScreen(
                 Box(
                     modifier = Modifier
                         .size(32.dp)
+                        // PrimaryLime tetap: warna brand
                         .background(PrimaryLime, MaterialTheme.shapes.small)
                 )
                 Spacer(Modifier.width(8.dp))
                 Text(
-                    text       = "FundFlow",
+                    // FIX: Menggunakan stringResource app_name yang sudah terdefinisi di proyek
+                    text       = stringResource(R.string.app_name),
                     style      = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold,
-                    color      = TextDark
+                    // FIX: reaktif terhadap tema
+                    color      = MaterialTheme.colorScheme.onSurface
                 )
             }
 
@@ -78,16 +82,20 @@ fun LoginScreen(
                 horizontalAlignment = Alignment.Start
             ) {
                 Text(
-                    text       = "Selamat Datang Kembali",
+                    // FIX: Lokalisasi judul selamat datang kembali
+                    text       = stringResource(R.string.login_welcome_title),
                     style      = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold,
-                    color      = TextDark
+                    // FIX: reaktif terhadap tema
+                    color      = MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(Modifier.height(4.dp))
                 Text(
-                    text  = "Masuk ke akun Anda untuk melanjutkan",
+                    // FIX: Lokalisasi teks instruksi login
+                    text  = stringResource(R.string.login_welcome_subtitle),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = TextLight
+                    // FIX: reaktif terhadap tema
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
 
@@ -95,12 +103,13 @@ fun LoginScreen(
 
             // ── Form ──────────────────────────────────────────
             FundFlowTextField(
-                value         = uiState.email,
-                onValueChange = viewModel::onEmailChange,
-                label         = "Email atau Username",
-                leadingIcon   = Icons.Default.AlternateEmail,
-                isError       = uiState.emailError != null,
-                errorMessage  = uiState.emailError,
+                value           = uiState.email,
+                onValueChange   = viewModel::onEmailChange,
+                // FIX: Lokalisasi label Email atau Username
+                label           = stringResource(R.string.login_label_email_username),
+                leadingIcon     = Icons.Default.AlternateEmail,
+                isError         = uiState.emailError != null,
+                errorMessage    = uiState.emailError,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
             )
 
@@ -109,7 +118,8 @@ fun LoginScreen(
             FundFlowPasswordField(
                 value         = uiState.password,
                 onValueChange = viewModel::onPasswordChange,
-                label         = "Kata Sandi",
+                // FIX: Lokalisasi label Kata Sandi
+                label         = stringResource(R.string.login_label_password),
                 leadingIcon   = Icons.Default.Lock,
                 isError       = uiState.passwordError != null,
                 errorMessage  = uiState.passwordError
@@ -118,9 +128,10 @@ fun LoginScreen(
             // Lupa kata sandi
             Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
                 FundFlowTextButton(
-                    text    = "Lupa kata sandi?",
+                    // FIX: Lokalisasi teks tombol lupa kata sandi
+                    text    = stringResource(R.string.login_btn_forgot_password),
                     onClick = { /* TODO: forgot password flow */ },
-                    color   = PrimaryLimeDark
+                    color   = PrimaryLimeDark   // tetap: warna brand
                 )
             }
 
@@ -131,13 +142,13 @@ fun LoginScreen(
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors   = CardDefaults.cardColors(
-                        containerColor = ExpenseRed.copy(alpha = 0.10f)
+                        containerColor = ExpenseRed.copy(alpha = 0.10f)   // tetap: semantik
                     ),
                     shape = MaterialTheme.shapes.small
                 ) {
                     Text(
                         text     = uiState.errorMessage!!,
-                        color    = ExpenseRed,
+                        color    = ExpenseRed,   // tetap: warna semantik error
                         style    = MaterialTheme.typography.bodySmall,
                         modifier = Modifier.padding(12.dp)
                     )
@@ -145,9 +156,9 @@ fun LoginScreen(
                 Spacer(Modifier.height(12.dp))
             }
 
-            // Tombol Masuk
             FundFlowPrimaryButton(
-                text      = "Masuk",
+                // FIX: Lokalisasi teks tombol Masuk
+                text      = stringResource(R.string.login_btn_submit),
                 onClick   = viewModel::login,
                 isLoading = uiState.isLoading
             )
@@ -160,14 +171,17 @@ fun LoginScreen(
                 verticalAlignment     = Alignment.CenterVertically
             ) {
                 Text(
-                    text  = "Belum punya akun? ",
+                    // FIX: Lokalisasi teks kaki footer ajakan daftar
+                    text  = stringResource(R.string.login_footer_no_account),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = TextLight
+                    // FIX: reaktif terhadap tema
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 FundFlowTextButton(
-                    text    = "Daftar Sekarang",
+                    // FIX: Lokalisasi teks tombol tautan daftar sekarang
+                    text    = stringResource(R.string.login_footer_register_now),
                     onClick = onNavigateToRegister,
-                    color   = PrimaryLimeDark
+                    color   = PrimaryLimeDark   // tetap: warna brand
                 )
             }
         }

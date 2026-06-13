@@ -1,4 +1,3 @@
-// ============================================================
 // feature/auth/presentation/register/RegisterStep2Screen.kt
 // ============================================================
 package com.example.fundflow.feature.auth.presentation.register
@@ -14,23 +13,19 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.core.os.ConfigurationCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.fundflow.R
 import com.example.fundflow.ui.components.*
 import com.example.fundflow.ui.theme.*
 import java.time.Month
 import java.time.format.TextStyle
 import java.util.Locale
-
-// Daftar nama bulan untuk picker
-private val MONTHS = (1..12).map { month ->
-    val num  = month.toString().padStart(2, '0')
-    val name = Month.of(month).getDisplayName(TextStyle.FULL, Locale("id", "ID"))
-        .replaceFirstChar { it.uppercase() }
-    num to name          // "01" to "Januari", dst
-}
 
 @Composable
 fun RegisterStep2Screen(
@@ -40,7 +35,6 @@ fun RegisterStep2Screen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    // Navigasi setelah register berhasil
     LaunchedEffect(uiState.isSuccess) {
         if (uiState.isSuccess) {
             viewModel.resetSuccessState()
@@ -48,15 +42,28 @@ fun RegisterStep2Screen(
         }
     }
 
-    var showMulaiPicker    by remember { mutableStateOf(false) }
-    var showSelesaiPicker  by remember { mutableStateOf(false) }
-    val currentYear        = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR)
+    var showMulaiPicker   by remember { mutableStateOf(false) }
+    var showSelesaiPicker by remember { mutableStateOf(false) }
+    val currentYear       = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR)
 
-    // Daftar pilihan bulan-tahun untuk picker (12 bulan dari tahun ini)
-    val monthOptions = buildList {
-        for (y in currentYear..(currentYear + 1)) {
-            for ((num, name) in MONTHS) {
-                add("$y-$num" to "$name $y")
+    // FIX: Mendapatkan Locale sistem secara dinamis agar nama bulan berubah mengikuti pengaturan bahasa perangkat
+    val configuration = LocalConfiguration.current
+    val currentLocale = remember(configuration) {
+        ConfigurationCompat.getLocales(configuration).get(0) ?: Locale.getDefault()
+    }
+
+    val monthOptions = remember(currentLocale) {
+        val monthsList = (1..12).map { month ->
+            val num  = month.toString().padStart(2, '0')
+            val name = Month.of(month).getDisplayName(TextStyle.FULL, currentLocale)
+                .replaceFirstChar { it.uppercase() }
+            num to name
+        }
+        buildList {
+            for (y in currentYear..(currentYear + 1)) {
+                for ((num, name) in monthsList) {
+                    add("$y-$num" to "$name $y")
+                }
             }
         }
     }
@@ -64,7 +71,8 @@ fun RegisterStep2Screen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(BackgroundKrem)
+            // FIX: reaktif terhadap tema (menggantikan BackgroundKrem yang hardcoded)
+            .background(MaterialTheme.colorScheme.background)
             .systemBarsPadding()
     ) {
         Column(
@@ -76,7 +84,7 @@ fun RegisterStep2Screen(
         ) {
             Spacer(Modifier.height(48.dp))
 
-            // ── Step Indicator ────────────────────────────────
+            // ── Step Indicator (inline, Step 2 aktif) ─────────
             Row(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment     = Alignment.CenterVertically
@@ -107,20 +115,24 @@ fun RegisterStep2Screen(
             Spacer(Modifier.height(24.dp))
 
             Column(
-                modifier            = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.Start
             ) {
                 Text(
-                    text       = "Setup Organisasi",
+                    // FIX: Lokalisasi judul Setup Organisasi
+                    text       = stringResource(R.string.register_step2_title),
                     style      = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold,
-                    color      = TextDark
+                    // FIX: reaktif terhadap tema
+                    color      = MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(Modifier.height(4.dp))
                 Text(
-                    text  = "Atur periode kepengurusan organisasi kamu",
+                    // FIX: Lokalisasi sub-judul instruksi periode kepengurusan
+                    text  = stringResource(R.string.register_step2_subtitle),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = TextLight
+                    // FIX: reaktif terhadap tema
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
 
@@ -130,7 +142,8 @@ fun RegisterStep2Screen(
             FundFlowTextField(
                 value         = uiState.namaOrganisasi,
                 onValueChange = viewModel::onNamaOrganisasiChange,
-                label         = "Nama Organisasi",
+                // FIX: Lokalisasi label Nama Organisasi
+                label         = stringResource(R.string.register_step2_label_org),
                 leadingIcon   = Icons.Default.Business,
                 isError       = uiState.namaOrganisasiError != null,
                 errorMessage  = uiState.namaOrganisasiError
@@ -140,68 +153,90 @@ fun RegisterStep2Screen(
 
             // ── Periode Mulai ─────────────────────────────────
             Text(
-                text       = "Periode Bulan Mulai",
+                // FIX: Lokalisasi label Periode Bulan Mulai
+                text       = stringResource(R.string.register_step2_label_start),
                 style      = MaterialTheme.typography.labelLarge,
-                color      = TextDark,
+                // FIX: reaktif terhadap tema
+                color      = MaterialTheme.colorScheme.onSurface,
                 fontWeight = FontWeight.Medium
             )
             Spacer(Modifier.height(6.dp))
 
             val mulaiLabel = monthOptions.find { it.first == uiState.periodeMulai }?.second
-                ?: "Pilih Bulan (Misal: Maret)"
+                ?: stringResource(R.string.register_step2_placeholder_start)
 
             OutlinedButton(
                 onClick  = { showMulaiPicker = true },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(56.dp),
-                shape  = MaterialTheme.shapes.small,
-                colors = ButtonDefaults.outlinedButtonColors(
-                    contentColor = if (uiState.periodeMulai.isEmpty()) TextMuted else TextDark
+                modifier = Modifier.fillMaxWidth().height(56.dp),
+                shape    = MaterialTheme.shapes.small,
+                colors   = ButtonDefaults.outlinedButtonColors(
+                    // FIX: reaktif terhadap tema
+                    contentColor = if (uiState.periodeMulai.isEmpty())
+                        MaterialTheme.colorScheme.onSurfaceVariant
+                    else MaterialTheme.colorScheme.onSurface
                 )
             ) {
-                Icon(Icons.Default.CalendarMonth, contentDescription = null, tint = TextLight)
+                Icon(
+                    Icons.Default.CalendarMonth,
+                    contentDescription = null,
+                    // FIX: reaktif terhadap tema
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                )
                 Spacer(Modifier.width(8.dp))
                 Text(mulaiLabel, modifier = Modifier.weight(1f))
             }
             if (uiState.periodeMulaiError != null) {
-                Text(uiState.periodeMulaiError!!, color = ExpenseRed,
-                    style = MaterialTheme.typography.labelSmall,
-                    modifier = Modifier.padding(top = 4.dp, start = 4.dp))
+                Text(
+                    uiState.periodeMulaiError!!,
+                    color    = ExpenseRed,   // tetap: warna semantik
+                    style    = MaterialTheme.typography.labelSmall,
+                    modifier = Modifier.padding(top = 4.dp, start = 4.dp)
+                )
             }
 
             Spacer(Modifier.height(20.dp))
 
             // ── Periode Selesai ───────────────────────────────
             Text(
-                text       = "Periode Bulan Berakhir",
+                // FIX: Lokalisasi label Periode Bulan Berakhir
+                text       = stringResource(R.string.register_step2_label_end),
                 style      = MaterialTheme.typography.labelLarge,
-                color      = TextDark,
+                // FIX: reaktif terhadap tema
+                color      = MaterialTheme.colorScheme.onSurface,
                 fontWeight = FontWeight.Medium
             )
             Spacer(Modifier.height(6.dp))
 
             val selesaiLabel = monthOptions.find { it.first == uiState.periodeSelesai }?.second
-                ?: "Pilih Bulan (Misal: Desember)"
+                ?: stringResource(R.string.register_step2_placeholder_end)
 
             OutlinedButton(
                 onClick  = { showSelesaiPicker = true },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(56.dp),
-                shape  = MaterialTheme.shapes.small,
-                colors = ButtonDefaults.outlinedButtonColors(
-                    contentColor = if (uiState.periodeSelesai.isEmpty()) TextMuted else TextDark
+                modifier = Modifier.fillMaxWidth().height(56.dp),
+                shape    = MaterialTheme.shapes.small,
+                colors   = ButtonDefaults.outlinedButtonColors(
+                    // FIX: reaktif terhadap tema
+                    contentColor = if (uiState.periodeSelesai.isEmpty())
+                        MaterialTheme.colorScheme.onSurfaceVariant
+                    else MaterialTheme.colorScheme.onSurface
                 )
             ) {
-                Icon(Icons.Default.CalendarMonth, contentDescription = null, tint = TextLight)
+                Icon(
+                    Icons.Default.CalendarMonth,
+                    contentDescription = null,
+                    // FIX: reaktif terhadap tema
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                )
                 Spacer(Modifier.width(8.dp))
                 Text(selesaiLabel, modifier = Modifier.weight(1f))
             }
             if (uiState.periodeSelesaiError != null) {
-                Text(uiState.periodeSelesaiError!!, color = ExpenseRed,
-                    style = MaterialTheme.typography.labelSmall,
-                    modifier = Modifier.padding(top = 4.dp, start = 4.dp))
+                Text(
+                    uiState.periodeSelesaiError!!,
+                    color    = ExpenseRed,   // tetap: warna semantik
+                    style    = MaterialTheme.typography.labelSmall,
+                    modifier = Modifier.padding(top = 4.dp, start = 4.dp)
+                )
             }
 
             // Error umum
@@ -214,7 +249,7 @@ fun RegisterStep2Screen(
                 ) {
                     Text(
                         text     = uiState.errorMessage!!,
-                        color    = ExpenseRed,
+                        color    = ExpenseRed,   // tetap: warna semantik
                         style    = MaterialTheme.typography.bodySmall,
                         modifier = Modifier.padding(12.dp)
                     )
@@ -224,7 +259,8 @@ fun RegisterStep2Screen(
             Spacer(Modifier.height(32.dp))
 
             FundFlowPrimaryButton(
-                text      = "Selesai & Mulai",
+                // FIX: Lokalisasi teks tombol Selesai & Mulai
+                text      = stringResource(R.string.register_step2_btn_submit),
                 onClick   = viewModel::register,
                 isLoading = uiState.isLoading
             )
@@ -236,26 +272,26 @@ fun RegisterStep2Screen(
     // ── Picker Bottom Sheet: Periode Mulai ────────────────────
     if (showMulaiPicker) {
         MonthPickerSheet(
-            options      = monthOptions,
-            selectedKey  = uiState.periodeMulai,
-            onSelect     = { key ->
+            options     = monthOptions,
+            selectedKey = uiState.periodeMulai,
+            onSelect    = { key ->
                 viewModel.onPeriodeMulaiChange(key)
                 showMulaiPicker = false
             },
-            onDismiss    = { showMulaiPicker = false }
+            onDismiss   = { showMulaiPicker = false }
         )
     }
 
     // ── Picker Bottom Sheet: Periode Selesai ──────────────────
     if (showSelesaiPicker) {
         MonthPickerSheet(
-            options      = monthOptions,
-            selectedKey  = uiState.periodeSelesai,
-            onSelect     = { key ->
+            options     = monthOptions,
+            selectedKey = uiState.periodeSelesai,
+            onSelect    = { key ->
                 viewModel.onPeriodeSelesaiChange(key)
                 showSelesaiPicker = false
             },
-            onDismiss    = { showSelesaiPicker = false }
+            onDismiss   = { showSelesaiPicker = false }
         )
     }
 }
@@ -271,32 +307,38 @@ private fun MonthPickerSheet(
 ) {
     FundFlowBottomSheet(onDismiss = onDismiss) {
         Text(
-            text       = "Pilih Bulan",
+            // FIX: Lokalisasi judul bottom sheet Pilih Bulan
+            text       = stringResource(R.string.register_step2_dialog_title),
             style      = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.SemiBold,
-            color      = TextDark
+            // FIX: reaktif terhadap tema
+            color      = MaterialTheme.colorScheme.onSurface
         )
         Spacer(Modifier.height(12.dp))
         options.forEach { (key, label) ->
             val isSelected = key == selectedKey
             Surface(
-                modifier  = Modifier
+                modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 2.dp),
-                onClick   = { onSelect(key) },
-                shape     = MaterialTheme.shapes.small,
-                color     = if (isSelected) PrimaryLime.copy(alpha = 0.2f) else CardWhite
+                onClick  = { onSelect(key) },
+                shape    = MaterialTheme.shapes.small,
+                // FIX: unselected background reaktif terhadap tema
+                color    = if (isSelected) PrimaryLime.copy(alpha = 0.2f)
+                else MaterialTheme.colorScheme.surface
             ) {
                 Row(
                     modifier          = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text  = label,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = if (isSelected) PrimaryLimeDark else TextDark,
+                        text       = label,
+                        style      = MaterialTheme.typography.bodyMedium,
+                        // FIX: unselected text reaktif terhadap tema
+                        color      = if (isSelected) PrimaryLimeDark
+                        else MaterialTheme.colorScheme.onSurface,
                         fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
-                        modifier = Modifier.weight(1f)
+                        modifier   = Modifier.weight(1f)
                     )
                     if (isSelected) {
                         Text("✓", color = PrimaryLimeDark, fontWeight = FontWeight.Bold)

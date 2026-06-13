@@ -12,11 +12,4 @@ data class Pengeluaran(
     val tanggal: String,
     val catatan: String     = "",
     val createdAt: Long     = System.currentTimeMillis()
-) {
-    companion object {
-        val KATEGORI_OPTIONS = listOf(
-            "Program Kerja", "Inventaris", "Operasional", "Konsumsi", "Administrasi", "Lainnya"
-        )
-        val METODE_OPTIONS = listOf("Cash", "Transfer")
-    }
-}
+)

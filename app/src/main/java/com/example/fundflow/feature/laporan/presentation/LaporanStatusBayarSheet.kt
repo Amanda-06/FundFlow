@@ -17,8 +17,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.fundflow.R
 import com.example.fundflow.core.util.CurrencyFormatter
 import com.example.fundflow.feature.laporan.domain.model.StatusBayarAnggota
 import com.example.fundflow.ui.components.FundFlowBottomSheet
@@ -32,7 +34,7 @@ fun LaporanStatusBayarSheet(
 ) {
     FundFlowBottomSheet(onDismiss = viewModel::onDismissSheet) {
         Text(
-            "Laporan Status Bayar Kas",
+            stringResource(R.string.laporan_status_bayar_kas),
             style      = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.SemiBold,
             // FIX: reaktif terhadap tema
@@ -50,7 +52,9 @@ fun LaporanStatusBayarSheet(
             elevation = CardDefaults.cardElevation(1.dp)
         ) {
             Row(
-                modifier              = Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 10.dp),
+                modifier              = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 14.dp, vertical = 10.dp),
                 verticalAlignment     = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
@@ -64,7 +68,7 @@ fun LaporanStatusBayarSheet(
                     )
                     Spacer(Modifier.width(8.dp))
                     Text(
-                        uiState.selectedMonthForStatus?.label ?: "Pilih Bulan",
+                        uiState.selectedMonthForStatus?.label ?: stringResource(R.string.pilih_bulan),
                         style      = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.SemiBold,
                         // FIX: reaktif terhadap tema
@@ -83,7 +87,9 @@ fun LaporanStatusBayarSheet(
         Spacer(Modifier.height(12.dp))
 
         if (uiState.isGenerating || uiState.laporanStatus == null) {
-            Box(Modifier.fillMaxWidth().padding(40.dp), contentAlignment = Alignment.Center) {
+            Box(Modifier
+                .fillMaxWidth()
+                .padding(40.dp), contentAlignment = Alignment.Center) {
                 CircularProgressIndicator(color = PrimaryLime)
             }
             return@FundFlowBottomSheet
@@ -97,9 +103,11 @@ fun LaporanStatusBayarSheet(
             modifier              = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            StatusSummaryItem(value = "${laporan.totalLunas}",    label = "Lunas",      color = IncomeGreen)
-            StatusSummaryItem(value = "${laporan.totalBelumBayar}", label = "Belum Bayar", color = ExpenseRed)
-            StatusSummaryItem(value = CurrencyFormatter.formatShort(laporan.totalTerkumpul), label = "Terkumpul", color = IuranBlue)
+            StatusSummaryItem(value = "${laporan.totalLunas}",    label = stringResource(R.string.laporan_status_bayar_kas_lunas), color = IncomeGreen)
+            StatusSummaryItem(value = "${laporan.totalBelumBayar}", label = stringResource(R.string.laporan_status_bayar_kas_belum_bayar), color = ExpenseRed)
+            StatusSummaryItem(value = CurrencyFormatter.formatShort(laporan.totalTerkumpul), label = stringResource(
+                R.string.laporan_status_bayar_kas_terkumpul
+            ), color = IuranBlue)
         }
 
         Spacer(Modifier.height(12.dp))
@@ -124,7 +132,7 @@ fun LaporanStatusBayarSheet(
             onDismissRequest = viewModel::onDismissStatusMonthPicker,
             title = {
                 Text(
-                    "Pilih Bulan",
+                    stringResource(R.string.pilih_bulan2),
                     style = MaterialTheme.typography.titleLarge,
                     // FIX: reaktif terhadap tema
                     color = MaterialTheme.colorScheme.onSurface
@@ -136,7 +144,9 @@ fun LaporanStatusBayarSheet(
                         items(uiState.availableMonths) { month ->
                             val isSelected = month.key == uiState.selectedMonthForStatus?.key
                             Surface(
-                                modifier = Modifier.fillMaxWidth().padding(vertical = 2.dp),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 2.dp),
                                 onClick  = { viewModel.onSelectStatusMonth(month) },
                                 shape    = MaterialTheme.shapes.small,
                                 // FIX: unselected background reaktif terhadap tema
@@ -159,7 +169,7 @@ fun LaporanStatusBayarSheet(
             confirmButton = {
                 TextButton(onClick = viewModel::onDismissStatusMonthPicker) {
                     // FIX: reaktif terhadap tema
-                    Text("Tutup", color = MaterialTheme.colorScheme.onSurface)
+                    Text(stringResource(R.string.laporan_status_bayar_kas_tutup), color = MaterialTheme.colorScheme.onSurface)
                 }
             },
             // FIX: reaktif terhadap tema
@@ -195,7 +205,9 @@ private fun StatusBayarRow(item: StatusBayarAnggota) {
         elevation = CardDefaults.cardElevation(1.dp)
     ) {
         Row(
-            modifier          = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 10.dp),
+            modifier          = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 12.dp, vertical = 10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(
@@ -203,7 +215,9 @@ private fun StatusBayarRow(item: StatusBayarAnggota) {
                     .size(28.dp)
                     .background(
                         // tetap: warna semantik status bayar
-                        if (item.statusBayar) IncomeGreen.copy(alpha = 0.12f) else ExpenseRed.copy(alpha = 0.12f),
+                        if (item.statusBayar) IncomeGreen.copy(alpha = 0.12f) else ExpenseRed.copy(
+                            alpha = 0.12f
+                        ),
                         CircleShape
                     ),
                 contentAlignment = Alignment.Center

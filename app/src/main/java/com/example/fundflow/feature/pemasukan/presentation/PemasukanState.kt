@@ -21,8 +21,7 @@ data class PemasukanState(
     val formDeskripsi: String           = "",
     val formSumber: String              = "",
     val formMetode: String              = "",
-    val formQty: String                 = "1",
-    val formHargaSatuan: String         = "",
+    val formNominal: String             = "", // FIX: formQty dan formHargaSatuan diganti formNominal
     val formTanggal: String             = "",
     val formCatatan: String             = "",
 
@@ -30,7 +29,7 @@ data class PemasukanState(
     val formDeskripsiError: String?     = null,
     val formSumberError: String?        = null,
     val formMetodeError: String?        = null,
-    val formHargaSatuanError: String?   = null,
+    val formNominalError: String?       = null, // FIX: disesuaikan
     val formTanggalError: String?       = null,
 
     // Delete dialog
@@ -39,12 +38,5 @@ data class PemasukanState(
 
     val errorMessage: String?           = null,
     val successMessage: String?         = null
-) {
-    // Computed: total nominal dari form (qty × hargaSatuan)
-    val formTotalNominal: Double
-        get() {
-            val qty    = formQty.toIntOrNull() ?: 1
-            val harga  = formHargaSatuan.replace(",", "").replace(".", "").toDoubleOrNull() ?: 0.0
-            return qty * harga
-        }
-}
+)
+// FIX: Blok `val formTotalNominal` dihapus karena user langsung input nominal utuh.

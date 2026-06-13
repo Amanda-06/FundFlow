@@ -1,3 +1,4 @@
+// feature/pemasukan/domain/usecase/AddPemasukanUseCase.kt
 package com.example.fundflow.feature.pemasukan.domain.usecase
 
 import com.example.fundflow.feature.pemasukan.domain.model.Pemasukan
@@ -8,5 +9,6 @@ class AddPemasukanUseCase @Inject constructor(
     private val repository: PemasukanRepository
 ) {
     suspend operator fun invoke(pemasukan: Pemasukan): Long =
-        repository.add(pemasukan.copy(nominal = pemasukan.qty * pemasukan.hargaSatuan))
+        // Langsung simpan karena nominal sudah diisi langsung dari UI
+        repository.add(pemasukan)
 }

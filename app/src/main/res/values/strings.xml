@@ -8,296 +8,414 @@
     <!-- ═══════════════════════════════════════════════════════
          ONBOARDING
     ═══════════════════════════════════════════════════════ -->
-    <string name="onboarding_title_1" translatable="false">Kelola Keuangan Organisasi</string>
-    <string name="onboarding_desc_1" translatable="false">Catat iuran, pemasukan, dan pengeluaran organisasi kamu dengan mudah dan terstruktur.</string>
-    <string name="onboarding_title_2" translatable="false">Monitor Status Anggota</string>
-    <string name="onboarding_desc_2" translatable="false">Pantau siapa saja yang sudah dan belum membayar iuran bulanan secara real-time.</string>
-    <string name="onboarding_title_3" translatable="false">Laporan Otomatis</string>
-    <string name="onboarding_desc_3" translatable="false">Hasilkan laporan keuangan secara otomatis dan ekspor ke PDF atau Excel kapan saja.</string>
-    <string name="onboarding_skip" translatable="false">Lewati</string>
-    <string name="onboarding_next" translatable="false">Lanjut</string>
-    <string name="onboarding_start" translatable="false">Mulai</string>
-    <string name="onboarding_register" translatable="false">Daftar Akun Baru</string>
+    <string name="onboarding_title_1">Kelola Keuangan Organisasi</string>
+    <string name="onboarding_desc_1">Catat iuran, pemasukan, dan pengeluaran organisasi kamu dengan mudah dan terstruktur.</string>
+    <string name="onboarding_title_2">Monitor Status Anggota</string>
+    <string name="onboarding_desc_2">Pantau siapa saja yang sudah dan belum membayar iuran bulanan secara real-time.</string>
+    <string name="onboarding_title_3">Laporan Otomatis</string>
+    <string name="onboarding_desc_3">Hasilkan laporan keuangan secara otomatis dan ekspor ke PDF atau Excel kapan saja.</string>
+    <string name="onboarding_skip">Lewati</string>
+    <string name="onboarding_next">Lanjut</string>
+    <string name="onboarding_start">Mulai</string>
+    <string name="onboarding_register">Daftar Akun Baru</string>
 
     <!-- ═══════════════════════════════════════════════════════
          AUTH — LOGIN
     ═══════════════════════════════════════════════════════ -->
-    <string name="login_welcome_title" translatable="false">Selamat Datang Kembali</string>
-    <string name="login_welcome_subtitle" translatable="false">Masuk ke akun Anda untuk melanjutkan</string>
-    <string name="login_email_label" translatable="false">Email atau Username</string>
-    <string name="login_password_label" translatable="false">Kata Sandi</string>
-    <string name="login_forgot_password" translatable="false">Lupa kata sandi?</string>
-    <string name="login_button" translatable="false">Masuk</string>
-    <string name="login_no_account" translatable="false">Belum punya akun?</string>
-    <string name="login_register_link" translatable="false">Daftar Sekarang</string>
+    <string name="login_email_label">Email atau Username</string>
+    <string name="login_password_label">Kata Sandi</string>
+    <string name="login_forgot_password">Lupa kata sandi?</string>
+    <string name="login_button">Masuk</string>
+    <string name="login_no_account">Belum punya akun?</string>
+    <string name="login_register_link">Daftar Sekarang</string>
+    <string name="login_welcome_title">Selamat Datang Kembali</string>
+    <string name="login_welcome_subtitle">Masuk ke akun Anda untuk melanjutkan</string>
+    <string name="login_label_email_username">Email atau Username</string>
+    <string name="login_label_password">Kata Sandi</string>
+    <string name="login_btn_forgot_password">Lupa kata sandi?</string>
+    <string name="login_btn_submit">Masuk</string>
+    <string name="login_footer_no_account">Belum punya akun? </string>
+    <string name="login_footer_register_now">Daftar Sekarang</string>
 
     <!-- ═══════════════════════════════════════════════════════
          AUTH — REGISTER
     ═══════════════════════════════════════════════════════ -->
-    <string name="register_title" translatable="false">Daftar Akun</string>
-    <string name="register_subtitle" translatable="false">Buat akun untuk mulai mengelola keuangan</string>
-    <string name="register_nama_lengkap" translatable="false">Nama Lengkap</string>
-    <string name="register_email" translatable="false">Email</string>
-    <string name="register_username" translatable="false">Username</string>
-    <string name="register_password" translatable="false">Kata Sandi</string>
-    <string name="register_confirm_password" translatable="false">Ulangi Kata Sandi</string>
-    <string name="register_next" translatable="false">Lanjut</string>
-    <string name="register_have_account" translatable="false">Sudah punya akun?</string>
-    <string name="register_login_link" translatable="false">Masuk</string>
+    <string name="register_title">Daftar Akun</string>
+    <string name="register_subtitle">Buat akun untuk mulai mengelola keuangan</string>
+    <string name="register_nama_lengkap">Nama Lengkap</string>
+    <string name="register_email">Email</string>
+    <string name="register_username">Username</string>
+    <string name="register_password">Kata Sandi</string>
+    <string name="register_confirm_password">Ulangi Kata Sandi</string>
+    <string name="register_next">Lanjut</string>
+    <string name="register_have_account">Sudah punya akun?</string>
+    <string name="register_login_link">Masuk</string>
+    <string name="register_label_nama_lengkap">Nama Lengkap</string>
+    <string name="register_label_email">Email</string>
+    <string name="register_label_username">Username</string>
+    <string name="register_label_password">Kata Sandi</string>
+    <string name="register_label_confirm_password">Ulangi Kata Sandi</string>
+    <string name="register_btn_next">Lanjut</string>
+    <string name="register_footer_has_account">Sudah punya akun? </string>
+    <string name="register_footer_login_now">Masuk</string>
 
-    <string name="register_step2_title" translatable="false">Setup Organisasi</string>
-    <string name="register_step2_subtitle" translatable="false">Atur periode kepengurusan organisasi kamu</string>
-    <string name="register_nama_organisasi" translatable="false">Nama Organisasi</string>
-    <string name="register_periode_mulai" translatable="false">Periode Bulan Mulai</string>
-    <string name="register_periode_mulai_placeholder" translatable="false">Pilih Bulan (Misal: Maret)</string>
-    <string name="register_periode_selesai" translatable="false">Periode Bulan Berakhir</string>
-    <string name="register_periode_selesai_placeholder" translatable="false">Pilih Bulan (Misal: Desember)</string>
-    <string name="register_finish" translatable="false">Selesai &amp; Mulai</string>
+    <string name="register_step2_title">Setup Organisasi</string>
+    <string name="register_step2_subtitle">Atur periode kepengurusan organisasi kamu</string>
+    <string name="register_nama_organisasi">Nama Organisasi</string>
+    <string name="register_periode_mulai">Periode Bulan Mulai</string>
+    <string name="register_periode_mulai_placeholder">Pilih Bulan (Misal: Maret)</string>
+    <string name="register_periode_selesai">Periode Bulan Berakhir</string>
+    <string name="register_periode_selesai_placeholder">Pilih Bulan (Misal: Desember)</string>
+    <string name="register_finish">Selesai &amp; Mulai</string>
+    <string name="register_step2_label_org">Nama Organisasi</string>
+    <string name="register_step2_label_start">Periode Bulan Mulai</string>
+    <string name="register_step2_placeholder_start">Pilih Bulan (Misal: Maret)</string>
+    <string name="register_step2_label_end">Periode Bulan Berakhir</string>
+    <string name="register_step2_placeholder_end">Pilih Bulan (Misal: Desember)</string>
+    <string name="register_step2_btn_submit">Selesai &amp; Mulai</string>
+    <string name="register_step2_dialog_title">Pilih Bulan</string>
 
     <!-- Validation messages -->
-    <string name="error_email_empty" translatable="false">Email tidak boleh kosong</string>
-    <string name="error_email_invalid" translatable="false">Format email tidak valid</string>
-    <string name="error_password_empty" translatable="false">Kata sandi tidak boleh kosong</string>
-    <string name="error_password_short" translatable="false">Kata sandi minimal 6 karakter</string>
-    <string name="error_confirm_password_empty" translatable="false">Konfirmasi kata sandi tidak boleh kosong</string>
-    <string name="error_confirm_password_mismatch" translatable="false">Kata sandi tidak cocok</string>
-    <string name="error_nama_empty" translatable="false">Nama lengkap tidak boleh kosong</string>
-    <string name="error_username_empty" translatable="false">Username tidak boleh kosong</string>
-    <string name="error_username_short" translatable="false">Username minimal 3 karakter</string>
-    <string name="error_field_empty" translatable="false">%1$s tidak boleh kosong</string>
+    <string name="error_email_empty">Email tidak boleh kosong</string>
+    <string name="error_email_invalid">Format email tidak valid</string>
+    <string name="error_password_empty">Kata sandi tidak boleh kosong</string>
+    <string name="error_password_short">Kata sandi minimal 6 karakter</string>
+    <string name="error_confirm_password_empty">Konfirmasi kata sandi tidak boleh kosong</string>
+    <string name="error_confirm_password_mismatch">Kata sandi tidak cocok</string>
+    <string name="error_nama_empty">Nama lengkap tidak boleh kosong</string>
+    <string name="error_username_empty">Username tidak boleh kosong</string>
+    <string name="error_username_short">Username minimal 3 karakter</string>
+    <string name="error_field_empty">%1$s tidak boleh kosong</string>
 
     <!-- ═══════════════════════════════════════════════════════
          HOME (DASHBOARD)
     ═══════════════════════════════════════════════════════ -->
-    <string name="home_greeting" translatable="false">Halo, %1$s 👋</string>
-    <string name="home_total_saldo" translatable="false">Total Saldo</string>
-    <string name="home_pemasukan" translatable="false">Pemasukan</string>
-    <string name="home_pengeluaran" translatable="false">Pengeluaran</string>
-    <string name="home_status_iuran" translatable="false">Status Iuran Bulan Ini</string>
-    <string name="home_status_iuran_desc" translatable="false">%1$d dari %2$d Anggota Lunas</string>
-    <string name="home_tagih" translatable="false">Tagih</string>
-    <string name="home_transaksi_terakhir" translatable="false">Transaksi Terakhir</string>
-    <string name="home_belum_ada_transaksi" translatable="false">Belum ada transaksi</string>
-    <string name="home_hari_libur_terdekat" translatable="false">Hari Libur Terdekat</string>
+    <string name="home_greeting">Halo, %1$s 👋</string>
+    <string name="home_total_saldo">Total Saldo</string>
+    <string name="home_pemasukan">Pemasukan</string>
+    <string name="home_pengeluaran">Pengeluaran</string>
+    <string name="home_status_iuran">Status Iuran Bulan Ini</string>
+    <string name="home_status_iuran_desc">%1$d dari %2$d Anggota Lunas</string>
+    <string name="home_tagih">Tagih</string>
+    <string name="home_transaksi_terakhir">Transaksi Terakhir</string>
+    <string name="home_belum_ada_transaksi">Belum ada transaksi</string>
+    <string name="home_hari_libur_terdekat">Hari Libur Terdekat</string>
 
     <!-- ═══════════════════════════════════════════════════════
          IURAN
     ═══════════════════════════════════════════════════════ -->
-    <string name="iuran_title" translatable="false">Iuran Anggota</string>
-    <string name="iuran_lunas" translatable="false">Lunas</string>
-    <string name="iuran_belum_bayar" translatable="false">Belum Bayar</string>
-    <string name="iuran_terkumpul" translatable="false">Terkumpul</string>
-    <string name="iuran_search_hint" translatable="false">Cari nama anggota...</string>
-    <string name="iuran_filter_semua" translatable="false">Semua</string>
-    <string name="iuran_filter_lunas" translatable="false">Lunas</string>
-    <string name="iuran_filter_belum_bayar" translatable="false">Belum Bayar</string>
-    <string name="iuran_detail_title" translatable="false">Detail Iuran</string>
-    <string name="iuran_status_pembayaran" translatable="false">Status Pembayaran</string>
-    <string name="iuran_sudah_bayar" translatable="false">Sudah Bayar</string>
-    <string name="iuran_terlambat" translatable="false">Terlambat (Denda)</string>
-    <string name="iuran_detail_pembayaran" translatable="false">Detail Pembayaran</string>
-    <string name="iuran_nominal" translatable="false">Nominal</string>
-    <string name="iuran_metode_pembayaran" translatable="false">Metode Pembayaran</string>
-    <string name="iuran_tanggal_pembayaran" translatable="false">Tanggal Pembayaran</string>
-    <string name="iuran_catatan_opsional" translatable="false">Catatan (Opsional)</string>
-    <string name="iuran_simpan" translatable="false">Simpan</string>
-    <string name="iuran_batal" translatable="false">Batal</string>
+    <string name="iuran_title">Iuran Anggota</string>
+    <string name="iuran_pilih_periode">Pilih Periode</string>
+    <string name="iuran_lunas">Lunas</string>
+    <string name="iuran_belum_bayar">Belum Bayar</string>
+    <string name="iuran_terkumpul">Terkumpul</string>
+    <string name="iuran_search_hint">Cari nama anggota...</string>
+    <string name="iuran_filter_semua">Semua</string>
+    <string name="iuran_filter_lunas">Lunas</string>
+    <string name="iuran_filter_belum_bayar">Belum Bayar</string>
+    <string name="iuran_detail_title">Detail Iuran</string>
+    <string name="iuran_status_pembayaran">Status Pembayaran</string>
+    <string name="iuran_sudah_bayar">Sudah Bayar</string>
+    <string name="iuran_terlambat">Terlambat (Denda)</string>
+    <string name="iuran_detail_pembayaran">Detail Pembayaran</string>
+    <string name="iuran_nominal">Nominal</string>
+    <string name="iuran_metode_pembayaran">Metode Pembayaran</string>
+    <string name="iuran_tanggal_pembayaran">Tanggal Pembayaran</string>
+    <string name="iuran_catatan_opsional">Catatan (Opsional)</string>
+    <string name="iuran_simpan">Simpan</string>
+    <string name="iuran_batal">Batal</string>
 
     <!-- ═══════════════════════════════════════════════════════
          MANAJEMEN ANGGOTA
     ═══════════════════════════════════════════════════════ -->
-    <string name="anggota_title" translatable="false">Manajemen Anggota</string>
-    <string name="anggota_count" translatable="false">%1$d anggota</string>
-    <string name="anggota_empty_title" translatable="false">Belum ada anggota</string>
-    <string name="anggota_empty_message" translatable="false">Klik tombol + untuk menambahkan anggota pertama.</string>
-    <string name="anggota_add_title" translatable="false">Tambah Anggota</string>
-    <string name="anggota_edit_title" translatable="false">Edit Anggota</string>
-    <string name="anggota_nama_label" translatable="false">Nama Anggota</string>
-    <string name="anggota_delete_title" translatable="false">Hapus Anggota?</string>
-    <string name="anggota_delete_message" translatable="false">Data iuran anggota ini untuk seluruh bulan juga akan ikut terhapus secara permanen.</string>
-    <string name="anggota_delete_batch_warning" translatable="false">Semua data iuran dari anggota yang dipilih juga akan ikut terhapus.</string>
+    <string name="anggota_title">Manajemen Anggota</string>
+    <string name="anggota_count">%1$d anggota</string>
+    <string name="anggota_empty_title">Belum ada anggota</string>
+    <string name="anggota_empty_message">Klik tombol + untuk menambahkan anggota pertama.</string>
+    <string name="anggota_add_title">Tambah Anggota</string>
+    <string name="anggota_edit_title">Edit Anggota</string>
+    <string name="anggota_nama_label">Nama Anggota</string>
+    <string name="anggota_delete_title">Hapus Anggota?</string>
+    <string name="anggota_delete_message">Data iuran anggota ini untuk seluruh bulan juga akan ikut terhapus secara permanen.</string>
+    <string name="anggota_delete_batch_warning">Semua data iuran dari anggota yang dipilih juga akan ikut terhapus.</string>
+    <string name="anggota_cari_nama_anggota">Cari nama anggota...</string>
+    <string name="anggota_anggota">anggota</string>
+    <string name="anggota_simpan">Simpan</string>
+    <string name="anggota_batal">Batal</string>
+    <string name="anggota_count_format">%1$d anggota</string>
 
     <!-- ═══════════════════════════════════════════════════════
          PEMASUKAN
     ═══════════════════════════════════════════════════════ -->
-    <string name="pemasukan_title" translatable="false">Pemasukan</string>
-    <string name="pemasukan_total" translatable="false">Total Pemasukan</string>
-    <string name="pemasukan_search_hint" translatable="false">Cari pemasukan...</string>
-    <string name="pemasukan_empty_title" translatable="false">Belum ada pemasukan</string>
-    <string name="pemasukan_empty_message" translatable="false">Klik tombol + untuk mencatat pemasukan pertama.</string>
-    <string name="pemasukan_detail_title" translatable="false">Detail Pemasukan</string>
-    <string name="pemasukan_edit_title" translatable="false">Edit Pemasukan</string>
-    <string name="pemasukan_deskripsi" translatable="false">Deskripsi</string>
-    <string name="pemasukan_deskripsi_hint" translatable="false">Masukkan deskripsi pemasukan</string>
-    <string name="pemasukan_sumber" translatable="false">Sumber Pemasukan</string>
-    <string name="pemasukan_sumber_hint" translatable="false">Pilih sumber (misal: Iuran Anggota)</string>
-    <string name="pemasukan_qty" translatable="false">Qty</string>
-    <string name="pemasukan_harga_satuan" translatable="false">Harga Satuan</string>
-    <string name="pemasukan_total_nominal" translatable="false">Total Nominal</string>
-    <string name="pemasukan_metode_penerimaan" translatable="false">Metode Penerimaan</string>
-    <string name="pemasukan_metode_hint" translatable="false">Pilih metode (Cash/Transfer)</string>
-    <string name="pemasukan_tanggal" translatable="false">Tanggal</string>
-    <string name="pemasukan_catatan_hint" translatable="false">Tambahkan catatan...</string>
-    <string name="pemasukan_simpan" translatable="false">Simpan Pemasukan</string>
-    <string name="pemasukan_simpan_perubahan" translatable="false">Simpan Perubahan</string>
-    <string name="pemasukan_delete_title" translatable="false">Hapus Pemasukan?</string>
-    <string name="pemasukan_delete_message" translatable="false">Data pemasukan ini akan dihapus secara permanen.</string>
-    <string name="pemasukan_saved" translatable="false">Pemasukan berhasil disimpan</string>
+    <string name="pemasukan_title">Pemasukan</string>
+    <string name="pemasukan_total">Total Pemasukan</string>
+    <string name="pemasukan_search_hint">Cari pemasukan...</string>
+    <string name="pemasukan_empty_title">Belum ada pemasukan</string>
+    <string name="pemasukan_empty_message">Klik tombol + untuk mencatat pemasukan pertama.</string>
+    <string name="pemasukan_detail_title">Detail Pemasukan</string>
+    <string name="pemasukan_edit_title">Edit Pemasukan</string>
+    <string name="pemasukan_deskripsi">Deskripsi</string>
+    <string name="pemasukan_deskripsi_hint">Masukkan deskripsi pemasukan</string>
+    <string name="pemasukan_sumber">Sumber Pemasukan</string>
+    <string name="pemasukan_sumber_hint">Pilih sumber (misal: Iuran Anggota)</string>
+    <string name="pemasukan_qty">Qty</string>
+    <string name="pemasukan_harga_satuan">Harga Satuan</string>
+    <string name="pemasukan_total_nominal">Total Nominal</string>
+    <string name="pemasukan_metode_penerimaan">Metode Penerimaan</string>
+    <string name="pemasukan_metode_hint">Pilih metode (Cash/Transfer)</string>
+    <string name="pemasukan_tanggal">Tanggal</string>
+    <string name="pemasukan_catatan_hint">Tambahkan catatan...</string>
+    <string name="pemasukan_simpan">Simpan Pemasukan</string>
+    <string name="pemasukan_simpan_perubahan">Simpan Perubahan</string>
+    <string name="pemasukan_delete_title">Hapus Pemasukan?</string>
+    <string name="pemasukan_delete_message">Data pemasukan ini akan dihapus secara permanen.</string>
+    <string name="pemasukan_saved">Pemasukan berhasil disimpan</string>
+    <string name="pemasukan_tambah_cd">Tambah Pemasukan</string>
+    <string name="pemasukan_item_name">pemasukan</string>
+    <string name="iuran_empty_title">Tidak ada data\n</string>
+    <string name="iuran_empty_filter_message">Tidak ada anggota yang sesuai dengan pencarian/filter.</string>
+    <string name="iuran_nominal_hint">Rp 0</string>
+    <string name="iuran_metode_hint">Pilih metode</string>
+
+    <string-array name="pemasukan_sumber_options">
+        <item>Iuran Anggota</item>
+        <item>Program Kerja</item>
+        <item>Sponsorship</item>
+        <item>Donasi</item>
+        <item>Dana Usaha</item>
+        <item>Lainnya</item>
+    </string-array>
+
+    <string-array name="pemasukan_metode_options">
+        <item>Cash</item>
+        <item>Transfer</item>
+    </string-array>
 
     <!-- ═══════════════════════════════════════════════════════
          PENGELUARAN
     ═══════════════════════════════════════════════════════ -->
-    <string name="pengeluaran_title" translatable="false">Pengeluaran</string>
-    <string name="pengeluaran_total" translatable="false">Total Pengeluaran</string>
-    <string name="pengeluaran_search_hint" translatable="false">Cari pengeluaran...</string>
-    <string name="pengeluaran_empty_title" translatable="false">Belum ada pengeluaran</string>
-    <string name="pengeluaran_empty_message" translatable="false">Klik tombol + untuk mencatat pengeluaran pertama.</string>
-    <string name="pengeluaran_detail_title" translatable="false">Detail Pengeluaran</string>
-    <string name="pengeluaran_edit_title" translatable="false">Edit Pengeluaran</string>
-    <string name="pengeluaran_deskripsi_hint" translatable="false">Masukkan deskripsi pengeluaran</string>
-    <string name="pengeluaran_kategori" translatable="false">Kategori</string>
-    <string name="pengeluaran_kategori_hint" translatable="false">Pilih kategori</string>
-    <string name="pengeluaran_nama_program" translatable="false">Nama Program Kerja (Opsional)</string>
-    <string name="pengeluaran_nama_program_hint" translatable="false">Misal: Seminar Nasional IT</string>
-    <string name="pengeluaran_nominal" translatable="false">Nominal</string>
-    <string name="pengeluaran_metode_pembayaran" translatable="false">Metode Pembayaran</string>
-    <string name="pengeluaran_tambah" translatable="false">Tambah Pengeluaran</string>
-    <string name="pengeluaran_simpan_perubahan" translatable="false">Simpan Perubahan</string>
-    <string name="pengeluaran_delete_title" translatable="false">Hapus Pengeluaran?</string>
-    <string name="pengeluaran_delete_message" translatable="false">Data pengeluaran ini akan dihapus secara permanen.</string>
-    <string name="pengeluaran_saved" translatable="false">Pengeluaran berhasil disimpan</string>
+    <string name="pengeluaran_title">Pengeluaran</string>
+    <string name="pengeluaran_total">Total Pengeluaran</string>
+    <string name="pengeluaran_search_hint">Cari pengeluaran...</string>
+    <string name="pengeluaran_empty_title">Belum ada pengeluaran</string>
+    <string name="pengeluaran_empty_message">Klik tombol + untuk mencatat pengeluaran pertama.</string>
+    <string name="pengeluaran_detail_title">Detail Pengeluaran</string>
+    <string name="pengeluaran_edit_title">Edit Pengeluaran</string>
+    <string name="pengeluaran_deskripsi_hint">Masukkan deskripsi pengeluaran</string>
+    <string name="pengeluaran_kategori">Kategori</string>
+    <string name="pengeluaran_kategori_hint">Pilih kategori</string>
+    <string name="pengeluaran_nama_program">Nama Program (Opsional)</string>
+    <string name="pengeluaran_nama_program_hint">contoh: Seminar Nasional IT</string>
+    <string name="pengeluaran_nominal">Nominal</string>
+    <string name="pengeluaran_metode_pembayaran">Metode Pembayaran</string>
+    <string name="pengeluaran_tambah">Tambah Pengeluaran</string>
+    <string name="pengeluaran_simpan_perubahan">Simpan Perubahan</string>
+    <string name="pengeluaran_delete_title">Hapus Pengeluaran?</string>
+    <string name="pengeluaran_delete_message">Data pengeluaran ini akan dihapus secara permanen.</string>
+    <string name="pengeluaran_saved">Pengeluaran berhasil disimpan</string>
+    <string name="pengeluaran_item_name">pengeluaran</string>
+    <string name="pengeluaran_deskripsi">Deskripsi</string>
+
+    <string-array name="pengeluaran_kategori_options">
+        <item>Program Kerja</item>
+        <item>Inventaris</item>
+        <item>Operasional</item>
+        <item>Konsumsi</item>
+        <item>Administrasi</item>
+        <item>Lainnya</item>
+    </string-array>
+
+    <string-array name="pengeluaran_metode_options">
+        <item>Cash</item>
+        <item>Transfer</item>
+    </string-array>
 
     <!-- ═══════════════════════════════════════════════════════
          LAPORAN
     ═══════════════════════════════════════════════════════ -->
-    <string name="laporan_title" translatable="false">Laporan</string>
-    <string name="laporan_export_title" translatable="false">Export Laporan</string>
-    <string name="laporan_export_desc" translatable="false">Pilih jenis laporan untuk melihat preview dan export ke PDF atau Excel</string>
-    <string name="laporan_jenis_laporan" translatable="false">JENIS LAPORAN</string>
-    <string name="laporan_iuran_bulanan" translatable="false">Laporan Iuran Bulanan</string>
-    <string name="laporan_iuran_bulanan_desc" translatable="false">Rekap iuran anggota per bulan dan total keseluruhan iuran</string>
-    <string name="laporan_status_bayar" translatable="false">Laporan Status Bayar Kas</string>
-    <string name="laporan_status_bayar_desc" translatable="false">Status pembayaran kas seluruh anggota dari bulan ke bulan</string>
-    <string name="laporan_detail_keuangan" translatable="false">Laporan Detail Keuangan</string>
-    <string name="laporan_detail_keuangan_desc" translatable="false">Ringkasan lengkap pemasukan dan pengeluaran organisasi</string>
-    <string name="laporan_rincian_iuran" translatable="false">Rincian Iuran Bulanan</string>
-    <string name="laporan_bulan" translatable="false">Bulan</string>
-    <string name="laporan_jumlah" translatable="false">Jumlah (Rp)</string>
-    <string name="laporan_total" translatable="false">Total</string>
-    <string name="laporan_export_pdf" translatable="false">Export PDF</string>
-    <string name="laporan_export_excel" translatable="false">Export Excel</string>
-    <string name="laporan_export_success" translatable="false">Laporan berhasil diekspor</string>
-    <string name="laporan_export_failed" translatable="false">Gagal mengekspor laporan</string>
+    <string name="laporan_title">Laporan</string>
+    <string name="laporan_export_title">Export Laporan</string>
+    <string name="laporan_export_desc">Pilih jenis laporan untuk melihat preview dan export ke PDF atau Excel</string>
+    <string name="laporan_jenis_laporan">JENIS LAPORAN</string>
+    <string name="laporan_iuran_bulanan">Laporan Iuran Bulanan</string>
+    <string name="laporan_iuran_bulanan_desc">Rekap iuran anggota per bulan dan total keseluruhan iuran</string>
+    <string name="laporan_status_bayar">Laporan Status Bayar Kas</string>
+    <string name="laporan_status_bayar_desc">Status pembayaran kas seluruh anggota dari bulan ke bulan</string>
+    <string name="laporan_detail_keuangan">Laporan Detail Keuangan</string>
+    <string name="laporan_detail_keuangan_desc">Ringkasan lengkap pemasukan dan pengeluaran organisasi</string>
+    <string name="laporan_rincian_iuran">Rincian Iuran Bulanan</string>
+    <string name="laporan_bulan">Bulan</string>
+    <string name="laporan_jumlah">Jumlah (Rp)</string>
+    <string name="laporan_total">Total</string>
+    <string name="laporan_export_pdf">Export PDF</string>
+    <string name="laporan_export_excel">Export Excel</string>
+    <string name="laporan_export_success">Laporan berhasil diekspor</string>
+    <string name="laporan_export_failed">Gagal mengekspor laporan</string>
+    <string name="laporan_status_bayar_kas">Laporan Status Bayar Kas</string>
+    <string name="pilih_bulan">Pilih Bulan</string>
+    <string name="laporan_status_bayar_kas_lunas">lunas</string>
+    <string name="laporan_status_bayar_kas_belum_bayar">Belum Bayar</string>
+    <string name="laporan_status_bayar_kas_terkumpul">Terkumpul</string>
+    <string name="pilih_bulan2">Pilih Bulan</string>
+    <string name="laporan_status_bayar_kas_tutup">Tutup</string>
+    <string name="laporan_detail_keuangan_laporan_detail_keuangan">Laporan Detail Keuangan</string>
+    <string name="laporan_detail_keuangan_pemasukan">Pemasukan</string>
+    <string name="laporan_detail_keuangan_pengeluaran">Pengeluaran</string>
+    <string name="laporan_detail_keuangan_saldo_akhir">Saldo Akhir</string>
+    <string name="laporan_detail_keuangan_pemasukan1">PEMASUKAN</string>
+    <string name="laporan_detail_keuangan_pengeluaran1">PENGELUARAN</string>
+    <string name="laporan_detail_keuangan_belum_ada_transaksi_pada_periode_ini">Belum ada transaksi pada periode ini</string>
+    <string name="laporan_detail_date_format"> · %1$s</string>
 
     <!-- ═══════════════════════════════════════════════════════
-         PROFIL
+         PROFILE
     ═══════════════════════════════════════════════════════ -->
-    <string name="profile_title" translatable="false">Profil</string>
-    <string name="profile_role_bendahara" translatable="false">Bendahara</string>
-    <string name="profile_edit" translatable="false">Edit Profil</string>
-    <string name="profile_about" translatable="false">Tentang FundFlow</string>
-    <string name="profile_help_center" translatable="false">Pusat Bantuan</string>
-    <string name="profile_logout" translatable="false">Keluar</string>
-    <string name="profile_logout_confirm_title" translatable="false">Keluar dari Akun?</string>
-    <string name="profile_logout_confirm_message" translatable="false">Anda perlu masuk kembali untuk mengakses data keuangan organisasi.</string>
-    <string name="profile_version" translatable="false">Versi %1$s</string>
+    <string name="profile_title">Profil</string>
+    <string name="profile_role_bendahara">Bendahara</string>
+    <string name="profile_edit">Edit Profil</string>
+    <string name="profile_about">Tentang FundFlow</string>
+    <string name="profile_help_center">Pusat Bantuan</string>
+    <string name="profile_logout">Keluar</string>
+    <string name="profile_logout_confirm_title">Keluar dari Akun?</string>
+    <string name="profile_logout_confirm_message">Anda perlu masuk kembali untuk mengakses data keuangan organisasi.</string>
+    <string name="profile_version">Versi %1$s</string>
+    <string name="profile_versi_1_0_0">Versi 1.0.0</string>
+    <string name="profile_batal">Batal</string>
+    <string name="profile_keluar">Keluar</string>
+    <string name="profile_default_user">Pengguna FundFlow</string>
 
     <!-- Edit Profile -->
-    <string name="edit_profile_title" translatable="false">Edit Profil</string>
-    <string name="edit_profile_nama" translatable="false">Nama Lengkap</string>
-    <string name="edit_profile_username" translatable="false">Username</string>
-    <string name="edit_profile_email" translatable="false">Email</string>
-    <string name="edit_profile_organisasi" translatable="false">Nama Organisasi</string>
-    <string name="edit_profile_save" translatable="false">Simpan Perubahan</string>
-    <string name="edit_profile_saved" translatable="false">Profil berhasil diperbarui</string>
+    <string name="edit_profile_nama">Nama Lengkap</string>
+    <string name="edit_profile_username">Username</string>
+    <string name="edit_profile_email">Email</string>
+    <string name="edit_profile_organisasi">Nama Organisasi</string>
+    <string name="edit_profile_save">Simpan Perubahan</string>
+    <string name="edit_profile_saved">Profil berhasil diperbarui</string>
+    <string name="edit_profile_success">Profil berhasil diperbarui</string>
+    <string name="edit_profile_title">Edit Profil</string>
+    <string name="edit_profile_label_nama_lengkap">Nama Lengkap</string>
+    <string name="edit_profile_label_username">Username</string>
+    <string name="edit_profile_label_email">Email</string>
+    <string name="edit_profile_label_nama_organisasi">Nama Organisasi</string>
+    <string name="edit_profile_section_ubah_password">Ubah Password</string>
+    <string name="edit_profile_password_warning">Kosongkan bagian ini jika tidak ingin mengubah password.</string>
+    <string name="edit_profile_label_password_saat_ini">Password Saat Ini</string>
+    <string name="edit_profile_label_password_baru">Password Baru</string>
+    <string name="edit_profile_label_konfirmasi_password">Konfirmasi Password</string>
+    <string name="edit_profile_btn_simpan">Simpan Perubahan</string>
 
     <!-- Tentang FundFlow -->
-    <string name="about_title" translatable="false">Tentang FundFlow</string>
-    <string name="about_app_desc" translatable="false">FundFlow adalah aplikasi mobile yang dirancang untuk membantu bendahara organisasi mengelola keuangan secara terstruktur, terpusat, dan efisien — mencakup pencatatan iuran, pemasukan, pengeluaran, hingga pelaporan otomatis.</string>
-    <string name="about_developed_by" translatable="false">Dikembangkan oleh</string>
+    <string name="about_app_desc">FundFlow adalah aplikasi mobile yang dirancang untuk membantu bendahara organisasi mengelola keuangan secara terstruktur, terpusat, dan efisien — mencakup pencatatan iuran, pemasukan, pengeluaran, hingga pelaporan otomatis.</string>
+    <string name="about_developed_by">Dikembangkan oleh</string>
     <string name="about_developer_names" translatable="false">Adinda Lestari &amp; Amanda Arva Safaray</string>
     <string name="about_university" translatable="false">Universitas Lambung Mangkurat</string>
-    <string name="about_version_label" translatable="false">Versi Aplikasi</string>
+    <string name="about_version_label">Versi Aplikasi</string>
+    <string name="about_title">Tentang FundFlow</string>
+    <string name="about_version">Versi 1.0.0</string>
+    <string name="about_description">FundFlow adalah aplikasi mobile yang dirancang untuk membantu bendahara organisasi mengelola keuangan secara terstruktur, terpusat, dan efisien — mencakup pencatatan iuran, pemasukan, pengeluaran, hingga pelaporan otomatis.</string>
+    <string name="about_label_developed_by">Dikembangkan oleh</string>
+    <string name="about_value_developers">Adinda Lestari &amp; Amanda Arva Safaraya</string>
+    <string name="about_label_university">Universitas</string>
+    <string name="about_value_university">Universitas Lambung Mangkurat</string>
+    <string name="about_copyright">© 2026 FundFlow. Seluruh hak cipta dilindungi.</string>
 
     <!-- Pusat Bantuan -->
-    <string name="help_title" translatable="false">Pusat Bantuan</string>
-    <string name="help_faq_section" translatable="false">Pertanyaan Umum (FAQ)</string>
-    <string name="help_contact_section" translatable="false">Hubungi Kami</string>
-    <string name="help_contact_email" translatable="false">Kirim Email</string>
-    <string name="help_faq_q1" translatable="false">Bagaimana cara menambahkan anggota baru?</string>
-    <string name="help_faq_a1" translatable="false">Buka halaman Iuran, lalu klik tombol tambah (+) di pojok kanan bawah untuk membuka Manajemen Anggota, kemudian klik tombol tambah anggota.</string>
-    <string name="help_faq_q2" translatable="false">Bagaimana cara mencatat pembayaran iuran?</string>
-    <string name="help_faq_a2" translatable="false">Buka halaman Iuran, pilih bulan, lalu klik nama anggota untuk membuka form detail iuran dan ubah status pembayaran.</string>
-    <string name="help_faq_q3" translatable="false">Bagaimana cara mengekspor laporan?</string>
-    <string name="help_faq_a3" translatable="false">Buka halaman Laporan, pilih jenis laporan yang diinginkan, lalu klik tombol Export PDF atau Export Excel pada preview laporan.</string>
-    <string name="help_faq_q4" translatable="false">Apakah data saya tersimpan secara offline?</string>
-    <string name="help_faq_a4" translatable="false">Ya, FundFlow menggunakan pendekatan offline-first sehingga data tetap dapat diakses tanpa koneksi internet dan akan disinkronkan saat online.</string>
-    <string name="help_faq_q5" translatable="false">Bagaimana cara mengubah bahasa atau tema aplikasi?</string>
-    <string name="help_faq_a5" translatable="false">Buka halaman Pengaturan melalui ikon gerigi di Home, lalu pilih Bahasa atau Tema sesuai preferensi Anda.</string>
+    <string name="help_faq_section">Pertanyaan Umum (FAQ)</string>
+    <string name="help_contact_section">Hubungi Kami</string>
+    <string name="help_contact_email">Kirim Email</string>
+    <string name="help_faq_q1">Bagaimana cara menambahkan anggota baru?</string>
+    <string name="help_faq_a1">Buka halaman Iuran, lalu klik tombol tambah (+) di pojok kanan bawah untuk membuka Manajemen Anggota, kemudian klik tombol tambah anggota.</string>
+    <string name="help_faq_q2">Bagaimana cara mencatat pembayaran iuran?</string>
+    <string name="help_faq_a2">Buka halaman Iuran, pilih bulan, lalu klik nama anggota untuk membuka form detail iuran dan ubah status pembayaran.</string>
+    <string name="help_faq_q3">Bagaimana cara mengekspor laporan?</string>
+    <string name="help_faq_a3">Buka halaman Laporan, pilih jenis laporan yang diinginkan, lalu klik tombol Export PDF atau Export Excel pada preview laporan.</string>
+    <string name="help_faq_q4">Apakah data saya tersimpan secara offline?</string>
+    <string name="help_faq_a4">Ya, FundFlow menggunakan pendekatan offline-first sehingga data tetap dapat diakses tanpa koneksi internet dan akan disinkronkan saat online.</string>
+    <string name="help_faq_q5">Bagaimana cara mengubah bahasa atau tema aplikasi?</string>
+    <string name="help_faq_a5">Buka halaman Pengaturan melalui ikon gerigi di Home, lalu pilih Bahasa atau Tema sesuai preferensi Anda.</string>
+    <string name="help_title">Pusat Bantuan</string>
+    <string name="help_faq_header">Pertanyaan Umum (FAQ)</string>
+    <string name="help_contact_header">Hubungi Kami</string>
+    <string name="help_support_email_label">Email Dukungan</string>
 
     <!-- ═══════════════════════════════════════════════════════
          SETTINGS
     ═══════════════════════════════════════════════════════ -->
-    <string name="settings_title" translatable="false">Pengaturan</string>
-    <string name="settings_section_general" translatable="false">UMUM</string>
-    <string name="settings_notifikasi" translatable="false">Notifikasi</string>
-    <string name="settings_notifikasi_desc" translatable="false">Pengingat pembayaran iuran dan aktivitas keuangan</string>
-    <string name="settings_bahasa" translatable="false">Bahasa</string>
-    <string name="settings_bahasa_id" translatable="false">Bahasa Indonesia</string>
-    <string name="settings_bahasa_en" translatable="false">English</string>
-    <string name="settings_tema" translatable="false">Tema</string>
-    <string name="settings_tema_light" translatable="false">Mode Terang</string>
-    <string name="settings_tema_dark" translatable="false">Mode Gelap</string>
-    <string name="settings_section_organisasi" translatable="false">ORGANISASI</string>
-    <string name="settings_periode_kas" translatable="false">Pengaturan Periode Kas</string>
-    <string name="settings_periode_kas_desc" translatable="false">Atur periode kepengurusan organisasi</string>
-    <string name="settings_pilih_bahasa" translatable="false">Pilih Bahasa</string>
-    <string name="settings_pilih_tema" translatable="false">Pilih Tema</string>
+    <string name="settings_title">Pengaturan</string>
+    <string name="settings_section_general">UMUM</string>
+    <string name="settings_notifikasi">Notifikasi</string>
+    <string name="settings_notifikasi_desc">Pengingat pembayaran iuran dan aktivitas keuangan</string>
+    <string name="settings_bahasa">Bahasa</string>
+    <string name="settings_bahasa_id">Bahasa Indonesia</string>
+    <string name="settings_bahasa_en">English</string>
+    <string name="settings_tema">Tema</string>
+    <string name="settings_tema_light">Mode Terang</string>
+    <string name="settings_tema_dark">Mode Gelap</string>
+    <string name="settings_section_organisasi">ORGANISASI</string>
+    <string name="settings_periode_kas">Pengaturan Periode Kas</string>
+    <string name="settings_periode_kas_desc">Atur periode kepengurusan organisasi</string>
+    <string name="settings_pilih_bahasa">Pilih Bahasa</string>
+    <string name="settings_pilih_tema">Pilih Tema</string>
 
     <!-- Pengaturan Periode -->
-    <string name="periode_title" translatable="false">Pengaturan Periode</string>
-    <string name="periode_current" translatable="false">Periode Saat Ini</string>
-    <string name="periode_mulai" translatable="false">Periode Bulan Mulai</string>
-    <string name="periode_selesai" translatable="false">Periode Bulan Berakhir</string>
-    <string name="periode_save" translatable="false">Simpan Periode</string>
-    <string name="periode_saved" translatable="false">Periode kas berhasil diperbarui</string>
-    <string name="periode_warning" translatable="false">Mengubah periode kas akan memengaruhi rentang bulan yang ditampilkan pada halaman Iuran dan Laporan.</string>
+    <string name="periode_title">Pengaturan Periode</string>
+    <string name="periode_current">Periode Saat Ini</string>
+    <string name="periode_mulai">Periode Bulan Mulai</string>
+    <string name="periode_selesai">Periode Bulan Berakhir</string>
+    <string name="periode_save">Simpan Periode</string>
+    <string name="periode_saved">Periode kas berhasil diperbarui</string>
+    <string name="periode_warning">Mengubah periode kas akan memengaruhi rentang bulan yang ditampilkan pada halaman Iuran dan Laporan.</string>
+    <string name="settings_period_success">Periode kas berhasil diperbarui</string>
+    <string name="settings_period_title">Pengaturan Periode</string>
+    <string name="settings_period_info">Mengubah periode kas akan memengaruhi rentang bulan yang ditampilkan pada halaman Iuran dan Laporan.</string>
+    <string name="settings_period_label_start">Periode Bulan Mulai</string>
+    <string name="settings_period_label_end">Periode Bulan Berakhir</string>
+    <string name="settings_period_placeholder">Pilih Bulan</string>
+    <string name="settings_period_btn_save">Simpan Periode</string>
+    <string name="settings_period_dialog_title">Pilih Bulan</string>
+    <string name="settings_period_dialog_close">Tutup</string>
 
     <!-- ═══════════════════════════════════════════════════════
          COMMON / SHARED
     ═══════════════════════════════════════════════════════ -->
-    <string name="common_loading" translatable="false">Memuat...</string>
-    <string name="common_save" translatable="false">Simpan</string>
-    <string name="common_cancel" translatable="false">Batal</string>
-    <string name="common_delete" translatable="false">Hapus</string>
-    <string name="common_edit" translatable="false">Edit</string>
-    <string name="common_close" translatable="false">Tutup</string>
-    <string name="common_confirm" translatable="false">Konfirmasi</string>
-    <string name="common_back" translatable="false">Kembali</string>
-    <string name="common_search" translatable="false">Cari</string>
-    <string name="common_error_generic" translatable="false">Terjadi kesalahan. Coba lagi.</string>
-    <string name="common_no_internet" translatable="false">Tidak ada koneksi internet. Periksa jaringan Anda.</string>
-    <string name="common_selected_count" translatable="false">%1$d / %2$d dipilih</string>
-    <string name="common_select_all" translatable="false">Semua</string>
-    <string name="common_delete_confirm_title" translatable="false">Hapus Data?</string>
-    <string name="common_delete_confirm_message" translatable="false">Tindakan ini tidak dapat dibatalkan.</string>
+    <string name="common_loading">Memuat...</string>
+    <string name="common_save">Simpan</string>
+    <string name="common_cancel">Batal</string>
+    <string name="common_delete">Hapus</string>
+    <string name="common_edit">Edit</string>
+    <string name="common_close">Tutup</string>
+    <string name="common_confirm">Konfirmasi</string>
+    <string name="common_back">Kembali</string>
+    <string name="common_search">Cari</string>
+    <string name="common_error_generic">Terjadi kesalahan. Coba lagi.</string>
+    <string name="common_no_internet">Tidak ada koneksi internet. Periksa jaringan Anda.</string>
+    <string name="common_selected_count">%1$d / %2$d dipilih</string>
+    <string name="common_select_all">Semua</string>
+    <string name="common_delete_confirm_title">Hapus Data?</string>
+    <string name="common_delete_confirm_message">Tindakan ini tidak dapat dibatalkan.</string>
+    <string name="common_hide_password">Sembunyikan password</string>
+    <string name="common_show_password">Tampilkan password</string>
 
     <!-- ═══════════════════════════════════════════════════════
          BOTTOM NAVIGATION
     ═══════════════════════════════════════════════════════ -->
-    <string name="nav_home" translatable="false">Home</string>
-    <string name="nav_iuran" translatable="false">Iuran</string>
-    <string name="nav_pemasukan" translatable="false">Pemasukan</string>
-    <string name="nav_pengeluaran" translatable="false">Pengeluaran</string>
-    <string name="nav_laporan" translatable="false">Laporan</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_iuran">Iuran</string>
+    <string name="nav_pemasukan">masuk</string>
+    <string name="nav_pengeluaran">keluar</string>
+    <string name="nav_laporan">Laporan</string>
 
     <!-- ═══════════════════════════════════════════════════════
          NOTIFICATIONS
     ═══════════════════════════════════════════════════════ -->
-    <string name="notif_channel_iuran_name" translatable="false">Pengingat Iuran</string>
-    <string name="notif_channel_iuran_desc" translatable="false">Notifikasi pengingat pembayaran iuran bulanan</string>
-    <string name="notif_channel_general_name" translatable="false">Notifikasi Umum</string>
-    <string name="notif_channel_general_desc" translatable="false">Notifikasi umum dari FundFlow</string>
-    <string name="notif_iuran_title" translatable="false">Pengingat Iuran</string>
-    <string name="notif_iuran_message" translatable="false">Ada %1$d anggota yang belum membayar iuran bulan ini.</string>
+    <string name="notif_channel_iuran_name">Pengingat Iuran</string>
+    <string name="notif_channel_iuran_desc">Notifikasi pengingat pembayaran iuran bulanan</string>
+    <string name="notif_channel_general_name">Notifikasi Umum</string>
+    <string name="notif_channel_general_desc">Notifikasi umum dari FundFlow</string>
+    <string name="notif_iuran_title">Pengingat Iuran</string>
+    <string name="notif_iuran_message">Ada %1$d anggota yang belum membayar iuran bulan ini.</string>
+
+    <string name="common_pilih_tanggal">Pilih tanggal</string>
+    <string name="common_ok">OK</string>
+    <string name="common_no">No</string>
 </resources>

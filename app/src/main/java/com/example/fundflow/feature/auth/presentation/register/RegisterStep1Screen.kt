@@ -1,4 +1,3 @@
-// ============================================================
 // feature/auth/presentation/register/RegisterStep1Screen.kt
 // ============================================================
 package com.example.fundflow.feature.auth.presentation.register
@@ -16,12 +15,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.fundflow.R
 import com.example.fundflow.ui.components.*
 import com.example.fundflow.ui.theme.*
 
@@ -36,7 +37,8 @@ fun RegisterStep1Screen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(BackgroundKrem)
+            // FIX: reaktif terhadap tema (menggantikan BackgroundKrem yang hardcoded)
+            .background(MaterialTheme.colorScheme.background)
             .systemBarsPadding()
     ) {
         Column(
@@ -59,16 +61,20 @@ fun RegisterStep1Screen(
                 horizontalAlignment = Alignment.Start
             ) {
                 Text(
-                    text       = "Daftar Akun",
+                    // FIX: Lokalisasi judul halaman Daftar Akun
+                    text       = stringResource(R.string.register_title),
                     style      = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold,
-                    color      = TextDark
+                    // FIX: reaktif terhadap tema
+                    color      = MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(Modifier.height(4.dp))
                 Text(
-                    text  = "Buat akun untuk mulai mengelola keuangan",
+                    // FIX: Lokalisasi sub-judul teks instruksi pendaftaran akun
+                    text  = stringResource(R.string.register_subtitle),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = TextLight
+                    // FIX: reaktif terhadap tema
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
 
@@ -78,7 +84,8 @@ fun RegisterStep1Screen(
             FundFlowTextField(
                 value         = uiState.namaLengkap,
                 onValueChange = viewModel::onNamaLengkapChange,
-                label         = "Nama Lengkap",
+                // FIX: Lokalisasi label Nama Lengkap
+                label         = stringResource(R.string.register_label_nama_lengkap),
                 leadingIcon   = Icons.Default.Person,
                 isError       = uiState.namaLengkapError != null,
                 errorMessage  = uiState.namaLengkapError
@@ -86,12 +93,13 @@ fun RegisterStep1Screen(
             Spacer(Modifier.height(14.dp))
 
             FundFlowTextField(
-                value         = uiState.email,
-                onValueChange = viewModel::onEmailChange,
-                label         = "Email",
-                leadingIcon   = Icons.Default.AlternateEmail,
-                isError       = uiState.emailError != null,
-                errorMessage  = uiState.emailError,
+                value           = uiState.email,
+                onValueChange   = viewModel::onEmailChange,
+                // FIX: Lokalisasi label Email
+                label           = stringResource(R.string.register_label_email),
+                leadingIcon     = Icons.Default.AlternateEmail,
+                isError         = uiState.emailError != null,
+                errorMessage    = uiState.emailError,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
             )
             Spacer(Modifier.height(14.dp))
@@ -99,7 +107,8 @@ fun RegisterStep1Screen(
             FundFlowTextField(
                 value         = uiState.username,
                 onValueChange = viewModel::onUsernameChange,
-                label         = "Username",
+                // FIX: Lokalisasi label Username
+                label         = stringResource(R.string.register_label_username),
                 leadingIcon   = Icons.Default.AlternateEmail,
                 isError       = uiState.usernameError != null,
                 errorMessage  = uiState.usernameError
@@ -109,7 +118,8 @@ fun RegisterStep1Screen(
             FundFlowPasswordField(
                 value         = uiState.password,
                 onValueChange = viewModel::onPasswordChange,
-                label         = "Kata Sandi",
+                // FIX: Lokalisasi label Kata Sandi
+                label         = stringResource(R.string.register_label_password),
                 leadingIcon   = Icons.Default.Lock,
                 isError       = uiState.passwordError != null,
                 errorMessage  = uiState.passwordError
@@ -119,7 +129,8 @@ fun RegisterStep1Screen(
             FundFlowPasswordField(
                 value         = uiState.confirmPassword,
                 onValueChange = viewModel::onConfirmPasswordChange,
-                label         = "Ulangi Kata Sandi",
+                // FIX: Lokalisasi label Ulangi Kata Sandi
+                label         = stringResource(R.string.register_label_confirm_password),
                 leadingIcon   = Icons.Default.Lock,
                 isError       = uiState.confirmPasswordError != null,
                 errorMessage  = uiState.confirmPasswordError
@@ -127,9 +138,9 @@ fun RegisterStep1Screen(
 
             Spacer(Modifier.height(28.dp))
 
-            // ── Tombol Lanjut ─────────────────────────────────
             FundFlowPrimaryButton(
-                text    = "Lanjut",
+                // FIX: Lokalisasi teks tombol Lanjut langkah berikutnya
+                text    = stringResource(R.string.register_btn_next),
                 onClick = {
                     if (viewModel.validateStep1()) onNavigateToStep2()
                 }
@@ -141,8 +152,19 @@ fun RegisterStep1Screen(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment     = Alignment.CenterVertically
             ) {
-                Text("Sudah punya akun? ", style = MaterialTheme.typography.bodyMedium, color = TextLight)
-                FundFlowTextButton(text = "Masuk", onClick = onNavigateToLogin, color = PrimaryLimeDark)
+                Text(
+                    // FIX: Lokalisasi teks label footer tautan masuk
+                    text  = stringResource(R.string.register_footer_has_account),
+                    style = MaterialTheme.typography.bodyMedium,
+                    // FIX: reaktif terhadap tema
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                FundFlowTextButton(
+                    // FIX: Lokalisasi teks tombol tautan masuk sekarang
+                    text = stringResource(R.string.register_footer_login_now),
+                    onClick = onNavigateToLogin,
+                    color = PrimaryLimeDark
+                )
             }
 
             Spacer(Modifier.height(32.dp))
@@ -158,26 +180,28 @@ private fun StepIndicator(currentStep: Int, totalSteps: Int) {
         verticalAlignment     = Alignment.CenterVertically
     ) {
         repeat(totalSteps) { index ->
-            val stepNum   = index + 1
-            val isActive  = stepNum == currentStep
-            val isDone    = stepNum < currentStep
+            val stepNum  = index + 1
+            val isActive = stepNum == currentStep
+            val isDone   = stepNum < currentStep
 
             Box(
-                modifier         = Modifier
+                modifier = Modifier
                     .size(28.dp)
                     .background(
                         color = when {
-                            isActive || isDone -> PrimaryLime
-                            else               -> BorderGray
+                            isActive || isDone -> PrimaryLime   // tetap: warna brand
+                            else               -> MaterialTheme.colorScheme.outline   // FIX: reaktif
                         },
                         shape = MaterialTheme.shapes.extraLarge
                     ),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text  = "$stepNum",
-                    style = MaterialTheme.typography.labelMedium,
-                    color = if (isActive || isDone) TextDark else TextLight,
+                    text       = "$stepNum",
+                    style      = MaterialTheme.typography.labelMedium,
+                    // Aktif/selesai: TextDark di atas PrimaryLime (tetap). Tidak aktif: FIX reaktif
+                    color      = if (isActive || isDone) TextDark
+                    else MaterialTheme.colorScheme.onSurfaceVariant,
                     fontWeight = FontWeight.Bold
                 )
             }
@@ -186,7 +210,9 @@ private fun StepIndicator(currentStep: Int, totalSteps: Int) {
                 HorizontalDivider(
                     modifier  = Modifier.width(32.dp),
                     thickness = 2.dp,
-                    color     = if (currentStep > stepNum) PrimaryLime else BorderGray
+                    // FIX: unselected line reaktif terhadap tema
+                    color     = if (currentStep > stepNum) PrimaryLime
+                    else MaterialTheme.colorScheme.outline
                 )
             }
         }

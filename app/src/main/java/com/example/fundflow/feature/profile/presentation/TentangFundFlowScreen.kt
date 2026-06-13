@@ -17,10 +17,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.fundflow.R
 import com.example.fundflow.ui.components.FundFlowTopBar
 import com.example.fundflow.ui.theme.*
 
@@ -29,7 +31,8 @@ fun TentangFundFlowScreen(
     onNavigateBack: () -> Unit
 ) {
     Scaffold(
-        topBar = { FundFlowTopBar(title = "Tentang FundFlow", onNavigateBack = onNavigateBack) },
+        // FIX: Lokalisasi judul halaman TopBar
+        topBar = { FundFlowTopBar(title = stringResource(R.string.about_title), onNavigateBack = onNavigateBack) },
         // FIX: reaktif terhadap tema
         containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
@@ -63,14 +66,16 @@ fun TentangFundFlowScreen(
             Spacer(Modifier.height(16.dp))
 
             Text(
-                "FundFlow",
+                // FIX: Menggunakan stringResource app_name yang sudah terdefinisi di proyek
+                stringResource(R.string.app_name),
                 style      = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold,
                 // FIX: reaktif terhadap tema
                 color      = MaterialTheme.colorScheme.onSurface
             )
             Text(
-                "Versi 1.0.0",
+                // FIX: Lokalisasi nomor versi aplikasi
+                stringResource(R.string.about_version),
                 style = MaterialTheme.typography.bodySmall,
                 // FIX: reaktif terhadap tema
                 color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -87,7 +92,8 @@ fun TentangFundFlowScreen(
                 elevation = CardDefaults.cardElevation(2.dp)
             ) {
                 Text(
-                    text      = "FundFlow adalah aplikasi mobile yang dirancang untuk membantu bendahara organisasi mengelola keuangan secara terstruktur, terpusat, dan efisien — mencakup pencatatan iuran, pemasukan, pengeluaran, hingga pelaporan otomatis.",
+                    // FIX: Lokalisasi paragraf teks deskripsi aplikasi
+                    text      = stringResource(R.string.about_description),
                     style     = MaterialTheme.typography.bodyMedium,
                     // FIX: reaktif terhadap tema
                     color     = MaterialTheme.colorScheme.onSurface,
@@ -102,20 +108,23 @@ fun TentangFundFlowScreen(
             // ── Pengembang ────────────────────────────────────
             InfoCard(
                 icon  = Icons.Default.Code,
-                title = "Dikembangkan oleh",
-                value = "Adinda Lestari & Amanda Arva Safaraya"
+                // FIX: Lokalisasi teks label dan nama pengembang
+                title = stringResource(R.string.about_label_developed_by),
+                value = stringResource(R.string.about_value_developers)
             )
             Spacer(Modifier.height(10.dp))
             InfoCard(
                 icon  = Icons.Default.School,
-                title = "Universitas",
-                value = "Universitas Lambung Mangkurat"
+                // FIX: Lokalisasi teks label institusi dan nama universitas
+                title = stringResource(R.string.about_label_university),
+                value = stringResource(R.string.about_value_university)
             )
 
             Spacer(Modifier.height(24.dp))
 
             Text(
-                "© 2026 FundFlow. Seluruh hak cipta dilindungi.",
+                // FIX: Lokalisasi teks hak cipta (copyright)
+                text      = stringResource(R.string.about_copyright),
                 style     = MaterialTheme.typography.bodySmall,
                 // FIX: reaktif terhadap tema
                 color     = MaterialTheme.colorScheme.onSurfaceVariant,

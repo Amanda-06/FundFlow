@@ -15,8 +15,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.fundflow.R
 import com.example.fundflow.core.util.CurrencyFormatter
 import com.example.fundflow.feature.laporan.domain.model.ItemDetailKeuangan
 import com.example.fundflow.ui.components.FundFlowBottomSheet
@@ -30,7 +32,7 @@ fun LaporanDetailKeuanganSheet(
 ) {
     FundFlowBottomSheet(onDismiss = viewModel::onDismissSheet) {
         Text(
-            "Laporan Detail Keuangan",
+            stringResource(R.string.laporan_detail_keuangan_laporan_detail_keuangan),
             style      = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.SemiBold,
             // FIX: reaktif terhadap tema
@@ -39,7 +41,9 @@ fun LaporanDetailKeuanganSheet(
         Spacer(Modifier.height(4.dp))
 
         if (uiState.isGenerating || uiState.laporanDetail == null) {
-            Box(Modifier.fillMaxWidth().padding(40.dp), contentAlignment = Alignment.Center) {
+            Box(Modifier
+                .fillMaxWidth()
+                .padding(40.dp), contentAlignment = Alignment.Center) {
                 CircularProgressIndicator(color = PrimaryLime)
             }
             return@FundFlowBottomSheet
@@ -64,14 +68,14 @@ fun LaporanDetailKeuanganSheet(
             // color (IncomeGreen / ExpenseRed) tetap: warna semantik
             SummaryBox(
                 modifier = Modifier.weight(1f),
-                label    = "Pemasukan",
+                label    = stringResource(R.string.laporan_detail_keuangan_pemasukan),
                 value    = CurrencyFormatter.formatShort(laporan.totalPemasukan),
                 color    = IncomeGreen,
                 icon     = Icons.Default.TrendingUp
             )
             SummaryBox(
                 modifier = Modifier.weight(1f),
-                label    = "Pengeluaran",
+                label    = stringResource(R.string.laporan_detail_keuangan_pengeluaran),
                 value    = CurrencyFormatter.formatShort(laporan.totalPengeluaran),
                 color    = ExpenseRed,
                 icon     = Icons.Default.TrendingDown
@@ -88,12 +92,14 @@ fun LaporanDetailKeuanganSheet(
             shape    = RoundedCornerShape(12.dp)
         ) {
             Row(
-                modifier              = Modifier.fillMaxWidth().padding(14.dp),
+                modifier              = Modifier
+                    .fillMaxWidth()
+                    .padding(14.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment     = Alignment.CenterVertically
             ) {
                 Text(
-                    "Saldo Akhir",
+                    stringResource(R.string.laporan_detail_keuangan_saldo_akhir),
                     style      = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     // FIX: reaktif terhadap tema
@@ -117,7 +123,7 @@ fun LaporanDetailKeuanganSheet(
                 if (laporan.daftarPemasukan.isNotEmpty()) {
                     item {
                         Text(
-                            "PEMASUKAN",
+                            stringResource(R.string.laporan_detail_keuangan_pemasukan1),
                             style      = MaterialTheme.typography.labelMedium,
                             fontWeight = FontWeight.SemiBold,
                             color      = IncomeGreen,   // tetap: warna semantik
@@ -130,7 +136,7 @@ fun LaporanDetailKeuanganSheet(
                 if (laporan.daftarPengeluaran.isNotEmpty()) {
                     item {
                         Text(
-                            "PENGELUARAN",
+                            stringResource(R.string.laporan_detail_keuangan_pengeluaran1),
                             style      = MaterialTheme.typography.labelMedium,
                             fontWeight = FontWeight.SemiBold,
                             color      = ExpenseRed,   // tetap: warna semantik
@@ -143,11 +149,13 @@ fun LaporanDetailKeuanganSheet(
                 if (laporan.daftarPemasukan.isEmpty() && laporan.daftarPengeluaran.isEmpty()) {
                     item {
                         Box(
-                            Modifier.fillMaxWidth().padding(24.dp),
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(24.dp),
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
-                                "Belum ada transaksi pada periode ini",
+                                stringResource(R.string.laporan_detail_keuangan_belum_ada_transaksi_pada_periode_ini),
                                 // FIX: reaktif terhadap tema
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 style = MaterialTheme.typography.bodySmall
@@ -217,7 +225,9 @@ private fun TransaksiRow(item: ItemDetailKeuangan) {
         elevation = CardDefaults.cardElevation(1.dp)
     ) {
         Row(
-            modifier          = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 10.dp),
+            modifier          = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 12.dp, vertical = 10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(
@@ -225,7 +235,9 @@ private fun TransaksiRow(item: ItemDetailKeuangan) {
                     .size(28.dp)
                     .background(
                         // tetap: warna semantik income/expense
-                        if (item.isIncome) IncomeGreen.copy(alpha = 0.12f) else ExpenseRed.copy(alpha = 0.12f),
+                        if (item.isIncome) IncomeGreen.copy(alpha = 0.12f) else ExpenseRed.copy(
+                            alpha = 0.12f
+                        ),
                         CircleShape
                     ),
                 contentAlignment = Alignment.Center
@@ -252,7 +264,8 @@ private fun TransaksiRow(item: ItemDetailKeuangan) {
                     // AccentPurple tetap: warna brand/aksen untuk keterangan
                     Text(item.keterangan, style = MaterialTheme.typography.bodySmall, color = AccentPurple, maxLines = 1)
                     Text(
-                        " · ${item.tanggal}",
+                        // FIX: Menggunakan stringResource format agar tanda baca titik tidak hardcode
+                        text  = stringResource(R.string.laporan_detail_date_format, item.tanggal),
                         style = MaterialTheme.typography.bodySmall,
                         // FIX: reaktif terhadap tema
                         color = MaterialTheme.colorScheme.onSurfaceVariant

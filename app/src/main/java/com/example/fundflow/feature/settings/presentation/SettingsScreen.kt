@@ -1,3 +1,5 @@
+// settings/presentation/SettingsScreen.kt
+
 package com.example.fundflow.feature.settings.presentation
 
 import androidx.compose.foundation.layout.*
@@ -9,10 +11,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.fundflow.R
 import com.example.fundflow.ui.components.FundFlowTopBar
 import com.example.fundflow.ui.theme.PrimaryLime
 import com.example.fundflow.ui.theme.PrimaryLimeDark
@@ -34,13 +38,14 @@ fun SettingsScreen(
         }
     }
 
-    // FIX BUG 2:
-    // Gunakan MaterialTheme.colorScheme untuk background agar reaktif terhadap tema.
     Scaffold(
         topBar = {
-            FundFlowTopBar(title = "Pengaturan", onNavigateBack = onNavigateBack)
+            FundFlowTopBar(
+                title          = stringResource(R.string.settings_title),
+                onNavigateBack = onNavigateBack
+            )
         },
-        containerColor = MaterialTheme.colorScheme.background   // FIX: was AppBackground
+        containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
         Column(
             modifier = Modifier
@@ -50,40 +55,46 @@ fun SettingsScreen(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             // ── Section: Umum ──────────────────────────────────
-            SectionLabel("UMUM")
+            SectionLabel(stringResource(R.string.settings_section_general))
 
             SettingsSwitchItem(
                 icon            = Icons.Default.Notifications,
-                title           = "Notifikasi",
-                subtitle        = "Pengingat pembayaran iuran dan aktivitas keuangan",
+                title           = stringResource(R.string.settings_notifikasi),
+                subtitle        = stringResource(R.string.settings_notifikasi_desc),
                 checked         = uiState.isNotificationEnabled,
                 onCheckedChange = viewModel::onToggleNotification
             )
 
             SettingsClickItem(
                 icon    = Icons.Default.Language,
-                title   = "Bahasa",
-                value   = if (uiState.language == "id") "Bahasa Indonesia" else "English",
+                title   = stringResource(R.string.settings_bahasa),
+                value   = if (uiState.language == "id")
+                    stringResource(R.string.settings_bahasa_id)
+                else
+                    stringResource(R.string.settings_bahasa_en),
                 onClick = viewModel::onShowLanguageDialog
             )
 
             SettingsSwitchItem(
                 icon     = if (uiState.isDarkTheme) Icons.Default.DarkMode else Icons.Default.LightMode,
-                title    = "Tema",
-                subtitle = if (uiState.isDarkTheme) "Mode Gelap" else "Mode Terang",
-                checked  = uiState.isDarkTheme,
+                title    = stringResource(R.string.settings_tema),
+                subtitle = if (uiState.isDarkTheme)
+                    stringResource(R.string.settings_tema_dark)
+                else
+                    stringResource(R.string.settings_tema_light),
+                checked         = uiState.isDarkTheme,
                 onCheckedChange = viewModel::onToggleDarkTheme
             )
 
             Spacer(Modifier.height(12.dp))
 
             // ── Section: Organisasi ────────────────────────────
-            SectionLabel("ORGANISASI")
+            SectionLabel(stringResource(R.string.settings_section_organisasi))
 
             SettingsClickItem(
                 icon    = Icons.Default.CalendarMonth,
-                title   = "Pengaturan Periode Kas",
-                value   = "Atur periode kepengurusan",
+                title   = stringResource(R.string.settings_periode_kas),
+                value   = stringResource(R.string.settings_periode_kas_desc),
                 onClick = onNavigateToPeriode
             )
         }
@@ -95,26 +106,36 @@ fun SettingsScreen(
             onDismissRequest = viewModel::onDismissLanguageDialog,
             title = {
                 Text(
-                    "Pilih Bahasa",
+                    stringResource(R.string.settings_pilih_bahasa),
                     style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.onSurface   // FIX: was TextDark
+                    color = MaterialTheme.colorScheme.onSurface
                 )
             },
             text = {
                 Column {
-                    LanguageOption("Bahasa Indonesia", "id", uiState.language, viewModel::onSelectLanguage)
-                    LanguageOption("English",          "en", uiState.language, viewModel::onSelectLanguage)
+                    LanguageOption(
+                        label        = stringResource(R.string.settings_bahasa_id),
+                        code         = "id",
+                        selectedCode = uiState.language,
+                        onSelect     = viewModel::onSelectLanguage
+                    )
+                    LanguageOption(
+                        label        = stringResource(R.string.settings_bahasa_en),
+                        code         = "en",
+                        selectedCode = uiState.language,
+                        onSelect     = viewModel::onSelectLanguage
+                    )
                 }
             },
             confirmButton = {
                 TextButton(onClick = viewModel::onDismissLanguageDialog) {
                     Text(
-                        "Tutup",
-                        color = MaterialTheme.colorScheme.onSurface   // FIX: was TextDark
+                        stringResource(R.string.common_close),
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 }
             },
-            containerColor = MaterialTheme.colorScheme.surface   // FIX: was CardWhite
+            containerColor = MaterialTheme.colorScheme.surface
         )
     }
 }
@@ -127,7 +148,7 @@ private fun SectionLabel(text: String) {
         text       = text,
         style      = MaterialTheme.typography.labelMedium,
         fontWeight = FontWeight.SemiBold,
-        color      = MaterialTheme.colorScheme.onSurfaceVariant,   // FIX: was TextLight
+        color      = MaterialTheme.colorScheme.onSurfaceVariant,
         modifier   = Modifier.padding(vertical = 8.dp, horizontal = 4.dp)
     )
 }
@@ -140,12 +161,10 @@ private fun SettingsSwitchItem(
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit
 ) {
-    // FIX BUG 2:
-    // containerColor pakai MaterialTheme.colorScheme.surface agar ikut tema.
     Card(
         modifier  = Modifier.fillMaxWidth(),
         colors    = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface   // FIX: was CardWhite
+            containerColor = MaterialTheme.colorScheme.surface
         ),
         shape     = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(1.dp)
@@ -159,7 +178,7 @@ private fun SettingsSwitchItem(
             Icon(
                 icon,
                 contentDescription = null,
-                tint     = MaterialTheme.colorScheme.onSurface,   // FIX: was TextDark
+                tint     = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.size(22.dp)
             )
             Spacer(Modifier.width(14.dp))
@@ -168,22 +187,22 @@ private fun SettingsSwitchItem(
                     title,
                     style      = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Medium,
-                    color      = MaterialTheme.colorScheme.onSurface   // FIX: was TextDark
+                    color      = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
                     subtitle,
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant   // FIX: was TextLight
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
             Switch(
                 checked         = checked,
                 onCheckedChange = onCheckedChange,
                 colors = SwitchDefaults.colors(
-                    checkedThumbColor   = MaterialTheme.colorScheme.surface,   // FIX: was CardWhite
-                    checkedTrackColor   = PrimaryLime,   // tetap — warna brand
-                    uncheckedThumbColor = MaterialTheme.colorScheme.surface,   // FIX: was CardWhite
-                    uncheckedTrackColor = MaterialTheme.colorScheme.outline    // FIX: was BorderGray
+                    checkedThumbColor   = MaterialTheme.colorScheme.surface,
+                    checkedTrackColor   = PrimaryLime,
+                    uncheckedThumbColor = MaterialTheme.colorScheme.surface,
+                    uncheckedTrackColor = MaterialTheme.colorScheme.outline
                 )
             )
         }
@@ -197,12 +216,11 @@ private fun SettingsClickItem(
     value: String,
     onClick: () -> Unit
 ) {
-    // FIX BUG 2: containerColor reaktif terhadap tema
     Card(
         modifier  = Modifier.fillMaxWidth(),
         onClick   = onClick,
         colors    = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface   // FIX: was CardWhite
+            containerColor = MaterialTheme.colorScheme.surface
         ),
         shape     = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(1.dp)
@@ -216,7 +234,7 @@ private fun SettingsClickItem(
             Icon(
                 icon,
                 contentDescription = null,
-                tint     = MaterialTheme.colorScheme.onSurface,   // FIX: was TextDark
+                tint     = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.size(22.dp)
             )
             Spacer(Modifier.width(14.dp))
@@ -225,18 +243,18 @@ private fun SettingsClickItem(
                     title,
                     style      = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Medium,
-                    color      = MaterialTheme.colorScheme.onSurface   // FIX: was TextDark
+                    color      = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
                     value,
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant   // FIX: was TextLight
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
             Icon(
                 Icons.Default.ChevronRight,
                 contentDescription = null,
-                tint     = MaterialTheme.colorScheme.onSurfaceVariant,   // FIX: was TextMuted
+                tint     = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.size(20.dp)
             )
         }
@@ -257,11 +275,10 @@ private fun LanguageOption(
             .padding(vertical = 2.dp),
         onClick  = { onSelect(code) },
         shape    = MaterialTheme.shapes.small,
-        // FIX BUG 2: background reaktif terhadap tema
         color    = if (isSelected)
-            PrimaryLime.copy(alpha = 0.2f)         // warna brand, tetap sama
+            PrimaryLime.copy(alpha = 0.2f)
         else
-            MaterialTheme.colorScheme.surface       // FIX: was CardWhite
+            MaterialTheme.colorScheme.surface
     ) {
         Row(
             modifier          = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
@@ -270,9 +287,8 @@ private fun LanguageOption(
             Text(
                 label,
                 style      = MaterialTheme.typography.bodyMedium,
-                // FIX: warna teks reaktif terhadap tema; warna brand tetap PrimaryLimeDark
                 color      = if (isSelected) PrimaryLimeDark
-                else MaterialTheme.colorScheme.onSurface,   // FIX: was TextDark
+                else MaterialTheme.colorScheme.onSurface,
                 fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
                 modifier   = Modifier.weight(1f)
             )

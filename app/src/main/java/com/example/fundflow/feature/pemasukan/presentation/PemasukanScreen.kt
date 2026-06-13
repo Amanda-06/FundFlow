@@ -11,10 +11,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.fundflow.R
 import com.example.fundflow.core.util.CurrencyFormatter
 import com.example.fundflow.feature.pemasukan.domain.model.Pemasukan
 import com.example.fundflow.ui.components.*
@@ -45,7 +47,16 @@ fun PemasukanScreen(
                     onCancel      = viewModel::onCancelSelection
                 )
             } else {
-                FundFlowTopBar(title = "Pemasukan", onNavigateBack = onNavigateBack)
+                Text(
+                    text       = stringResource(R.string.pemasukan_title),
+                    style      = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.Bold,
+                    color      = MaterialTheme.colorScheme.onBackground,
+                    modifier   = Modifier
+                        .fillMaxWidth()
+                        .background(MaterialTheme.colorScheme.background)
+                        .padding(horizontal = 16.dp, vertical = 16.dp)
+                )
             }
         },
         floatingActionButton = {
@@ -53,13 +64,13 @@ fun PemasukanScreen(
                 FloatingActionButton(
                     onClick        = viewModel::onShowAddSheet,
                     containerColor = IncomeGreen, // tetap — warna brand aksen pemasukan
-                    contentColor   = MaterialTheme.colorScheme.surface // FIX: was CardWhite
+                    contentColor   = MaterialTheme.colorScheme.surface
                 ) {
-                    Icon(Icons.Default.Add, contentDescription = "Tambah Pemasukan")
+                    Icon(Icons.Default.Add, contentDescription = stringResource(R.string.pemasukan_tambah_cd))
                 }
             }
         },
-        containerColor = MaterialTheme.colorScheme.background // FIX: was AppBackground
+        containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
         LazyColumn(
             modifier            = Modifier.fillMaxSize().padding(padding),
@@ -83,21 +94,21 @@ fun PemasukanScreen(
                         Icon(
                             Icons.Default.TrendingUp,
                             contentDescription = null,
-                            tint               = MaterialTheme.colorScheme.surface.copy(alpha = 0.8f), // FIX: was CardWhite
+                            tint               = MaterialTheme.colorScheme.surface.copy(alpha = 0.8f),
                             modifier           = Modifier.size(32.dp)
                         )
                         Spacer(Modifier.width(14.dp))
                         Column {
                             Text(
-                                "Total Pemasukan",
+                                stringResource(R.string.pemasukan_total),
                                 style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.surface.copy(alpha = 0.85f) // FIX: was CardWhite
+                                color = MaterialTheme.colorScheme.surface.copy(alpha = 0.85f)
                             )
                             Text(
                                 CurrencyFormatter.format(uiState.totalPemasukan),
                                 style      = MaterialTheme.typography.headlineMedium,
                                 fontWeight = FontWeight.Bold,
-                                color      = MaterialTheme.colorScheme.surface // FIX: was CardWhite
+                                color      = MaterialTheme.colorScheme.surface
                             )
                         }
                     }
@@ -108,7 +119,7 @@ fun PemasukanScreen(
                 FundFlowTextField(
                     value         = uiState.searchQuery,
                     onValueChange = viewModel::onSearchChange,
-                    label         = "Cari pemasukan...",
+                    label         = stringResource(R.string.pemasukan_search_hint),
                     leadingIcon   = Icons.Default.Search,
                     modifier      = Modifier.fillMaxWidth()
                 )
@@ -118,8 +129,8 @@ fun PemasukanScreen(
                 item {
                     EmptyStateView(
                         icon     = Icons.Default.TrendingUp,
-                        title    = "Belum ada pemasukan",
-                        message  = "Klik tombol + untuk mencatat pemasukan pertama.",
+                        title    = stringResource(R.string.pemasukan_empty_title),
+                        message  = stringResource(R.string.pemasukan_empty_message),
                         modifier = Modifier.fillMaxWidth().padding(top = 40.dp)
                     )
                 }
@@ -146,15 +157,15 @@ fun PemasukanScreen(
     if (uiState.showDeleteDialog) {
         if (uiState.deleteTargetId != null) {
             ConfirmDeleteDialog(
-                title     = "Hapus Pemasukan?",
-                message   = "Data pemasukan ini akan dihapus secara permanen.",
+                title     = stringResource(R.string.pemasukan_delete_title),
+                message   = stringResource(R.string.pemasukan_delete_message),
                 onConfirm = viewModel::onConfirmDelete,
                 onDismiss = viewModel::onDismissDeleteDialog
             )
         } else {
             ConfirmBatchDeleteDialog(
                 itemCount = uiState.selectedIds.size,
-                itemName  = "pemasukan",
+                itemName  = stringResource(R.string.pemasukan_item_name),
                 onConfirm = viewModel::onConfirmDelete,
                 onDismiss = viewModel::onDismissDeleteDialog
             )
@@ -194,7 +205,7 @@ private fun PemasukanListItem(
                 pemasukan.deskripsi,
                 style      = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Medium,
-                color      = MaterialTheme.colorScheme.onSurface, // FIX: was TextDark
+                color      = MaterialTheme.colorScheme.onSurface,
                 maxLines   = 1
             )
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -207,7 +218,7 @@ private fun PemasukanListItem(
                 Text(
                     " · ${pemasukan.tanggal}",
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant // FIX: was TextLight
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }
@@ -224,7 +235,7 @@ private fun PemasukanListItem(
                     IconButton(onClick = onEdit, modifier = Modifier.size(28.dp)) {
                         Icon(
                             Icons.Default.Edit, null,
-                            tint     = MaterialTheme.colorScheme.onSurfaceVariant, // FIX: was TextLight
+                            tint     = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.size(14.dp)
                         )
                     }

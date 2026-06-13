@@ -22,7 +22,6 @@
     <!-- ═══════════════════════════════════════════════════════
          AUTH — LOGIN
     ═══════════════════════════════════════════════════════ -->
-    <string name="login_welcome_title">Welcome Back</string>
     <string name="login_welcome_subtitle">Sign in to your account to continue</string>
     <string name="login_email_label">Email or Username</string>
     <string name="login_password_label">Password</string>
@@ -30,6 +29,13 @@
     <string name="login_button">Sign In</string>
     <string name="login_no_account">Don\'t have an account?</string>
     <string name="login_register_link">Sign Up Now</string>
+    <string name="login_welcome_title">Welcome Back</string>
+    <string name="login_label_email_username">Email or Username</string>
+    <string name="login_label_password">Password</string>
+    <string name="login_btn_forgot_password">Forgot password?</string>
+    <string name="login_btn_submit">Login</string>
+    <string name="login_footer_no_account">Don\'t have an account? </string>
+    <string name="login_footer_register_now">Register Now</string>
 
     <!-- ═══════════════════════════════════════════════════════
          AUTH — REGISTER
@@ -44,6 +50,14 @@
     <string name="register_next">Next</string>
     <string name="register_have_account">Already have an account?</string>
     <string name="register_login_link">Sign In</string>
+    <string name="register_label_nama_lengkap">Full Name</string>
+    <string name="register_label_email">Email</string>
+    <string name="register_label_username">Username</string>
+    <string name="register_label_password">Password</string>
+    <string name="register_label_confirm_password">Repeat Password</string>
+    <string name="register_btn_next">Next</string>
+    <string name="register_footer_has_account">Already have an account? </string>
+    <string name="register_footer_login_now">Login</string>
 
     <string name="register_step2_title">Organization Setup</string>
     <string name="register_step2_subtitle">Set up your organization\'s management period</string>
@@ -53,6 +67,13 @@
     <string name="register_periode_selesai">End Month</string>
     <string name="register_periode_selesai_placeholder">Select Month (e.g., December)</string>
     <string name="register_finish">Finish &amp; Start</string>
+    <string name="register_step2_label_org">Organization Name</string>
+    <string name="register_step2_label_start">Start Month Period</string>
+    <string name="register_step2_placeholder_start">Select Month (e.g., March)</string>
+    <string name="register_step2_label_end">End Month Period</string>
+    <string name="register_step2_placeholder_end">Select Month (e.g., December)</string>
+    <string name="register_step2_btn_submit">Finish &amp; Start</string>
+    <string name="register_step2_dialog_title">Select Month</string>
 
     <!-- Validation messages -->
     <string name="error_email_empty">Email cannot be empty</string>
@@ -84,6 +105,7 @@
          IURAN (MEMBERSHIP DUES)
     ═══════════════════════════════════════════════════════ -->
     <string name="iuran_title">Member Dues</string>
+    <string name="iuran_pilih_periode">choose period</string>
     <string name="iuran_lunas">Paid</string>
     <string name="iuran_belum_bayar">Unpaid</string>
     <string name="iuran_terkumpul">Collected</string>
@@ -116,6 +138,11 @@
     <string name="anggota_delete_title">Delete Member?</string>
     <string name="anggota_delete_message">All dues records for this member across every month will also be permanently deleted.</string>
     <string name="anggota_delete_batch_warning">All dues records for the selected members will also be deleted.</string>
+    <string name="anggota_cari_nama_anggota">Search for member names...</string>
+    <string name="anggota_anggota">member</string>
+    <string name="anggota_simpan">Save</string>
+    <string name="anggota_batal">Cancel</string>
+    <string name="anggota_count_format">%1$d members</string>
 
     <!-- ═══════════════════════════════════════════════════════
          INCOME (PEMASUKAN)
@@ -143,6 +170,28 @@
     <string name="pemasukan_delete_title">Delete Income?</string>
     <string name="pemasukan_delete_message">This income record will be permanently deleted.</string>
     <string name="pemasukan_saved">Income saved successfully</string>
+    <string name="pemasukan_tambah_cd">Add Income</string>
+    <string name="pemasukan_item_name">income</string>
+    <string name="common_pilih_tanggal">Select date</string>
+    <string name="common_ok">OK</string>
+    <string name="iuran_empty_title">No data available</string>
+    <string name="iuran_empty_filter_message">No members match the search/filter.</string>
+    <string name="iuran_nominal_hint">Rp 0</string>
+    <string name="iuran_metode_hint">Select method</string>
+
+    <string-array name="pemasukan_sumber_options">
+        <item>Member Dues</item>
+        <item>Work Program</item>
+        <item>Sponsorship</item>
+        <item>Donation</item>
+        <item>Business Fund</item>
+        <item>Others</item>
+    </string-array>
+
+    <string-array name="pemasukan_metode_options">
+        <item>Cash</item>
+        <item>Transfer</item>
+    </string-array>
 
     <!-- ═══════════════════════════════════════════════════════
          EXPENSE (PENGELUARAN)
@@ -166,6 +215,22 @@
     <string name="pengeluaran_delete_title">Delete Expense?</string>
     <string name="pengeluaran_delete_message">This expense record will be permanently deleted.</string>
     <string name="pengeluaran_saved">Expense saved successfully</string>
+    <string name="pengeluaran_item_name">expense</string>
+    <string name="pengeluaran_deskripsi">Description</string>
+
+    <string-array name="pengeluaran_kategori_options">
+        <item>Work Program</item>
+        <item>Inventory</item>
+        <item>Operational</item>
+        <item>Consumption</item>
+        <item>Administration</item>
+        <item>Others</item>
+    </string-array>
+
+    <string-array name="pengeluaran_metode_options">
+        <item>Cash</item>
+        <item>Transfer</item>
+    </string-array>
 
     <!-- ═══════════════════════════════════════════════════════
          REPORTS
@@ -188,6 +253,22 @@
     <string name="laporan_export_excel">Export Excel</string>
     <string name="laporan_export_success">Report exported successfully</string>
     <string name="laporan_export_failed">Failed to export report</string>
+    <string name="common_no">No</string>
+    <string name="laporan_status_bayar_kas">Payment Status Report</string>
+    <string name="pilih_bulan">select month</string>
+    <string name="laporan_status_bayar_kas_lunas">paid</string>
+    <string name="laporan_status_bayar_kas_belum_bayar">unpaid</string>
+    <string name="laporan_status_bayar_kas_terkumpul">Collected</string>
+    <string name="pilih_bulan2">select month</string>
+    <string name="laporan_status_bayar_kas_tutup">Tutup</string>
+    <string name="laporan_detail_keuangan_laporan_detail_keuangan">Detailed Financial Report</string>
+    <string name="laporan_detail_keuangan_pemasukan">Income</string>
+    <string name="laporan_detail_keuangan_pengeluaran">Expense</string>
+    <string name="laporan_detail_keuangan_saldo_akhir">Final Balance</string>
+    <string name="laporan_detail_keuangan_pemasukan1">INCOME</string>
+    <string name="laporan_detail_keuangan_pengeluaran1">EXPENSE</string>
+    <string name="laporan_detail_keuangan_belum_ada_transaksi_pada_periode_ini">There have been no transactions in this period</string>
+    <string name="laporan_detail_date_format"> · %1$s</string>
 
     <!-- ═══════════════════════════════════════════════════════
          PROFILE
@@ -201,26 +282,47 @@
     <string name="profile_logout_confirm_title">Sign Out?</string>
     <string name="profile_logout_confirm_message">You\'ll need to sign in again to access your organization\'s financial data.</string>
     <string name="profile_version">Version %1$s</string>
+    <string name="profile_versi_1_0_0">Version 1.0.0</string>
+    <string name="profile_batal">Cancel</string>
+    <string name="profile_keluar">Out</string>
+    <string name="profile_default_user">FundFlow User</string>
 
     <!-- Edit Profile -->
-    <string name="edit_profile_title">Edit Profile</string>
     <string name="edit_profile_nama">Full Name</string>
     <string name="edit_profile_username">Username</string>
     <string name="edit_profile_email">Email</string>
     <string name="edit_profile_organisasi">Organization Name</string>
     <string name="edit_profile_save">Save Changes</string>
     <string name="edit_profile_saved">Profile updated successfully</string>
+    <string name="edit_profile_success">Profile updated successfully</string>
+    <string name="edit_profile_title">Edit Profile</string>
+    <string name="edit_profile_label_nama_lengkap">Full Name</string>
+    <string name="edit_profile_label_username">Username</string>
+    <string name="edit_profile_label_email">Email</string>
+    <string name="edit_profile_label_nama_organisasi">Organization Name</string>
+    <string name="edit_profile_section_ubah_password">Change Password</string>
+    <string name="edit_profile_password_warning">Leave this section blank if you do not want to change your password.</string>
+    <string name="edit_profile_label_password_saat_ini">Current Password</string>
+    <string name="edit_profile_label_password_baru">New Password</string>
+    <string name="edit_profile_label_konfirmasi_password">Confirm New Password</string>
+    <string name="edit_profile_btn_simpan">Save Changes</string>
 
     <!-- About FundFlow -->
-    <string name="about_title">About FundFlow</string>
     <string name="about_app_desc">FundFlow is a mobile application designed to help organization treasurers manage finances in a structured, centralized, and efficient way — covering dues recording, income, expenses, and automatic reporting.</string>
     <string name="about_developed_by">Developed by</string>
     <string name="about_developer_names">Adinda Lestari &amp; Amanda Arva Safaray</string>
     <string name="about_university">Lambung Mangkurat University</string>
     <string name="about_version_label">App Version</string>
+    <string name="about_title">About FundFlow</string>
+    <string name="about_version">Version 1.0.0</string>
+    <string name="about_description">FundFlow is a mobile application designed to help organization treasurers manage finances in a structured, centralized, and efficient manner — including recording dues, income, expenses, and automated reporting.</string>
+    <string name="about_label_developed_by">Developed by</string>
+    <string name="about_value_developers">Adinda Lestari &amp; Amanda Arva Safaraya</string>
+    <string name="about_label_university">University</string>
+    <string name="about_value_university">Lambung Mangkurat University</string>
+    <string name="about_copyright">© 2026 FundFlow. All rights reserved.</string>
 
     <!-- Help Center -->
-    <string name="help_title">Help Center</string>
     <string name="help_faq_section">Frequently Asked Questions</string>
     <string name="help_contact_section">Contact Us</string>
     <string name="help_contact_email">Send Email</string>
@@ -234,6 +336,10 @@
     <string name="help_faq_a4">Yes, FundFlow uses an offline-first approach so your data remains accessible without an internet connection and will sync once you\'re online.</string>
     <string name="help_faq_q5">How do I change the app\'s language or theme?</string>
     <string name="help_faq_a5">Open Settings via the gear icon on Home, then choose Language or Theme according to your preference.</string>
+    <string name="help_title">Help Center</string>
+    <string name="help_faq_header">Frequently Asked Questions (FAQ)</string>
+    <string name="help_contact_header">Contact Us</string>
+    <string name="help_support_email_label">Support Email</string>
 
     <!-- ═══════════════════════════════════════════════════════
          SETTINGS
@@ -262,6 +368,15 @@
     <string name="periode_save">Save Period</string>
     <string name="periode_saved">Cash period updated successfully</string>
     <string name="periode_warning">Changing the cash period will affect the month range shown on the Dues and Reports pages.</string>
+    <string name="settings_period_success">Cash period updated successfully</string>
+    <string name="settings_period_title">Period Settings</string>
+    <string name="settings_period_info">Changing the cash period will affect the month range displayed on the Dues and Reports pages.</string>
+    <string name="settings_period_label_start">Start Month Period</string>
+    <string name="settings_period_label_end">End Month Period</string>
+    <string name="settings_period_placeholder">Select Month</string>
+    <string name="settings_period_btn_save">Save Period</string>
+    <string name="settings_period_dialog_title">Select Month</string>
+    <string name="settings_period_dialog_close">Close</string>
 
     <!-- ═══════════════════════════════════════════════════════
          COMMON / SHARED
@@ -281,12 +396,14 @@
     <string name="common_select_all">All</string>
     <string name="common_delete_confirm_title">Delete Data?</string>
     <string name="common_delete_confirm_message">This action cannot be undone.</string>
+    <string name="common_hide_password">Hide password</string>
+    <string name="common_show_password">Show password</string>
 
     <!-- ═══════════════════════════════════════════════════════
          BOTTOM NAVIGATION
     ═══════════════════════════════════════════════════════ -->
     <string name="nav_home">Home</string>
-    <string name="nav_iuran">Dues</string>
+    <string name="nav_iuran">Member</string>
     <string name="nav_pemasukan">Income</string>
     <string name="nav_pengeluaran">Expense</string>
     <string name="nav_laporan">Reports</string>
@@ -300,4 +417,5 @@
     <string name="notif_channel_general_desc">General notifications from FundFlow</string>
     <string name="notif_iuran_title">Dues Reminder</string>
     <string name="notif_iuran_message">%1$d members have not paid their dues this month.</string>
+
 </resources>

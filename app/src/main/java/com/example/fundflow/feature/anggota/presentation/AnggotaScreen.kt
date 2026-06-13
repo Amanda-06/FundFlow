@@ -12,10 +12,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.fundflow.R
 import com.example.fundflow.feature.anggota.domain.model.Anggota
 import com.example.fundflow.ui.components.*
 import com.example.fundflow.ui.theme.*
@@ -48,7 +50,7 @@ fun AnggotaScreen(
                 )
             } else {
                 FundFlowTopBar(
-                    title          = "Manajemen Anggota",
+                    title          = stringResource(R.string.anggota_title),
                     onNavigateBack = onNavigateBack
                 )
             }
@@ -60,7 +62,7 @@ fun AnggotaScreen(
                     containerColor = PrimaryLime,
                     contentColor   = TextDark          // tetap: warna brand
                 ) {
-                    Icon(Icons.Default.PersonAdd, contentDescription = "Tambah Anggota")
+                    Icon(Icons.Default.PersonAdd, contentDescription = stringResource(R.string.anggota_add_title))
                 }
             }
         },
@@ -76,7 +78,7 @@ fun AnggotaScreen(
             FundFlowTextField(
                 value         = uiState.searchQuery,
                 onValueChange = viewModel::onSearchQueryChange,
-                label         = "Cari nama anggota...",
+                label         = stringResource(R.string.anggota_cari_nama_anggota),
                 leadingIcon   = Icons.Default.Search,
                 modifier      = Modifier
                     .fillMaxWidth()
@@ -85,7 +87,8 @@ fun AnggotaScreen(
 
             // ── Jumlah anggota ─────────────────────────────────
             Text(
-                text     = "${uiState.filteredList.size} anggota",
+                // FIX: Menghilangkan hardcode teks "anggota" dengan format stringResource dinamis
+                text     = stringResource(R.string.anggota_count_format, uiState.filteredList.size),
                 style    = MaterialTheme.typography.bodySmall,
                 // FIX: reaktif terhadap tema
                 color    = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -100,8 +103,8 @@ fun AnggotaScreen(
             } else if (uiState.filteredList.isEmpty()) {
                 EmptyStateView(
                     icon     = Icons.Default.Group,
-                    title    = "Belum ada anggota",
-                    message  = "Klik tombol + untuk menambahkan anggota pertama.",
+                    title    = stringResource(R.string.anggota_empty_title),
+                    message  = stringResource(R.string.anggota_empty_message),
                     modifier = Modifier.fillMaxSize()
                 )
             } else {
@@ -149,18 +152,18 @@ fun AnggotaScreen(
     if (uiState.showDeleteDialog) {
         if (uiState.deleteTargetId != null) {
             ConfirmDeleteDialog(
-                title     = "Hapus Anggota?",
-                message   = "Data iuran anggota ini untuk seluruh bulan juga akan ikut terhapus secara permanen.",
+                title     = stringResource(R.string.anggota_delete_title),
+                message   = stringResource(R.string.anggota_delete_message),
                 onConfirm = viewModel::onConfirmDelete,
                 onDismiss = viewModel::onDismissDeleteDialog
             )
         } else {
             ConfirmBatchDeleteDialog(
                 itemCount    = uiState.selectedIds.size,
-                itemName     = "anggota",
-                extraWarning = "Semua data iuran dari anggota yang dipilih juga akan ikut terhapus.",
+                itemName     = stringResource(R.string.anggota_anggota),
+                extraWarning = stringResource(R.string.anggota_delete_batch_warning),
                 onConfirm    = viewModel::onConfirmDelete,
-                onDismiss    = viewModel::onDismissDeleteDialog
+                onDismiss = viewModel::onDismissDeleteDialog
             )
         }
     }
@@ -188,7 +191,10 @@ private fun AnggotaListItem(
             modifier = Modifier
                 .size(40.dp)
                 // FIX: pakai inverseSurface agar kontras di kedua mode
-                .background(MaterialTheme.colorScheme.inverseSurface, MaterialTheme.shapes.extraLarge),
+                .background(
+                    MaterialTheme.colorScheme.inverseSurface,
+                    MaterialTheme.shapes.extraLarge
+                ),
             contentAlignment = Alignment.Center
         ) {
             Text(
@@ -213,7 +219,8 @@ private fun AnggotaListItem(
             IconButton(onClick = onEdit, modifier = Modifier.size(32.dp)) {
                 Icon(
                     Icons.Default.Edit,
-                    contentDescription = "Edit",
+                    // FIX: Mengubah contentDescription "Edit" menjadi stringResource
+                    contentDescription = stringResource(R.string.common_edit),
                     // FIX: reaktif terhadap tema
                     tint     = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.size(16.dp)
@@ -222,7 +229,8 @@ private fun AnggotaListItem(
             IconButton(onClick = onDelete, modifier = Modifier.size(32.dp)) {
                 Icon(
                     Icons.Default.Delete,
-                    contentDescription = "Hapus",
+                    // FIX: Mengubah contentDescription "Hapus" menjadi stringResource
+                    contentDescription = stringResource(R.string.common_delete),
                     tint     = ExpenseRed,   // tetap: warna brand/semantik
                     modifier = Modifier.size(16.dp)
                 )
@@ -245,7 +253,7 @@ private fun AnggotaFormDialog(
         onDismissRequest = onDismiss,
         title = {
             Text(
-                text  = if (isEdit) "Edit Anggota" else "Tambah Anggota",
+                text  = if (isEdit) stringResource(R.string.anggota_edit_title) else stringResource(R.string.anggota_add_title),
                 style = MaterialTheme.typography.titleLarge,
                 // FIX: reaktif terhadap tema
                 color = MaterialTheme.colorScheme.onSurface
@@ -255,7 +263,7 @@ private fun AnggotaFormDialog(
             FundFlowTextField(
                 value         = inputNama,
                 onValueChange = onNamaChange,
-                label         = "Nama Anggota",
+                label         = stringResource(R.string.anggota_nama_label),
                 leadingIcon   = Icons.Default.Person,
                 isError       = inputNamaError != null,
                 errorMessage  = inputNamaError
@@ -269,13 +277,13 @@ private fun AnggotaFormDialog(
                     contentColor   = TextDark    // tetap: warna brand
                 )
             ) {
-                Text("Simpan", fontWeight = FontWeight.SemiBold)
+                Text(stringResource(R.string.anggota_simpan), fontWeight = FontWeight.SemiBold)
             }
         },
         dismissButton = {
             OutlinedButton(onClick = onDismiss) {
                 // FIX: reaktif terhadap tema
-                Text("Batal", color = MaterialTheme.colorScheme.onSurface)
+                Text(stringResource(R.string.anggota_batal), color = MaterialTheme.colorScheme.onSurface)
             }
         },
         // FIX: reaktif terhadap tema

@@ -22,12 +22,6 @@ data class PemasukanEntity(
     @ColumnInfo(name = "metode")
     val metode: String,                  // Cash / Transfer
 
-    @ColumnInfo(name = "qty")
-    val qty: Int = 1,
-
-    @ColumnInfo(name = "harga_satuan")
-    val hargaSatuan: Double = 0.0,
-
     @ColumnInfo(name = "nominal")
     val nominal: Double,                 // = qty × harga_satuan
 

@@ -18,10 +18,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.fundflow.R
 import com.example.fundflow.ui.theme.*
 
 @Composable
@@ -57,7 +59,12 @@ fun ProfileScreen(
                     modifier = Modifier.padding(start = 4.dp, top = 4.dp)
                 ) {
                     // TextDark tetap: icon di atas header hijau brand
-                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Kembali", tint = TextDark)
+                    // FIX: Mengubah contentDescription "Kembali" menjadi stringResource
+                    Icon(
+                        imageVector        = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = stringResource(R.string.common_back),
+                        tint               = TextDark
+                    )
                 }
 
                 Column(
@@ -67,7 +74,7 @@ fun ProfileScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text       = "Profil",
+                        text       = stringResource(R.string.profile_title),
                         style      = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
                         color      = TextDark   // tetap: di atas header hijau
@@ -99,13 +106,15 @@ fun ProfileScreen(
                         )
                     } else {
                         Text(
-                            text       = uiState.profile?.namaLengkap?.ifBlank { "Pengguna FundFlow" } ?: "Pengguna FundFlow",
+                            // FIX: Mengubah hardcode nama fallback menjadi stringResource
+                            text       = uiState.profile?.namaLengkap?.ifBlank { stringResource(R.string.profile_default_user) }
+                                ?: stringResource(R.string.profile_default_user),
                             style      = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.Bold,
                             color      = TextDark   // tetap: di atas header hijau
                         )
                         Text(
-                            text  = "Bendahara",
+                            text  = stringResource(R.string.profile_role_bendahara),
                             style = MaterialTheme.typography.bodySmall,
                             color = TextDark.copy(alpha = 0.7f)   // tetap: di atas header hijau
                         )
@@ -144,23 +153,23 @@ fun ProfileScreen(
             ) {
                 ProfileMenuItem(
                     icon    = Icons.Default.AccountCircle,
-                    label   = "Edit Profil",
+                    label   = stringResource(R.string.profile_edit),
                     onClick = onNavigateToEditProfile
                 )
                 ProfileMenuItem(
                     icon    = Icons.Default.Info,
-                    label   = "Tentang FundFlow",
+                    label   = stringResource(R.string.profile_about),
                     onClick = onNavigateToAbout
                 )
                 ProfileMenuItem(
                     icon    = Icons.AutoMirrored.Filled.HelpOutline,
-                    label   = "Pusat Bantuan",
+                    label   = stringResource(R.string.profile_help_center),
                     onClick = onNavigateToHelp
                 )
                 // Keluar tetap ExpenseRed karena ini warna semantik/brand
                 ProfileMenuItem(
                     icon      = Icons.AutoMirrored.Filled.Logout,
-                    label     = "Keluar",
+                    label     = stringResource(R.string.profile_logout),
                     iconTint  = ExpenseRed,
                     textColor = ExpenseRed,
                     onClick   = viewModel::onShowLogoutDialog
@@ -170,7 +179,7 @@ fun ProfileScreen(
             Spacer(Modifier.weight(1f))
 
             Text(
-                text      = "Versi 1.0.0",
+                text      = stringResource(R.string.profile_version),
                 style     = MaterialTheme.typography.bodySmall,
                 // FIX: reaktif terhadap tema
                 color     = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -189,7 +198,7 @@ fun ProfileScreen(
             icon  = { Icon(Icons.AutoMirrored.Filled.Logout, contentDescription = null, tint = ExpenseRed) },
             title = {
                 Text(
-                    "Keluar dari Akun?",
+                    stringResource(R.string.profile_logout_confirm_title),
                     style = MaterialTheme.typography.headlineSmall,
                     // FIX: reaktif terhadap tema
                     color = MaterialTheme.colorScheme.onSurface
@@ -197,7 +206,7 @@ fun ProfileScreen(
             },
             text  = {
                 Text(
-                    "Anda perlu masuk kembali untuk mengakses data keuangan organisasi.",
+                    stringResource(R.string.profile_logout_confirm_message),
                     // FIX: reaktif terhadap tema
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -213,14 +222,14 @@ fun ProfileScreen(
                     if (uiState.isLoggingOut) {
                         CircularProgressIndicator(modifier = Modifier.size(18.dp), color = Color.White, strokeWidth = 2.dp)
                     } else {
-                        Text("Keluar", fontWeight = FontWeight.SemiBold)
+                        Text(stringResource(R.string.profile_keluar), fontWeight = FontWeight.SemiBold)
                     }
                 }
             },
             dismissButton = {
                 OutlinedButton(onClick = viewModel::onDismissLogoutDialog) {
                     // FIX: reaktif terhadap tema
-                    Text("Batal", color = MaterialTheme.colorScheme.onSurface)
+                    Text(stringResource(R.string.profile_batal), color = MaterialTheme.colorScheme.onSurface)
                 }
             },
             // FIX: reaktif terhadap tema

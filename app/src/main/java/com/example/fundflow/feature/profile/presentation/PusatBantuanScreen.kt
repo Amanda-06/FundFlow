@@ -16,9 +16,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.fundflow.R
 import com.example.fundflow.feature.profile.domain.model.FaqItem
 import com.example.fundflow.ui.components.FundFlowTopBar
 import com.example.fundflow.ui.theme.*
@@ -31,7 +33,8 @@ fun PusatBantuanScreen(
     val faqList = viewModel.faqList
 
     Scaffold(
-        topBar = { FundFlowTopBar(title = "Pusat Bantuan", onNavigateBack = onNavigateBack) },
+        // FIX: Lokalisasi judul halaman TopBar
+        topBar = { FundFlowTopBar(title = stringResource(R.string.help_title), onNavigateBack = onNavigateBack) },
         // FIX: reaktif terhadap tema
         containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
@@ -42,7 +45,8 @@ fun PusatBantuanScreen(
         ) {
             item {
                 Text(
-                    "Pertanyaan Umum (FAQ)",
+                    // FIX: Lokalisasi header bagian Pertanyaan Umum (FAQ)
+                    text       = stringResource(R.string.help_faq_header),
                     style      = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     // FIX: reaktif terhadap tema
@@ -59,7 +63,8 @@ fun PusatBantuanScreen(
 
             item {
                 Text(
-                    "Hubungi Kami",
+                    // FIX: Lokalisasi header bagian Hubungi Kami
+                    text       = stringResource(R.string.help_contact_header),
                     style      = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     // FIX: reaktif terhadap tema
@@ -84,14 +89,15 @@ fun PusatBantuanScreen(
                         Spacer(Modifier.width(12.dp))
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
-                                "Email Dukungan",
+                                // FIX: Lokalisasi teks label Email Dukungan
+                                text       = stringResource(R.string.help_support_email_label),
                                 style      = MaterialTheme.typography.bodyMedium,
                                 fontWeight = FontWeight.Medium,
                                 // FIX: reaktif terhadap tema
                                 color      = MaterialTheme.colorScheme.onSurface
                             )
                             Text(
-                                "support.fundflow@gmail.com",
+                                "support.fundflow@gmail.com", // Alamat email tetap literal karena merupakan nama entitas/tujuan alamat resmi
                                 style = MaterialTheme.typography.bodySmall,
                                 // FIX: reaktif terhadap tema
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -125,7 +131,7 @@ private fun FaqCard(faq: FaqItem) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    faq.question,
+                    faq.question, // Nilai teks diambil secara dinamis dari object domain/API, sudah aman
                     style      = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Medium,
                     // FIX: reaktif terhadap tema
@@ -142,7 +148,7 @@ private fun FaqCard(faq: FaqItem) {
             if (expanded) {
                 Spacer(Modifier.height(8.dp))
                 Text(
-                    faq.answer,
+                    faq.answer, // Nilai teks diambil secara dinamis dari object domain/API, sudah aman
                     style      = MaterialTheme.typography.bodySmall,
                     // FIX: reaktif terhadap tema
                     color      = MaterialTheme.colorScheme.onSurfaceVariant,
