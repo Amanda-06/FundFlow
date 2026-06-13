@@ -1,3 +1,5 @@
+// feature/laporan/presentation/LaporanDetailKeuanganSheet.kt
+// ============================================================
 package com.example.fundflow.feature.laporan.presentation
 
 import androidx.compose.foundation.background
@@ -31,7 +33,8 @@ fun LaporanDetailKeuanganSheet(
             "Laporan Detail Keuangan",
             style      = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.SemiBold,
-            color      = TextDark
+            // FIX: reaktif terhadap tema
+            color      = MaterialTheme.colorScheme.onSurface
         )
         Spacer(Modifier.height(4.dp))
 
@@ -47,7 +50,8 @@ fun LaporanDetailKeuanganSheet(
         Text(
             laporan.periode,
             style = MaterialTheme.typography.bodySmall,
-            color = TextLight
+            // FIX: reaktif terhadap tema
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
 
         Spacer(Modifier.height(12.dp))
@@ -57,6 +61,7 @@ fun LaporanDetailKeuanganSheet(
             modifier              = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
+            // color (IncomeGreen / ExpenseRed) tetap: warna semantik
             SummaryBox(
                 modifier = Modifier.weight(1f),
                 label    = "Pemasukan",
@@ -76,6 +81,7 @@ fun LaporanDetailKeuanganSheet(
         Spacer(Modifier.height(8.dp))
 
         // ── Saldo Akhir ────────────────────────────────────────
+        // HeaderGreen tetap: warna brand
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors   = CardDefaults.cardColors(containerColor = HeaderGreen.copy(alpha = 0.25f)),
@@ -86,12 +92,19 @@ fun LaporanDetailKeuanganSheet(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment     = Alignment.CenterVertically
             ) {
-                Text("Saldo Akhir", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.SemiBold, color = TextDark)
+                Text(
+                    "Saldo Akhir",
+                    style      = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.SemiBold,
+                    // FIX: reaktif terhadap tema
+                    color      = MaterialTheme.colorScheme.onSurface
+                )
                 Text(
                     CurrencyFormatter.format(laporan.saldoAkhir),
                     style      = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
-                    color      = TextDark
+                    // FIX: reaktif terhadap tema
+                    color      = MaterialTheme.colorScheme.onSurface
                 )
             }
         }
@@ -107,7 +120,7 @@ fun LaporanDetailKeuanganSheet(
                             "PEMASUKAN",
                             style      = MaterialTheme.typography.labelMedium,
                             fontWeight = FontWeight.SemiBold,
-                            color      = IncomeGreen,
+                            color      = IncomeGreen,   // tetap: warna semantik
                             modifier   = Modifier.padding(vertical = 4.dp)
                         )
                     }
@@ -120,7 +133,7 @@ fun LaporanDetailKeuanganSheet(
                             "PENGELUARAN",
                             style      = MaterialTheme.typography.labelMedium,
                             fontWeight = FontWeight.SemiBold,
-                            color      = ExpenseRed,
+                            color      = ExpenseRed,   // tetap: warna semantik
                             modifier   = Modifier.padding(vertical = 4.dp)
                         )
                     }
@@ -129,8 +142,16 @@ fun LaporanDetailKeuanganSheet(
 
                 if (laporan.daftarPemasukan.isEmpty() && laporan.daftarPengeluaran.isEmpty()) {
                     item {
-                        Box(Modifier.fillMaxWidth().padding(24.dp), contentAlignment = Alignment.Center) {
-                            Text("Belum ada transaksi pada periode ini", color = TextMuted, style = MaterialTheme.typography.bodySmall)
+                        Box(
+                            Modifier.fillMaxWidth().padding(24.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                "Belum ada transaksi pada periode ini",
+                                // FIX: reaktif terhadap tema
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                style = MaterialTheme.typography.bodySmall
+                            )
                         }
                     }
                 }
@@ -149,9 +170,10 @@ private fun SummaryBox(
     modifier: Modifier = Modifier,
     label: String,
     value: String,
-    color: androidx.compose.ui.graphics.Color,
+    color: androidx.compose.ui.graphics.Color,   // warna semantik dari caller
     icon: androidx.compose.ui.graphics.vector.ImageVector
 ) {
+    // Background color.copy(alpha) tetap: warna semantik per kategori
     Card(
         modifier = modifier,
         colors   = CardDefaults.cardColors(containerColor = color.copy(alpha = 0.10f)),
@@ -159,12 +181,27 @@ private fun SummaryBox(
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(icon, contentDescription = null, tint = color, modifier = Modifier.size(16.dp))
+                Icon(
+                    icon,
+                    contentDescription = null,
+                    tint     = color,   // tetap: warna semantik
+                    modifier = Modifier.size(16.dp)
+                )
                 Spacer(Modifier.width(6.dp))
-                Text(label, style = MaterialTheme.typography.labelSmall, color = TextLight)
+                Text(
+                    label,
+                    style = MaterialTheme.typography.labelSmall,
+                    // FIX: reaktif terhadap tema
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             }
             Spacer(Modifier.height(4.dp))
-            Text(value, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = color)
+            Text(
+                value,
+                style      = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color      = color   // tetap: warna semantik
+            )
         }
     }
 }
@@ -174,7 +211,8 @@ private fun SummaryBox(
 private fun TransaksiRow(item: ItemDetailKeuangan) {
     Card(
         modifier  = Modifier.fillMaxWidth(),
-        colors    = CardDefaults.cardColors(containerColor = CardWhite),
+        // FIX: reaktif terhadap tema
+        colors    = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         shape     = RoundedCornerShape(10.dp),
         elevation = CardDefaults.cardElevation(1.dp)
     ) {
@@ -186,30 +224,46 @@ private fun TransaksiRow(item: ItemDetailKeuangan) {
                 modifier = Modifier
                     .size(28.dp)
                     .background(
+                        // tetap: warna semantik income/expense
                         if (item.isIncome) IncomeGreen.copy(alpha = 0.12f) else ExpenseRed.copy(alpha = 0.12f),
                         CircleShape
                     ),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    imageVector = if (item.isIncome) Icons.Default.TrendingUp else Icons.Default.TrendingDown,
+                    imageVector        = if (item.isIncome) Icons.Default.TrendingUp else Icons.Default.TrendingDown,
                     contentDescription = null,
-                    tint = if (item.isIncome) IncomeGreen else ExpenseRed,
+                    // tetap: warna semantik income/expense
+                    tint     = if (item.isIncome) IncomeGreen else ExpenseRed,
                     modifier = Modifier.size(14.dp)
                 )
             }
             Spacer(Modifier.width(10.dp))
             Column(modifier = Modifier.weight(1f)) {
-                Text(item.deskripsi, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium, color = TextDark, maxLines = 1)
+                Text(
+                    item.deskripsi,
+                    style      = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.Medium,
+                    // FIX: reaktif terhadap tema
+                    color      = MaterialTheme.colorScheme.onSurface,
+                    maxLines   = 1
+                )
                 Row {
+                    // AccentPurple tetap: warna brand/aksen untuk keterangan
                     Text(item.keterangan, style = MaterialTheme.typography.bodySmall, color = AccentPurple, maxLines = 1)
-                    Text(" · ${item.tanggal}", style = MaterialTheme.typography.bodySmall, color = TextLight)
+                    Text(
+                        " · ${item.tanggal}",
+                        style = MaterialTheme.typography.bodySmall,
+                        // FIX: reaktif terhadap tema
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
                 }
             }
             Text(
                 "${if (item.isIncome) "+" else "-"} ${CurrencyFormatter.format(item.nominal)}",
                 style      = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.SemiBold,
+                // tetap: warna semantik income/expense
                 color      = if (item.isIncome) IncomeGreen else ExpenseRed
             )
         }

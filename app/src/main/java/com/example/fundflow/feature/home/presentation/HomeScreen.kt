@@ -1,6 +1,4 @@
-// ============================================================
-// feature/home/presentation/HomeScreen.kt  (FIXED)
-// ============================================================
+// feature/home/presentation/HomeScreen.kt
 package com.example.fundflow.feature.home.presentation
 
 import androidx.compose.foundation.background
@@ -18,7 +16,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -46,27 +43,22 @@ fun HomeScreen(
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .background(AppBackground),
+            .background(MaterialTheme.colorScheme.background), // FIX: was AppBackground
         contentPadding = PaddingValues(bottom = 100.dp)
     ) {
-        // ── Top Bar ───────────────────────────────────────────
         item {
             HomeTopBar(
-                userName          = uiState.userName.ifEmpty { "FundFlow" },
-                onProfileClick    = onNavigateToProfile,
-                onSettingsClick   = onNavigateToSettings
+                userName        = uiState.userName.ifEmpty { "FundFlow" },
+                onProfileClick  = onNavigateToProfile,
+                onSettingsClick = onNavigateToSettings
             )
         }
-
-        // ── Kartu Saldo Utama ─────────────────────────────────
         item {
             SaldoCard(
                 summary  = uiState.summary,
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
             )
         }
-
-        // ── Status Iuran Bulan Ini ────────────────────────────
         item {
             IuranStatusCard(
                 lunasCount      = uiState.summary.iuranSummary.lunasCount,
@@ -75,8 +67,6 @@ fun HomeScreen(
                 modifier        = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
             )
         }
-
-        // ── Hari Libur Terdekat (Nager.Date) ─────────────────
         item {
             when {
                 uiState.isLoadingHolidays -> {
@@ -87,8 +77,8 @@ fun HomeScreen(
                         contentAlignment = Alignment.Center
                     ) {
                         CircularProgressIndicator(
-                            modifier = Modifier.size(24.dp),
-                            color    = IuranBlue,
+                            modifier    = Modifier.size(24.dp),
+                            color       = IuranBlue,
                             strokeWidth = 2.dp
                         )
                     }
@@ -99,46 +89,34 @@ fun HomeScreen(
                         modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
                     )
                 }
-                uiState.holidayError != null -> {
-                    // Gagal load API — tampilkan info ringkas, tidak perlu error besar
-                }
+                uiState.holidayError != null -> { /* silent fail */ }
             }
         }
-
-        // ── Label Transaksi Terakhir ──────────────────────────
         item {
             Text(
                 text       = "Transaksi Terakhir",
                 style      = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
-                color      = TextDark,
+                color      = MaterialTheme.colorScheme.onBackground, // FIX: was TextDark
                 modifier   = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
             )
         }
-
-        // ── List Transaksi Terakhir ───────────────────────────
         if (uiState.isLoadingSummary) {
             item {
                 Box(
-                    modifier         = Modifier
-                        .fillMaxWidth()
-                        .padding(32.dp),
+                    modifier         = Modifier.fillMaxWidth().padding(32.dp),
                     contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator(color = PrimaryLime)
-                }
+                ) { CircularProgressIndicator(color = PrimaryLime) }
             }
         } else if (uiState.summary.recentTransactions.isEmpty()) {
             item {
                 Box(
-                    modifier         = Modifier
-                        .fillMaxWidth()
-                        .padding(32.dp),
+                    modifier         = Modifier.fillMaxWidth().padding(32.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
                         text  = "Belum ada transaksi",
-                        color = TextMuted,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant, // FIX: was TextMuted
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
@@ -164,43 +142,45 @@ private fun HomeTopBar(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(AppBackground)
+            .background(MaterialTheme.colorScheme.background) // FIX: was AppBackground
             .statusBarsPadding()
             .padding(horizontal = 16.dp, vertical = 12.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment     = Alignment.CenterVertically
     ) {
         Column {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    text       = "FundFlow",
-                    style      = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold,
-                    color      = TextDark
-                )
-            }
+            Text(
+                text       = "FundFlow",
+                style      = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+                color      = MaterialTheme.colorScheme.onBackground // FIX: was TextDark
+            )
             Text(
                 text  = "Halo, $userName 👋",
                 style = MaterialTheme.typography.bodySmall,
-                color = TextLight
+                color = MaterialTheme.colorScheme.onSurfaceVariant  // FIX: was TextLight
             )
         }
         Row {
             IconButton(onClick = onSettingsClick) {
-                Icon(Icons.Outlined.Settings, contentDescription = "Pengaturan", tint = Color.Gray)
+                Icon(
+                    Icons.Outlined.Settings,
+                    contentDescription = "Pengaturan",
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant // FIX: was Color.Gray
+                )
             }
             IconButton(onClick = onProfileClick) {
                 Box(
                     modifier = Modifier
                         .size(36.dp)
                         .clip(CircleShape)
-                        .background(NavBackground),
+                        .background(MaterialTheme.colorScheme.inverseSurface), // FIX: was NavBackground
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
                         Icons.Default.Person,
                         contentDescription = "Profil",
-                        tint               = CardWhite,
+                        tint               = MaterialTheme.colorScheme.inverseOnSurface, // FIX: was CardWhite
                         modifier           = Modifier.size(20.dp)
                     )
                 }
@@ -215,6 +195,8 @@ private fun SaldoCard(
     summary: DashboardSummary,
     modifier: Modifier = Modifier
 ) {
+    // SaldoCard pakai HeaderGreen (warna brand) — tetap dipertahankan
+    // karena ini adalah aksen utama aplikasi, bukan surface umum.
     Card(
         modifier  = modifier,
         colors    = CardDefaults.cardColors(containerColor = HeaderGreen),
@@ -225,14 +207,14 @@ private fun SaldoCard(
             Text(
                 text  = "Total Saldo",
                 style = MaterialTheme.typography.bodyMedium,
-                color = TextDark.copy(alpha = 0.7f)
+                color = TextDark.copy(alpha = 0.7f) // tetap — di atas warna brand hijau
             )
             Spacer(Modifier.height(4.dp))
             Text(
                 text       = CurrencyFormatter.format(summary.totalSaldo),
                 style      = MaterialTheme.typography.headlineLarge,
                 fontWeight = FontWeight.Bold,
-                color      = TextDark
+                color      = TextDark // tetap — di atas warna brand hijau
             )
             Spacer(Modifier.height(16.dp))
             Row(
@@ -280,7 +262,9 @@ private fun IuranStatusCard(
 ) {
     Card(
         modifier  = modifier,
-        colors    = CardDefaults.cardColors(containerColor = CardWhite),
+        colors    = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface // FIX: was CardWhite
+        ),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         shape     = RoundedCornerShape(12.dp)
     ) {
@@ -295,26 +279,23 @@ private fun IuranStatusCard(
                     text       = "Status Iuran Bulan Ini",
                     style      = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
-                    color      = TextDark
+                    color      = MaterialTheme.colorScheme.onSurface // FIX: was TextDark
                 )
                 Spacer(Modifier.height(4.dp))
                 Text(
                     text  = "$lunasCount dari ${lunasCount + belumBayarCount} Anggota Lunas",
                     style = MaterialTheme.typography.bodySmall,
-                    color = TextLight
+                    color = MaterialTheme.colorScheme.onSurfaceVariant // FIX: was TextLight
                 )
             }
             Button(
-                // FIX: sebelumnya onClick = {} (kosong, tidak melakukan apa-apa).
-                // Sekarang memanggil onTagihClick yang diteruskan dari
-                // MainScreen -> berpindah ke tab "Iuran" pada bottom nav.
                 onClick = onTagihClick,
                 colors  = ButtonDefaults.buttonColors(
-                    containerColor = PrimaryLime,
+                    containerColor = PrimaryLime, // tetap — warna brand
                     contentColor   = TextDark
                 ),
-                shape            = RoundedCornerShape(8.dp),
-                contentPadding   = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
+                shape          = RoundedCornerShape(8.dp),
+                contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
             ) {
                 Text("Tagih", style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.SemiBold)
             }
@@ -329,14 +310,18 @@ private fun HolidayCard(
     modifier: Modifier = Modifier
 ) {
     val formattedDate = runCatching {
-        val ld       = LocalDate.parse(holiday.date)
+        val ld        = LocalDate.parse(holiday.date)
         val formatter = DateTimeFormatter.ofPattern("d MMMM yyyy", Locale("id", "ID"))
         ld.format(formatter)
     }.getOrDefault(holiday.date)
 
+    // HolidayCard pakai IuranBlue sebagai aksen — tetap dipertahankan,
+    // alpha sudah cukup rendah sehingga kontras oke di kedua tema.
     Card(
         modifier  = modifier,
-        colors    = CardDefaults.cardColors(containerColor = IuranBlue.copy(alpha = 0.10f)),
+        colors    = CardDefaults.cardColors(
+            containerColor = IuranBlue.copy(alpha = 0.10f)
+        ),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
         shape     = RoundedCornerShape(12.dp)
     ) {
@@ -368,12 +353,12 @@ private fun HolidayCard(
                     text       = holiday.localName,
                     style      = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.Bold,
-                    color      = TextDark
+                    color      = MaterialTheme.colorScheme.onSurface // FIX: was TextDark
                 )
                 Text(
                     text  = formattedDate,
                     style = MaterialTheme.typography.bodySmall,
-                    color = TextLight
+                    color = MaterialTheme.colorScheme.onSurfaceVariant // FIX: was TextLight
                 )
             }
         }
@@ -388,7 +373,9 @@ private fun RecentTransactionItem(
 ) {
     Card(
         modifier  = modifier,
-        colors    = CardDefaults.cardColors(containerColor = CardWhite),
+        colors    = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface // FIX: was CardWhite
+        ),
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
         shape     = RoundedCornerShape(10.dp)
     ) {
@@ -409,8 +396,7 @@ private fun RecentTransactionItem(
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    imageVector = if (transaction.isIncome) Icons.Default.TrendingUp
-                    else Icons.Default.TrendingDown,
+                    imageVector        = if (transaction.isIncome) Icons.Default.TrendingUp else Icons.Default.TrendingDown,
                     contentDescription = null,
                     tint               = if (transaction.isIncome) IncomeGreen else ExpenseRed,
                     modifier           = Modifier.size(18.dp)
@@ -422,13 +408,13 @@ private fun RecentTransactionItem(
                     text       = transaction.title,
                     style      = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Medium,
-                    color      = TextDark,
+                    color      = MaterialTheme.colorScheme.onSurface, // FIX: was TextDark
                     maxLines   = 1
                 )
                 Text(
-                    text  = transaction.subtitle,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = TextLight,
+                    text     = transaction.subtitle,
+                    style    = MaterialTheme.typography.bodySmall,
+                    color    = MaterialTheme.colorScheme.onSurfaceVariant, // FIX: was TextLight
                     maxLines = 1
                 )
             }

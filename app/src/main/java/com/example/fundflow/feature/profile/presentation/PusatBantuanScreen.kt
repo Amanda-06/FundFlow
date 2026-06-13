@@ -1,10 +1,8 @@
-// ============================================================
 // feature/profile/presentation/PusatBantuanScreen.kt
 // ============================================================
 package com.example.fundflow.feature.profile.presentation
 
 import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -34,11 +32,12 @@ fun PusatBantuanScreen(
 
     Scaffold(
         topBar = { FundFlowTopBar(title = "Pusat Bantuan", onNavigateBack = onNavigateBack) },
-        containerColor = AppBackground
+        // FIX: reaktif terhadap tema
+        containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
         LazyColumn(
-            modifier       = Modifier.fillMaxSize().padding(padding),
-            contentPadding = PaddingValues(16.dp),
+            modifier            = Modifier.fillMaxSize().padding(padding),
+            contentPadding      = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             item {
@@ -46,7 +45,8 @@ fun PusatBantuanScreen(
                     "Pertanyaan Umum (FAQ)",
                     style      = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
-                    color      = TextDark,
+                    // FIX: reaktif terhadap tema
+                    color      = MaterialTheme.colorScheme.onSurface,
                     modifier   = Modifier.padding(bottom = 4.dp)
                 )
             }
@@ -62,7 +62,8 @@ fun PusatBantuanScreen(
                     "Hubungi Kami",
                     style      = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
-                    color      = TextDark,
+                    // FIX: reaktif terhadap tema
+                    color      = MaterialTheme.colorScheme.onSurface,
                     modifier   = Modifier.padding(bottom = 4.dp)
                 )
             }
@@ -70,7 +71,8 @@ fun PusatBantuanScreen(
             item {
                 Card(
                     modifier  = Modifier.fillMaxWidth(),
-                    colors    = CardDefaults.cardColors(containerColor = CardWhite),
+                    // FIX: reaktif terhadap tema
+                    colors    = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                     shape     = RoundedCornerShape(12.dp),
                     elevation = CardDefaults.cardElevation(1.dp)
                 ) {
@@ -81,8 +83,19 @@ fun PusatBantuanScreen(
                         Icon(Icons.Default.Email, contentDescription = null, tint = IuranBlue)
                         Spacer(Modifier.width(12.dp))
                         Column(modifier = Modifier.weight(1f)) {
-                            Text("Email Dukungan", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium, color = TextDark)
-                            Text("support.fundflow@gmail.com", style = MaterialTheme.typography.bodySmall, color = TextLight)
+                            Text(
+                                "Email Dukungan",
+                                style      = MaterialTheme.typography.bodyMedium,
+                                fontWeight = FontWeight.Medium,
+                                // FIX: reaktif terhadap tema
+                                color      = MaterialTheme.colorScheme.onSurface
+                            )
+                            Text(
+                                "support.fundflow@gmail.com",
+                                style = MaterialTheme.typography.bodySmall,
+                                // FIX: reaktif terhadap tema
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
                         }
                     }
                 }
@@ -100,27 +113,30 @@ private fun FaqCard(faq: FaqItem) {
             .fillMaxWidth()
             .animateContentSize()
             .clickable { expanded = !expanded },
-        colors    = CardDefaults.cardColors(containerColor = CardWhite),
+        // FIX: reaktif terhadap tema
+        colors    = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         shape     = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(1.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
-                modifier          = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
+                modifier              = Modifier.fillMaxWidth(),
+                verticalAlignment     = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
                     faq.question,
                     style      = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Medium,
-                    color      = TextDark,
+                    // FIX: reaktif terhadap tema
+                    color      = MaterialTheme.colorScheme.onSurface,
                     modifier   = Modifier.weight(1f)
                 )
                 Icon(
                     imageVector        = if (expanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
                     contentDescription = null,
-                    tint               = TextLight
+                    // FIX: reaktif terhadap tema
+                    tint               = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
             if (expanded) {
@@ -128,7 +144,8 @@ private fun FaqCard(faq: FaqItem) {
                 Text(
                     faq.answer,
                     style      = MaterialTheme.typography.bodySmall,
-                    color      = TextLight,
+                    // FIX: reaktif terhadap tema
+                    color      = MaterialTheme.colorScheme.onSurfaceVariant,
                     lineHeight = MaterialTheme.typography.bodySmall.lineHeight
                 )
             }

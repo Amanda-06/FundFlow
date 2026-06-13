@@ -1,4 +1,3 @@
-// ============================================================
 // feature/anggota/presentation/AnggotaScreen.kt
 // ============================================================
 package com.example.fundflow.feature.anggota.presentation
@@ -28,7 +27,6 @@ fun AnggotaScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    // Error snackbar
     val snackbarHostState = remember { SnackbarHostState() }
     LaunchedEffect(uiState.errorMessage) {
         uiState.errorMessage?.let {
@@ -58,15 +56,16 @@ fun AnggotaScreen(
         floatingActionButton = {
             if (!uiState.isSelectionMode) {
                 FloatingActionButton(
-                    onClick           = viewModel::onShowAddDialog,
-                    containerColor    = PrimaryLime,
-                    contentColor      = TextDark
+                    onClick        = viewModel::onShowAddDialog,
+                    containerColor = PrimaryLime,
+                    contentColor   = TextDark          // tetap: warna brand
                 ) {
                     Icon(Icons.Default.PersonAdd, contentDescription = "Tambah Anggota")
                 }
             }
         },
-        containerColor = AppBackground
+        // FIX: pakai MaterialTheme.colorScheme.background agar reaktif terhadap tema
+        containerColor = MaterialTheme.colorScheme.background
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -88,7 +87,8 @@ fun AnggotaScreen(
             Text(
                 text     = "${uiState.filteredList.size} anggota",
                 style    = MaterialTheme.typography.bodySmall,
-                color    = TextLight,
+                // FIX: reaktif terhadap tema
+                color    = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
             )
 
@@ -99,9 +99,9 @@ fun AnggotaScreen(
                 }
             } else if (uiState.filteredList.isEmpty()) {
                 EmptyStateView(
-                    icon    = Icons.Default.Group,
-                    title   = "Belum ada anggota",
-                    message = "Klik tombol + untuk menambahkan anggota pertama.",
+                    icon     = Icons.Default.Group,
+                    title    = "Belum ada anggota",
+                    message  = "Klik tombol + untuk menambahkan anggota pertama.",
                     modifier = Modifier.fillMaxSize()
                 )
             } else {
@@ -136,12 +136,12 @@ fun AnggotaScreen(
     // ── Dialog Tambah / Edit ──────────────────────────────────
     if (uiState.showAddDialog) {
         AnggotaFormDialog(
-            isEdit        = uiState.editTarget != null,
-            inputNama     = uiState.inputNama,
-            inputNamaError= uiState.inputNamaError,
-            onNamaChange  = viewModel::onInputNamaChange,
-            onSave        = viewModel::onSaveAnggota,
-            onDismiss     = viewModel::onDismissAddDialog
+            isEdit         = uiState.editTarget != null,
+            inputNama      = uiState.inputNama,
+            inputNamaError = uiState.inputNamaError,
+            onNamaChange   = viewModel::onInputNamaChange,
+            onSave         = viewModel::onSaveAnggota,
+            onDismiss      = viewModel::onDismissAddDialog
         )
     }
 
@@ -187,13 +187,15 @@ private fun AnggotaListItem(
         Box(
             modifier = Modifier
                 .size(40.dp)
-                .background(NavBackground, MaterialTheme.shapes.extraLarge),
+                // FIX: pakai inverseSurface agar kontras di kedua mode
+                .background(MaterialTheme.colorScheme.inverseSurface, MaterialTheme.shapes.extraLarge),
             contentAlignment = Alignment.Center
         ) {
             Text(
                 text       = anggota.namaAnggota.take(1).uppercase(),
                 style      = MaterialTheme.typography.titleSmall,
-                color      = CardWhite,
+                // FIX: inverseOnSurface kontras terhadap inverseSurface
+                color      = MaterialTheme.colorScheme.inverseOnSurface,
                 fontWeight = FontWeight.Bold
             )
         }
@@ -202,16 +204,28 @@ private fun AnggotaListItem(
             text       = anggota.namaAnggota,
             style      = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Medium,
-            color      = TextDark,
+            // FIX: reaktif terhadap tema
+            color      = MaterialTheme.colorScheme.onSurface,
             modifier   = Modifier.weight(1f)
         )
         // Aksi edit / delete — hanya tampil saat bukan selection mode
         if (!isSelectionMode) {
             IconButton(onClick = onEdit, modifier = Modifier.size(32.dp)) {
-                Icon(Icons.Default.Edit, contentDescription = "Edit", tint = TextLight, modifier = Modifier.size(16.dp))
+                Icon(
+                    Icons.Default.Edit,
+                    contentDescription = "Edit",
+                    // FIX: reaktif terhadap tema
+                    tint     = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.size(16.dp)
+                )
             }
             IconButton(onClick = onDelete, modifier = Modifier.size(32.dp)) {
-                Icon(Icons.Default.Delete, contentDescription = "Hapus", tint = ExpenseRed, modifier = Modifier.size(16.dp))
+                Icon(
+                    Icons.Default.Delete,
+                    contentDescription = "Hapus",
+                    tint     = ExpenseRed,   // tetap: warna brand/semantik
+                    modifier = Modifier.size(16.dp)
+                )
             }
         }
     }
@@ -233,7 +247,8 @@ private fun AnggotaFormDialog(
             Text(
                 text  = if (isEdit) "Edit Anggota" else "Tambah Anggota",
                 style = MaterialTheme.typography.titleLarge,
-                color = TextDark
+                // FIX: reaktif terhadap tema
+                color = MaterialTheme.colorScheme.onSurface
             )
         },
         text = {
@@ -251,7 +266,7 @@ private fun AnggotaFormDialog(
                 onClick = onSave,
                 colors  = ButtonDefaults.buttonColors(
                     containerColor = PrimaryLime,
-                    contentColor   = TextDark
+                    contentColor   = TextDark    // tetap: warna brand
                 )
             ) {
                 Text("Simpan", fontWeight = FontWeight.SemiBold)
@@ -259,9 +274,11 @@ private fun AnggotaFormDialog(
         },
         dismissButton = {
             OutlinedButton(onClick = onDismiss) {
-                Text("Batal", color = TextDark)
+                // FIX: reaktif terhadap tema
+                Text("Batal", color = MaterialTheme.colorScheme.onSurface)
             }
         },
-        containerColor = CardWhite
+        // FIX: reaktif terhadap tema
+        containerColor = MaterialTheme.colorScheme.surface
     )
 }

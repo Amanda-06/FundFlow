@@ -1,3 +1,4 @@
+// feature/profile/data/repository/ProfileRepositoryImpl.kt
 package com.example.fundflow.feature.profile.data.repository
 
 import com.example.fundflow.feature.auth.data.local.UserDao
@@ -8,8 +9,10 @@ import com.example.fundflow.feature.profile.data.mapper.toProfile
 import com.example.fundflow.feature.profile.data.remote.ProfileRemoteDataSource
 import com.example.fundflow.feature.profile.domain.model.Profile
 import com.example.fundflow.feature.profile.domain.repository.ProfileRepository
+import com.google.firebase.auth.EmailAuthProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class ProfileRepositoryImpl @Inject constructor(
@@ -24,10 +27,8 @@ class ProfileRepositoryImpl @Inject constructor(
 
     override suspend fun getProfile(): Profile? {
         val uid = authService.currentUser?.uid ?: return null
-        // Coba ambil dari Room dulu
         var entity = userDao.getUserById(uid)
         if (entity == null) {
-            // Fallback: ambil dari Firestore lalu cache ke Room
             val remoteData = remoteDataSource.fetchProfile(uid)
             if (remoteData != null) {
                 entity = com.example.fundflow.feature.auth.data.model.UserEntity(
@@ -43,19 +44,33 @@ class ProfileRepositoryImpl @Inject constructor(
         return entity?.toProfile()
     }
 
-    /**
-     * Update profil — simpan ke Room (offline-first) sekaligus sync ke Firestore.
-     */
+    /** Update profil — simpan ke Room (offline-first) lalu sync ke Firestore. */
     override suspend fun updateProfile(profile: Profile) {
         val existing  = userDao.getUserById(profile.userId)
         val createdAt = existing?.createdAt ?: System.currentTimeMillis()
 
-        // 1. Simpan ke Room — sumber kebenaran lokal
         userDao.insertUser(profile.toEntity(createdAt))
 
-        // 2. Sync ke Firestore (best-effort, tidak memblokir UI jika gagal)
         runCatching {
             remoteDataSource.saveProfile(profile.userId, profile.toFirestoreMap())
         }
+    }
+
+    /**
+     * Re-autentikasi dengan password lama, lalu update ke password baru via Firebase Auth.
+     * Melempar Exception (mis. FirebaseAuthInvalidCredentialsException) jika password lama salah.
+     */
+    override suspend fun updatePassword(passwordSaatIni: String, passwordBaru: String) {
+        val user  = authService.currentUser
+            ?: throw IllegalStateException("Pengguna belum login")
+        val email = user.email
+            ?: throw IllegalStateException("Email pengguna tidak ditemukan")
+
+        // Re-autentikasi diperlukan Firebase sebelum update credential sensitif
+        val credential = EmailAuthProvider.getCredential(email, passwordSaatIni)
+        user.reauthenticate(credential).await()
+
+        // Setelah re-auth berhasil, update password
+        user.updatePassword(passwordBaru).await()
     }
 }

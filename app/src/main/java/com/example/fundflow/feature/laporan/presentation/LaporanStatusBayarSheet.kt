@@ -1,4 +1,3 @@
-// ============================================================
 // feature/laporan/presentation/LaporanStatusBayarSheet.kt
 // ============================================================
 package com.example.fundflow.feature.laporan.presentation
@@ -36,7 +35,8 @@ fun LaporanStatusBayarSheet(
             "Laporan Status Bayar Kas",
             style      = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.SemiBold,
-            color      = TextDark
+            // FIX: reaktif terhadap tema
+            color      = MaterialTheme.colorScheme.onSurface
         )
         Spacer(Modifier.height(12.dp))
 
@@ -44,26 +44,39 @@ fun LaporanStatusBayarSheet(
         Card(
             modifier  = Modifier.fillMaxWidth(),
             onClick   = viewModel::onShowStatusMonthPicker,
-            colors    = CardDefaults.cardColors(containerColor = CardWhite),
+            // FIX: reaktif terhadap tema
+            colors    = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
             shape     = RoundedCornerShape(10.dp),
             elevation = CardDefaults.cardElevation(1.dp)
         ) {
             Row(
-                modifier          = Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 10.dp),
-                verticalAlignment = Alignment.CenterVertically,
+                modifier              = Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 10.dp),
+                verticalAlignment     = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.CalendarMonth, contentDescription = null, tint = TextDark, modifier = Modifier.size(18.dp))
+                    Icon(
+                        Icons.Default.CalendarMonth,
+                        contentDescription = null,
+                        // FIX: reaktif terhadap tema
+                        tint     = MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier.size(18.dp)
+                    )
                     Spacer(Modifier.width(8.dp))
                     Text(
                         uiState.selectedMonthForStatus?.label ?: "Pilih Bulan",
                         style      = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.SemiBold,
-                        color      = TextDark
+                        // FIX: reaktif terhadap tema
+                        color      = MaterialTheme.colorScheme.onSurface
                     )
                 }
-                Icon(Icons.Default.ExpandMore, contentDescription = null, tint = TextLight)
+                Icon(
+                    Icons.Default.ExpandMore,
+                    contentDescription = null,
+                    // FIX: reaktif terhadap tema
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             }
         }
 
@@ -79,11 +92,12 @@ fun LaporanStatusBayarSheet(
         val laporan = uiState.laporanStatus
 
         // ── Summary ───────────────────────────────────────────
+        // Warna value (IncomeGreen, ExpenseRed, IuranBlue) tetap: warna semantik
         Row(
             modifier              = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            StatusSummaryItem(value = "${laporan.totalLunas}", label = "Lunas", color = IncomeGreen)
+            StatusSummaryItem(value = "${laporan.totalLunas}",    label = "Lunas",      color = IncomeGreen)
             StatusSummaryItem(value = "${laporan.totalBelumBayar}", label = "Belum Bayar", color = ExpenseRed)
             StatusSummaryItem(value = CurrencyFormatter.formatShort(laporan.totalTerkumpul), label = "Terkumpul", color = IuranBlue)
         }
@@ -104,10 +118,18 @@ fun LaporanStatusBayarSheet(
         ExportButtonsRow(uiState = uiState, viewModel = viewModel)
     }
 
+    // ── Dialog Pilih Bulan ────────────────────────────────────
     if (uiState.showStatusMonthPicker) {
         AlertDialog(
             onDismissRequest = viewModel::onDismissStatusMonthPicker,
-            title = { Text("Pilih Bulan", style = MaterialTheme.typography.titleLarge, color = TextDark) },
+            title = {
+                Text(
+                    "Pilih Bulan",
+                    style = MaterialTheme.typography.titleLarge,
+                    // FIX: reaktif terhadap tema
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            },
             text = {
                 Box(modifier = Modifier.heightIn(max = 400.dp)) {
                     LazyColumn {
@@ -117,12 +139,16 @@ fun LaporanStatusBayarSheet(
                                 modifier = Modifier.fillMaxWidth().padding(vertical = 2.dp),
                                 onClick  = { viewModel.onSelectStatusMonth(month) },
                                 shape    = MaterialTheme.shapes.small,
-                                color    = if (isSelected) PrimaryLime.copy(alpha = 0.2f) else CardWhite
+                                // FIX: unselected background reaktif terhadap tema
+                                color    = if (isSelected) PrimaryLime.copy(alpha = 0.2f)
+                                else MaterialTheme.colorScheme.surface
                             ) {
                                 Text(
                                     month.label,
                                     modifier   = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
-                                    color      = if (isSelected) PrimaryLimeDark else TextDark,
+                                    // FIX: unselected text reaktif terhadap tema
+                                    color      = if (isSelected) PrimaryLimeDark
+                                    else MaterialTheme.colorScheme.onSurface,
                                     fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal
                                 )
                             }
@@ -131,18 +157,31 @@ fun LaporanStatusBayarSheet(
                 }
             },
             confirmButton = {
-                TextButton(onClick = viewModel::onDismissStatusMonthPicker) { Text("Tutup", color = TextDark) }
+                TextButton(onClick = viewModel::onDismissStatusMonthPicker) {
+                    // FIX: reaktif terhadap tema
+                    Text("Tutup", color = MaterialTheme.colorScheme.onSurface)
+                }
             },
-            containerColor = CardWhite
+            // FIX: reaktif terhadap tema
+            containerColor = MaterialTheme.colorScheme.surface
         )
     }
 }
 
 @Composable
-private fun StatusSummaryItem(value: String, label: String, color: androidx.compose.ui.graphics.Color) {
+private fun StatusSummaryItem(
+    value: String,
+    label: String,
+    color: androidx.compose.ui.graphics.Color   // warna semantik, tetap dari caller
+) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(value, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = color)
-        Text(label, style = MaterialTheme.typography.labelSmall, color = TextLight)
+        Text(
+            label,
+            style = MaterialTheme.typography.labelSmall,
+            // FIX: reaktif terhadap tema
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
     }
 }
 
@@ -150,7 +189,8 @@ private fun StatusSummaryItem(value: String, label: String, color: androidx.comp
 private fun StatusBayarRow(item: StatusBayarAnggota) {
     Card(
         modifier  = Modifier.fillMaxWidth(),
-        colors    = CardDefaults.cardColors(containerColor = CardWhite),
+        // FIX: reaktif terhadap tema
+        colors    = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         shape     = RoundedCornerShape(10.dp),
         elevation = CardDefaults.cardElevation(1.dp)
     ) {
@@ -162,25 +202,35 @@ private fun StatusBayarRow(item: StatusBayarAnggota) {
                 modifier = Modifier
                     .size(28.dp)
                     .background(
+                        // tetap: warna semantik status bayar
                         if (item.statusBayar) IncomeGreen.copy(alpha = 0.12f) else ExpenseRed.copy(alpha = 0.12f),
                         CircleShape
                     ),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    imageVector = if (item.statusBayar) Icons.Default.Check else Icons.Default.Close,
+                    imageVector        = if (item.statusBayar) Icons.Default.Check else Icons.Default.Close,
                     contentDescription = null,
-                    tint = if (item.statusBayar) IncomeGreen else ExpenseRed,
+                    // tetap: warna semantik status bayar
+                    tint     = if (item.statusBayar) IncomeGreen else ExpenseRed,
                     modifier = Modifier.size(14.dp)
                 )
             }
             Spacer(Modifier.width(10.dp))
-            Text(item.namaAnggota, style = MaterialTheme.typography.bodyMedium, color = TextDark, modifier = Modifier.weight(1f))
+            Text(
+                item.namaAnggota,
+                style    = MaterialTheme.typography.bodyMedium,
+                // FIX: reaktif terhadap tema
+                color    = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier.weight(1f)
+            )
             Text(
                 if (item.statusBayar) CurrencyFormatter.format(item.nominal) else "-",
                 style      = MaterialTheme.typography.bodySmall,
                 fontWeight = FontWeight.SemiBold,
-                color      = if (item.statusBayar) TextDark else TextMuted
+                // Lunas → TextDark sudah tidak dipakai; FIX reaktif. Belum bayar → onSurfaceVariant
+                color      = if (item.statusBayar) MaterialTheme.colorScheme.onSurface
+                else MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }

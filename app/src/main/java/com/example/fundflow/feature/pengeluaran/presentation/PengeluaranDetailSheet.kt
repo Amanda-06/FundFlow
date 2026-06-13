@@ -1,3 +1,5 @@
+// feature/pengeluaran/presentation/PengeluaranDetailSheet.kt
+// ============================================================
 package com.example.fundflow.feature.pengeluaran.presentation
 
 import androidx.compose.foundation.layout.*
@@ -35,11 +37,15 @@ fun PengeluaranDetailSheet(
                 text       = if (isEdit) "Edit Pengeluaran" else "Detail Pengeluaran",
                 style      = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.SemiBold,
-                color      = TextDark,
+                color      = MaterialTheme.colorScheme.onSurface, // FIX: was TextDark
                 modifier   = Modifier.weight(1f)
             )
             IconButton(onClick = viewModel::onDismissSheet) {
-                Icon(Icons.Default.Close, contentDescription = "Tutup", tint = TextLight)
+                Icon(
+                    Icons.Default.Close,
+                    contentDescription = "Tutup",
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant // FIX: was TextLight
+                )
             }
         }
 
@@ -49,7 +55,6 @@ fun PengeluaranDetailSheet(
             modifier            = Modifier.fillMaxWidth().verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(14.dp)
         ) {
-            // ── Deskripsi ─────────────────────────────────────
             FundFlowTextField(
                 value         = uiState.formDeskripsi,
                 onValueChange = viewModel::onFormDeskripsiChange,
@@ -59,7 +64,6 @@ fun PengeluaranDetailSheet(
                 errorMessage  = uiState.formDeskripsiError
             )
 
-            // ── Kategori ──────────────────────────────────────
             DropdownField(
                 label        = "Kategori",
                 selectedItem = uiState.formKategori,
@@ -70,7 +74,6 @@ fun PengeluaranDetailSheet(
                 errorMessage = uiState.formKategoriError
             )
 
-            // ── Nama Program (opsional) ───────────────────────
             FundFlowTextField(
                 value         = uiState.formNamaProgram,
                 onValueChange = viewModel::onFormNamaProgramChange,
@@ -78,7 +81,6 @@ fun PengeluaranDetailSheet(
                 placeholder   = "Misal: Seminar Nasional IT"
             )
 
-            // ── Qty + Harga Satuan ────────────────────────────
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                 FundFlowTextField(
                     value           = uiState.formQuantity,
@@ -99,20 +101,24 @@ fun PengeluaranDetailSheet(
                 )
             }
 
-            // ── Nominal (read-only) ───────────────────────────
             LabelSection(label = "Nominal") {
                 Column {
                     Text(
                         CurrencyFormatter.format(uiState.formTotalNominal),
-                        style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = ExpenseRed
+                        style      = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        color      = ExpenseRed // tetap — warna brand aksen pengeluaran
                     )
                     val qty   = uiState.formQuantity.toIntOrNull() ?: 1
                     val harga = uiState.formHargaSatuan.toDoubleOrNull() ?: 0.0
-                    Text("$qty x ${CurrencyFormatter.format(harga)}", style = MaterialTheme.typography.bodySmall, color = TextLight)
+                    Text(
+                        "$qty x ${CurrencyFormatter.format(harga)}",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant // FIX: was TextLight
+                    )
                 }
             }
 
-            // ── Metode Pembayaran ─────────────────────────────
             DropdownField(
                 label        = "Metode Pembayaran",
                 selectedItem = uiState.formMetode,
@@ -123,7 +129,6 @@ fun PengeluaranDetailSheet(
                 errorMessage = uiState.formMetodeError
             )
 
-            // ── Tanggal ───────────────────────────────────────
             DatePickerField(
                 label        = "Tanggal",
                 value        = uiState.formTanggal,
@@ -132,7 +137,6 @@ fun PengeluaranDetailSheet(
                 errorMessage = uiState.formTanggalError
             )
 
-            // ── Catatan ───────────────────────────────────────
             FundFlowTextField(
                 value         = uiState.formCatatan,
                 onValueChange = viewModel::onFormCatatanChange,

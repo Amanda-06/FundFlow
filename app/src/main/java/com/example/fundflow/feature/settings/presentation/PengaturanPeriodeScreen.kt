@@ -1,6 +1,7 @@
+// feature/settings/presentation/PengaturanPeriodeKasScreen.kt
+// ============================================================
 package com.example.fundflow.feature.settings.presentation
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -58,7 +59,8 @@ fun PengaturanPeriodeScreen(
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarState) },
         topBar = { FundFlowTopBar(title = "Pengaturan Periode", onNavigateBack = onNavigateBack) },
-        containerColor = AppBackground
+        // FIX: reaktif terhadap tema
+        containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
         if (uiState.isLoading) {
             Box(Modifier.fillMaxSize().padding(padding), contentAlignment = Alignment.Center) {
@@ -75,48 +77,88 @@ fun PengaturanPeriodeScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             // ── Info Card ───────────────────────────────────────
+            // Info card ini pakai warna semantik IuranBlue yang sama di kedua tema,
+            // hanya teks di dalamnya yang perlu reaktif.
             Card(
                 colors = CardDefaults.cardColors(containerColor = IuranBlue.copy(alpha = 0.10f)),
                 shape  = RoundedCornerShape(12.dp)
             ) {
                 Row(modifier = Modifier.padding(14.dp), verticalAlignment = Alignment.Top) {
-                    Icon(Icons.Default.Info, contentDescription = null, tint = IuranBlue, modifier = Modifier.size(20.dp))
+                    Icon(
+                        Icons.Default.Info,
+                        contentDescription = null,
+                        tint     = IuranBlue,    // tetap: warna semantik
+                        modifier = Modifier.size(20.dp)
+                    )
                     Spacer(Modifier.width(10.dp))
                     Text(
                         "Mengubah periode kas akan memengaruhi rentang bulan yang ditampilkan pada halaman Iuran dan Laporan.",
                         style = MaterialTheme.typography.bodySmall,
-                        color = TextDark
+                        // FIX: reaktif terhadap tema
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 }
             }
 
             // ── Periode Mulai ─────────────────────────────────
-            Text("Periode Bulan Mulai", style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Medium, color = TextDark)
+            Text(
+                "Periode Bulan Mulai",
+                style      = MaterialTheme.typography.labelLarge,
+                fontWeight = FontWeight.Medium,
+                // FIX: reaktif terhadap tema
+                color      = MaterialTheme.colorScheme.onSurface
+            )
             val mulaiLabel = monthOptions.find { it.first == uiState.bulanMulai }?.second ?: "Pilih Bulan"
             OutlinedButton(
                 onClick  = { showMulaiPicker = true },
                 modifier = Modifier.fillMaxWidth().height(56.dp),
                 shape    = MaterialTheme.shapes.small
             ) {
-                Icon(Icons.Default.CalendarMonth, contentDescription = null, tint = TextLight)
+                Icon(
+                    Icons.Default.CalendarMonth,
+                    contentDescription = null,
+                    // FIX: reaktif terhadap tema
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                )
                 Spacer(Modifier.width(8.dp))
-                Text(mulaiLabel, modifier = Modifier.weight(1f), color = TextDark)
+                Text(
+                    mulaiLabel,
+                    modifier = Modifier.weight(1f),
+                    // FIX: reaktif terhadap tema
+                    color    = MaterialTheme.colorScheme.onSurface
+                )
             }
             if (uiState.bulanMulaiError != null) {
                 Text(uiState.bulanMulaiError!!, color = ExpenseRed, style = MaterialTheme.typography.labelSmall)
             }
 
             // ── Periode Selesai ───────────────────────────────
-            Text("Periode Bulan Berakhir", style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Medium, color = TextDark)
+            Text(
+                "Periode Bulan Berakhir",
+                style      = MaterialTheme.typography.labelLarge,
+                fontWeight = FontWeight.Medium,
+                // FIX: reaktif terhadap tema
+                color      = MaterialTheme.colorScheme.onSurface
+            )
             val selesaiLabel = monthOptions.find { it.first == uiState.bulanSelesai }?.second ?: "Pilih Bulan"
             OutlinedButton(
                 onClick  = { showSelesaiPicker = true },
                 modifier = Modifier.fillMaxWidth().height(56.dp),
                 shape    = MaterialTheme.shapes.small
             ) {
-                Icon(Icons.Default.CalendarMonth, contentDescription = null, tint = TextLight)
+                Icon(
+                    Icons.Default.CalendarMonth,
+                    contentDescription = null,
+                    // FIX: reaktif terhadap tema
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                )
                 Spacer(Modifier.width(8.dp))
-                Text(selesaiLabel, modifier = Modifier.weight(1f), color = TextDark)
+                Text(
+                    selesaiLabel,
+                    modifier = Modifier.weight(1f),
+                    // FIX: reaktif terhadap tema
+                    color    = MaterialTheme.colorScheme.onSurface
+                )
             }
             if (uiState.bulanSelesaiError != null) {
                 Text(uiState.bulanSelesaiError!!, color = ExpenseRed, style = MaterialTheme.typography.labelSmall)
@@ -133,10 +175,20 @@ fun PengaturanPeriodeScreen(
     }
 
     if (showMulaiPicker) {
-        MonthPickerDialog(monthOptions, uiState.bulanMulai, { viewModel.onBulanMulaiChange(it); showMulaiPicker = false }, { showMulaiPicker = false })
+        MonthPickerDialog(
+            monthOptions,
+            uiState.bulanMulai,
+            { viewModel.onBulanMulaiChange(it); showMulaiPicker = false },
+            { showMulaiPicker = false }
+        )
     }
     if (showSelesaiPicker) {
-        MonthPickerDialog(monthOptions, uiState.bulanSelesai, { viewModel.onBulanSelesaiChange(it); showSelesaiPicker = false }, { showSelesaiPicker = false })
+        MonthPickerDialog(
+            monthOptions,
+            uiState.bulanSelesai,
+            { viewModel.onBulanSelesaiChange(it); showSelesaiPicker = false },
+            { showSelesaiPicker = false }
+        )
     }
 }
 
@@ -149,7 +201,14 @@ private fun MonthPickerDialog(
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Pilih Bulan", style = MaterialTheme.typography.titleLarge, color = TextDark) },
+        title = {
+            Text(
+                "Pilih Bulan",
+                style = MaterialTheme.typography.titleLarge,
+                // FIX: reaktif terhadap tema
+                color = MaterialTheme.colorScheme.onSurface
+            )
+        },
         text = {
             Column(modifier = Modifier.heightIn(max = 400.dp)) {
                 androidx.compose.foundation.lazy.LazyColumn {
@@ -160,12 +219,16 @@ private fun MonthPickerDialog(
                             modifier = Modifier.fillMaxWidth().padding(vertical = 2.dp),
                             onClick  = { onSelect(key) },
                             shape    = MaterialTheme.shapes.small,
-                            color    = if (isSelected) PrimaryLime.copy(alpha = 0.2f) else CardWhite
+                            // FIX: unselected background reaktif terhadap tema
+                            color    = if (isSelected) PrimaryLime.copy(alpha = 0.2f)
+                            else MaterialTheme.colorScheme.surface
                         ) {
                             Text(
                                 label,
-                                modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
-                                color = if (isSelected) PrimaryLimeDark else TextDark,
+                                modifier   = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+                                // FIX: unselected text reaktif terhadap tema
+                                color      = if (isSelected) PrimaryLimeDark
+                                else MaterialTheme.colorScheme.onSurface,
                                 fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal
                             )
                         }
@@ -174,11 +237,12 @@ private fun MonthPickerDialog(
             }
         },
         confirmButton = {
-            TextButton(onClick = onDismiss) { Text("Tutup", color = TextDark) }
+            TextButton(onClick = onDismiss) {
+                // FIX: reaktif terhadap tema
+                Text("Tutup", color = MaterialTheme.colorScheme.onSurface)
+            }
         },
-        containerColor = CardWhite
+        // FIX: reaktif terhadap tema
+        containerColor = MaterialTheme.colorScheme.surface
     )
 }
-
-// Helper import untuk LazyColumn items pada AlertDialog
-private fun <T> items(count: Int, itemContent: @Composable (Int) -> Unit) {}

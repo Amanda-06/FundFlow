@@ -1,6 +1,3 @@
-// ============================================================
-// feature/laporan/presentation/LaporanScreen.kt
-// ============================================================
 package com.example.fundflow.feature.laporan.presentation
 
 import androidx.compose.foundation.background
@@ -8,7 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.* // Ini sudah mencakup Icons.Default / Icons.Filled
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -27,8 +24,8 @@ import com.example.fundflow.ui.theme.*
 fun LaporanScreen(
     viewModel: LaporanViewModel = hiltViewModel()
 ) {
-    val uiState       by viewModel.uiState.collectAsStateWithLifecycle()
-    val snackbarState  = remember { SnackbarHostState() }
+    val uiState      by viewModel.uiState.collectAsStateWithLifecycle()
+    val snackbarState = remember { SnackbarHostState() }
 
     LaunchedEffect(uiState.errorMessage, uiState.successMessage) {
         uiState.errorMessage?.let   { snackbarState.showSnackbar(it); viewModel.clearMessages() }
@@ -39,11 +36,23 @@ fun LaporanScreen(
         snackbarHost = { SnackbarHost(snackbarState) },
         topBar = {
             TopAppBar(
-                title = { Text("Laporan", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.SemiBold, color = TextDark) },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = AppBackground)
+                title = {
+                    Text(
+                        "Laporan",
+                        style      = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.SemiBold,
+                        // FIX: reaktif terhadap tema
+                        color      = MaterialTheme.colorScheme.onSurface
+                    )
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    // FIX: reaktif terhadap tema
+                    containerColor = MaterialTheme.colorScheme.background
+                )
             )
         },
-        containerColor = AppBackground
+        // FIX: reaktif terhadap tema
+        containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
         Column(
             modifier = Modifier
@@ -53,29 +62,41 @@ fun LaporanScreen(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             // ── Export Laporan Header Card ─────────────────────
+            // HeaderGreen tetap: warna brand. Hanya teks di dalamnya yang perlu reaktif.
             Card(
                 modifier  = Modifier.fillMaxWidth(),
                 colors    = CardDefaults.cardColors(containerColor = HeaderGreen.copy(alpha = 0.25f)),
                 shape     = RoundedCornerShape(14.dp),
                 elevation = CardDefaults.cardElevation(0.dp)
             ) {
-                Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+                Row(
+                    modifier          = Modifier.padding(16.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Box(
                         modifier = Modifier
                             .size(44.dp)
                             .clip(CircleShape)
-                            .background(HeaderGreen),
+                            .background(HeaderGreen),   // tetap: warna brand
                         contentAlignment = Alignment.Center
                     ) {
+                        // Icon di atas HeaderGreen → tetap pakai TextDark
                         Icon(Icons.Default.FileDownload, contentDescription = null, tint = TextDark)
                     }
                     Spacer(Modifier.width(14.dp))
                     Column {
-                        Text("Export Laporan", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.SemiBold, color = TextDark)
+                        Text(
+                            "Export Laporan",
+                            style      = MaterialTheme.typography.titleSmall,
+                            fontWeight = FontWeight.SemiBold,
+                            // FIX: reaktif terhadap tema
+                            color      = MaterialTheme.colorScheme.onSurface
+                        )
                         Text(
                             "Pilih jenis laporan untuk melihat preview dan export ke PDF atau Excel",
                             style = MaterialTheme.typography.bodySmall,
-                            color = TextLight
+                            // FIX: reaktif terhadap tema
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 }
@@ -86,11 +107,13 @@ fun LaporanScreen(
                 "JENIS LAPORAN",
                 style      = MaterialTheme.typography.labelMedium,
                 fontWeight = FontWeight.SemiBold,
-                color      = TextLight,
+                // FIX: reaktif terhadap tema
+                color      = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier   = Modifier.padding(top = 8.dp, start = 4.dp)
             )
 
             // ── List Jenis Laporan ──────────────────────────────
+            // iconBgColor & iconColor tetap: warna semantik per kategori laporan
             LaporanMenuItem(
                 icon        = Icons.Default.Groups,
                 iconBgColor = IncomeGreen.copy(alpha = 0.12f),
@@ -119,7 +142,6 @@ fun LaporanScreen(
     }
 
     // ── Bottom Sheets ──────────────────────────────────────────
-    // PERBAIKAN: Memanggil fungsi sheet tanpa argumen karena parameter tidak terdefinisi di tujuannya
     when (uiState.activeSheet) {
         LaporanType.IURAN_BULANAN   -> LaporanIuranBulananSheet(uiState = uiState, viewModel = viewModel)
         LaporanType.STATUS_BAYAR    -> LaporanStatusBayarSheet(uiState = uiState, viewModel = viewModel)
@@ -140,7 +162,8 @@ private fun LaporanMenuItem(
     Card(
         modifier  = Modifier.fillMaxWidth(),
         onClick   = onClick,
-        colors    = CardDefaults.cardColors(containerColor = CardWhite),
+        // FIX: reaktif terhadap tema
+        colors    = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         shape     = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(1.dp)
     ) {
@@ -152,18 +175,39 @@ private fun LaporanMenuItem(
                 modifier = Modifier
                     .size(44.dp)
                     .clip(RoundedCornerShape(12.dp))
-                    .background(iconBgColor),
+                    .background(iconBgColor),   // tetap: warna semantik
                 contentAlignment = Alignment.Center
             ) {
-                Icon(icon, contentDescription = null, tint = iconColor, modifier = Modifier.size(22.dp))
+                Icon(
+                    icon,
+                    contentDescription = null,
+                    tint     = iconColor,   // tetap: warna semantik
+                    modifier = Modifier.size(22.dp)
+                )
             }
             Spacer(Modifier.width(14.dp))
             Column(modifier = Modifier.weight(1f)) {
-                Text(title, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold, color = TextDark)
-                Text(subtitle, style = MaterialTheme.typography.bodySmall, color = TextLight, maxLines = 2)
+                Text(
+                    title,
+                    style      = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    // FIX: reaktif terhadap tema
+                    color      = MaterialTheme.colorScheme.onSurface
+                )
+                Text(
+                    subtitle,
+                    style    = MaterialTheme.typography.bodySmall,
+                    // FIX: reaktif terhadap tema
+                    color    = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 2
+                )
             }
-            // PERBAIKAN: Mengubah dari Icons.AutoMirrored.Filled.ChevronRight ke Icons.Default.ChevronRight
-            Icon(Icons.Default.ChevronRight, contentDescription = null, tint = TextMuted)
+            Icon(
+                Icons.Default.ChevronRight,
+                contentDescription = null,
+                // FIX: reaktif terhadap tema
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
+            )
         }
     }
 }

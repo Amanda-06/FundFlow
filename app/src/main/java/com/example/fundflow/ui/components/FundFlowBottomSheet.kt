@@ -18,7 +18,7 @@ fun FundFlowBottomSheet(
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         sheetState       = sheetState,
-        containerColor   = SurfaceGray,
+        containerColor   = MaterialTheme.colorScheme.surface,
         dragHandle = {
             Box(
                 modifier = Modifier
@@ -27,7 +27,7 @@ fun FundFlowBottomSheet(
                 contentAlignment = Alignment.Center
             ) {
                 BottomSheetDefaults.DragHandle(
-                    color = BorderGray
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         },

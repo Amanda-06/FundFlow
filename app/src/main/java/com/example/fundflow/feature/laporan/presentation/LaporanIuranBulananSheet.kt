@@ -1,6 +1,4 @@
-// ============================================================
 // feature/laporan/presentation/LaporanIuranBulananSheet.kt
-// ============================================================
 package com.example.fundflow.feature.laporan.presentation
 
 import androidx.compose.foundation.background
@@ -31,7 +29,8 @@ fun LaporanIuranBulananSheet(
             "Laporan Iuran Bulanan",
             style      = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.SemiBold,
-            color      = TextDark
+            // FIX: reaktif terhadap tema
+            color      = MaterialTheme.colorScheme.onSurface
         )
         Spacer(Modifier.height(16.dp))
 
@@ -47,47 +46,96 @@ fun LaporanIuranBulananSheet(
         // ── Tabel Rincian ─────────────────────────────────────
         Card(
             modifier = Modifier.fillMaxWidth(),
-            colors   = CardDefaults.cardColors(containerColor = CardWhite),
+            // FIX: reaktif terhadap tema
+            colors   = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
             shape    = RoundedCornerShape(12.dp)
         ) {
             Column(modifier = Modifier.padding(12.dp)) {
-                Text("Rincian Iuran Bulanan", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.SemiBold, color = TextDark)
+                Text(
+                    "Rincian Iuran Bulanan",
+                    style      = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.SemiBold,
+                    // FIX: reaktif terhadap tema
+                    color      = MaterialTheme.colorScheme.onSurface
+                )
                 Spacer(Modifier.height(8.dp))
 
                 // Header tabel
                 Row(modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp)) {
-                    Text("No",    style = MaterialTheme.typography.labelSmall, color = TextLight, modifier = Modifier.width(32.dp))
-                    Text("Bulan", style = MaterialTheme.typography.labelSmall, color = TextLight, modifier = Modifier.weight(1f))
-                    Text("Jumlah (Rp)", style = MaterialTheme.typography.labelSmall, color = TextLight)
+                    Text(
+                        "No",
+                        style    = MaterialTheme.typography.labelSmall,
+                        // FIX: reaktif terhadap tema
+                        color    = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.width(32.dp)
+                    )
+                    Text(
+                        "Bulan",
+                        style    = MaterialTheme.typography.labelSmall,
+                        // FIX: reaktif terhadap tema
+                        color    = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.weight(1f)
+                    )
+                    Text(
+                        "Jumlah (Rp)",
+                        style = MaterialTheme.typography.labelSmall,
+                        // FIX: reaktif terhadap tema
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
                 }
-                HorizontalDivider(color = BorderGray)
+                // FIX: reaktif terhadap tema
+                HorizontalDivider(color = MaterialTheme.colorScheme.outline)
 
                 laporan.rincianBulan.forEachIndexed { index, rincian ->
                     Row(
                         modifier          = Modifier.fillMaxWidth().padding(vertical = 8.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text("${index + 1}", style = MaterialTheme.typography.bodySmall, color = TextDark, modifier = Modifier.width(32.dp))
-                        Text(rincian.bulan, style = MaterialTheme.typography.bodySmall, color = TextDark, modifier = Modifier.weight(1f))
-                        Text(CurrencyFormatter.format(rincian.jumlah), style = MaterialTheme.typography.bodySmall, color = TextDark)
+                        Text(
+                            "${index + 1}",
+                            style    = MaterialTheme.typography.bodySmall,
+                            // FIX: reaktif terhadap tema
+                            color    = MaterialTheme.colorScheme.onSurface,
+                            modifier = Modifier.width(32.dp)
+                        )
+                        Text(
+                            rincian.bulan,
+                            style    = MaterialTheme.typography.bodySmall,
+                            // FIX: reaktif terhadap tema
+                            color    = MaterialTheme.colorScheme.onSurface,
+                            modifier = Modifier.weight(1f)
+                        )
+                        Text(
+                            CurrencyFormatter.format(rincian.jumlah),
+                            style = MaterialTheme.typography.bodySmall,
+                            // FIX: reaktif terhadap tema
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
                     }
-                    HorizontalDivider(color = BorderGray.copy(alpha = 0.5f))
+                    // FIX: reaktif terhadap tema
+                    HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f))
                 }
 
-                // Total
+                // Total — IncomeGreen tetap: warna semantik
                 Row(
-                    modifier          = Modifier
+                    modifier = Modifier
                         .fillMaxWidth()
                         .background(IncomeGreen.copy(alpha = 0.10f), RoundedCornerShape(8.dp))
                         .padding(horizontal = 8.dp, vertical = 10.dp),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text("Total", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold, color = TextDark)
+                    Text(
+                        "Total",
+                        style      = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.Bold,
+                        // FIX: reaktif terhadap tema
+                        color      = MaterialTheme.colorScheme.onSurface
+                    )
                     Text(
                         CurrencyFormatter.format(laporan.totalKeseluruhan),
                         style      = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.Bold,
-                        color      = IncomeGreenDark
+                        color      = IncomeGreenDark   // tetap: warna semantik
                     )
                 }
             }
@@ -95,7 +143,6 @@ fun LaporanIuranBulananSheet(
 
         Spacer(Modifier.height(16.dp))
 
-        // ── Tombol Export ─────────────────────────────────────
         ExportButtonsRow(uiState = uiState, viewModel = viewModel)
     }
 }
@@ -108,6 +155,7 @@ fun ExportButtonsRow(uiState: LaporanState, viewModel: LaporanViewModel) {
             onClick  = viewModel::onExportPdf,
             enabled  = !uiState.isExporting,
             modifier = Modifier.weight(1f).height(48.dp),
+            // PdfRed tetap: warna semantik PDF
             colors   = ButtonDefaults.outlinedButtonColors(contentColor = PdfRed),
             shape    = MaterialTheme.shapes.medium
         ) {
@@ -119,6 +167,7 @@ fun ExportButtonsRow(uiState: LaporanState, viewModel: LaporanViewModel) {
             onClick  = viewModel::onExportExcel,
             enabled  = !uiState.isExporting,
             modifier = Modifier.weight(1f).height(48.dp),
+            // IncomeGreen & Color.White tetap: warna semantik Excel
             colors   = ButtonDefaults.buttonColors(containerColor = IncomeGreen, contentColor = Color.White),
             shape    = MaterialTheme.shapes.medium
         ) {

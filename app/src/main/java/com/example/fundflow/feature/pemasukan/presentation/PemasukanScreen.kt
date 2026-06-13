@@ -52,21 +52,21 @@ fun PemasukanScreen(
             if (!uiState.isSelectionMode) {
                 FloatingActionButton(
                     onClick        = viewModel::onShowAddSheet,
-                    containerColor = IncomeGreen,
-                    contentColor   = CardWhite
+                    containerColor = IncomeGreen, // tetap — warna brand aksen pemasukan
+                    contentColor   = MaterialTheme.colorScheme.surface // FIX: was CardWhite
                 ) {
                     Icon(Icons.Default.Add, contentDescription = "Tambah Pemasukan")
                 }
             }
         },
-        containerColor = AppBackground
+        containerColor = MaterialTheme.colorScheme.background // FIX: was AppBackground
     ) { padding ->
         LazyColumn(
-            modifier       = Modifier.fillMaxSize().padding(padding),
-            contentPadding = PaddingValues(start = 16.dp, top = 8.dp, end = 16.dp, bottom = 80.dp),
+            modifier            = Modifier.fillMaxSize().padding(padding),
+            contentPadding      = PaddingValues(start = 16.dp, top = 8.dp, end = 16.dp, bottom = 80.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            // ── Kartu total pemasukan ──────────────────────────
+            // ── Kartu total pemasukan — tetap IncomeGreen (warna brand) ──
             item {
                 Card(
                     modifier  = Modifier.fillMaxWidth(),
@@ -83,7 +83,7 @@ fun PemasukanScreen(
                         Icon(
                             Icons.Default.TrendingUp,
                             contentDescription = null,
-                            tint               = CardWhite.copy(alpha = 0.8f),
+                            tint               = MaterialTheme.colorScheme.surface.copy(alpha = 0.8f), // FIX: was CardWhite
                             modifier           = Modifier.size(32.dp)
                         )
                         Spacer(Modifier.width(14.dp))
@@ -91,20 +91,19 @@ fun PemasukanScreen(
                             Text(
                                 "Total Pemasukan",
                                 style = MaterialTheme.typography.bodySmall,
-                                color = CardWhite.copy(alpha = 0.85f)
+                                color = MaterialTheme.colorScheme.surface.copy(alpha = 0.85f) // FIX: was CardWhite
                             )
                             Text(
                                 CurrencyFormatter.format(uiState.totalPemasukan),
                                 style      = MaterialTheme.typography.headlineMedium,
                                 fontWeight = FontWeight.Bold,
-                                color      = CardWhite
+                                color      = MaterialTheme.colorScheme.surface // FIX: was CardWhite
                             )
                         }
                     }
                 }
             }
 
-            // ── Search bar ────────────────────────────────────
             item {
                 FundFlowTextField(
                     value         = uiState.searchQuery,
@@ -115,19 +114,17 @@ fun PemasukanScreen(
                 )
             }
 
-            // ── Empty state ───────────────────────────────────
             if (!uiState.isLoading && uiState.filteredList.isEmpty()) {
                 item {
                     EmptyStateView(
-                        icon    = Icons.Default.TrendingUp,
-                        title   = "Belum ada pemasukan",
-                        message = "Klik tombol + untuk mencatat pemasukan pertama.",
+                        icon     = Icons.Default.TrendingUp,
+                        title    = "Belum ada pemasukan",
+                        message  = "Klik tombol + untuk mencatat pemasukan pertama.",
                         modifier = Modifier.fillMaxWidth().padding(top = 40.dp)
                     )
                 }
             }
 
-            // ── List ──────────────────────────────────────────
             items(uiState.filteredList, key = { it.pemasukanId }) { item ->
                 PemasukanListItem(
                     pemasukan       = item,
@@ -142,15 +139,10 @@ fun PemasukanScreen(
         }
     }
 
-    // ── Bottom Sheet Form ─────────────────────────────────────
     if (uiState.showFormSheet) {
-        PemasukanDetailSheet(
-            uiState   = uiState,
-            viewModel = viewModel
-        )
+        PemasukanDetailSheet(uiState = uiState, viewModel = viewModel)
     }
 
-    // ── Konfirmasi Hapus ──────────────────────────────────────
     if (uiState.showDeleteDialog) {
         if (uiState.deleteTargetId != null) {
             ConfirmDeleteDialog(
@@ -187,7 +179,6 @@ private fun PemasukanListItem(
         onClick         = onClick,
         onLongClick     = onLongClick
     ) {
-        // Ikon sumber
         Box(
             modifier = Modifier
                 .size(40.dp)
@@ -203,20 +194,20 @@ private fun PemasukanListItem(
                 pemasukan.deskripsi,
                 style      = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Medium,
-                color      = TextDark,
+                color      = MaterialTheme.colorScheme.onSurface, // FIX: was TextDark
                 maxLines   = 1
             )
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     pemasukan.sumber,
-                    style   = MaterialTheme.typography.bodySmall,
-                    color   = AccentPurple,
+                    style    = MaterialTheme.typography.bodySmall,
+                    color    = AccentPurple, // tetap — warna brand aksen
                     maxLines = 1
                 )
                 Text(
                     " · ${pemasukan.tanggal}",
                     style = MaterialTheme.typography.bodySmall,
-                    color = TextLight
+                    color = MaterialTheme.colorScheme.onSurfaceVariant // FIX: was TextLight
                 )
             }
         }
@@ -231,7 +222,11 @@ private fun PemasukanListItem(
             if (!isSelectionMode) {
                 Row {
                     IconButton(onClick = onEdit, modifier = Modifier.size(28.dp)) {
-                        Icon(Icons.Default.Edit, null, tint = TextLight, modifier = Modifier.size(14.dp))
+                        Icon(
+                            Icons.Default.Edit, null,
+                            tint     = MaterialTheme.colorScheme.onSurfaceVariant, // FIX: was TextLight
+                            modifier = Modifier.size(14.dp)
+                        )
                     }
                     IconButton(onClick = onDelete, modifier = Modifier.size(28.dp)) {
                         Icon(Icons.Default.Delete, null, tint = ExpenseRed, modifier = Modifier.size(14.dp))

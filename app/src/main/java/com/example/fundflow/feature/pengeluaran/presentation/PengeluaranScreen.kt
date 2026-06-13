@@ -1,4 +1,3 @@
-// ============================================================
 // feature/pengeluaran/presentation/PengeluaranScreen.kt
 // ============================================================
 package com.example.fundflow.feature.pengeluaran.presentation
@@ -55,21 +54,21 @@ fun PengeluaranScreen(
             if (!uiState.isSelectionMode) {
                 FloatingActionButton(
                     onClick        = viewModel::onShowAddSheet,
-                    containerColor = ExpenseRed,
-                    contentColor   = CardWhite
+                    containerColor = ExpenseRed, // tetap — warna brand aksen pengeluaran
+                    contentColor   = MaterialTheme.colorScheme.surface // FIX: was CardWhite
                 ) {
                     Icon(Icons.Default.Add, contentDescription = "Tambah Pengeluaran")
                 }
             }
         },
-        containerColor = AppBackground
+        containerColor = MaterialTheme.colorScheme.background // FIX: was AppBackground
     ) { padding ->
         LazyColumn(
-            modifier       = Modifier.fillMaxSize().padding(padding),
-            contentPadding = PaddingValues(start = 16.dp, top = 8.dp, end = 16.dp, bottom = 80.dp),
+            modifier            = Modifier.fillMaxSize().padding(padding),
+            contentPadding      = PaddingValues(start = 16.dp, top = 8.dp, end = 16.dp, bottom = 80.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            // ── Kartu total pengeluaran ────────────────────────
+            // ── Kartu total pengeluaran — tetap ExpenseRed (warna brand) ──
             item {
                 Card(
                     modifier  = Modifier.fillMaxWidth(),
@@ -81,22 +80,29 @@ fun PengeluaranScreen(
                         modifier          = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 16.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Icon(Icons.Default.TrendingDown, null, tint = CardWhite.copy(alpha = 0.8f), modifier = Modifier.size(32.dp))
+                        Icon(
+                            Icons.Default.TrendingDown, null,
+                            tint     = MaterialTheme.colorScheme.surface.copy(alpha = 0.8f), // FIX: was CardWhite
+                            modifier = Modifier.size(32.dp)
+                        )
                         Spacer(Modifier.width(14.dp))
                         Column {
-                            Text("Total Pengeluaran", style = MaterialTheme.typography.bodySmall, color = CardWhite.copy(alpha = 0.85f))
+                            Text(
+                                "Total Pengeluaran",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.surface.copy(alpha = 0.85f) // FIX: was CardWhite
+                            )
                             Text(
                                 CurrencyFormatter.format(uiState.totalPengeluaran),
                                 style      = MaterialTheme.typography.headlineMedium,
                                 fontWeight = FontWeight.Bold,
-                                color      = CardWhite
+                                color      = MaterialTheme.colorScheme.surface // FIX: was CardWhite
                             )
                         }
                     }
                 }
             }
 
-            // ── Search bar ────────────────────────────────────
             item {
                 FundFlowTextField(
                     value         = uiState.searchQuery,
@@ -110,9 +116,9 @@ fun PengeluaranScreen(
             if (!uiState.isLoading && uiState.filteredList.isEmpty()) {
                 item {
                     EmptyStateView(
-                        icon    = Icons.Default.TrendingDown,
-                        title   = "Belum ada pengeluaran",
-                        message = "Klik tombol + untuk mencatat pengeluaran pertama.",
+                        icon     = Icons.Default.TrendingDown,
+                        title    = "Belum ada pengeluaran",
+                        message  = "Klik tombol + untuk mencatat pengeluaran pertama.",
                         modifier = Modifier.fillMaxWidth().padding(top = 40.dp)
                     )
                 }
@@ -139,8 +145,8 @@ fun PengeluaranScreen(
     if (uiState.showDeleteDialog) {
         if (uiState.deleteTargetId != null) {
             ConfirmDeleteDialog(
-                title = "Hapus Pengeluaran?",
-                message = "Data pengeluaran ini akan dihapus secara permanen.",
+                title     = "Hapus Pengeluaran?",
+                message   = "Data pengeluaran ini akan dihapus secara permanen.",
                 onConfirm = viewModel::onConfirmDelete,
                 onDismiss = viewModel::onDismissDeleteDialog
             )
@@ -181,30 +187,42 @@ private fun PengeluaranListItem(
         }
         Spacer(Modifier.width(12.dp))
         Column(modifier = Modifier.weight(1f)) {
-            Text(pengeluaran.deskripsi, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium, color = TextDark, maxLines = 1)
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(pengeluaran.kategori, style = MaterialTheme.typography.bodySmall, color = AccentPurple)
-                if (pengeluaran.namaProgram.isNotBlank()) {
-                    Text(" · ${pengeluaran.namaProgram}", style = MaterialTheme.typography.bodySmall, color = TextLight, maxLines = 1)
-                }
-            }
-            Text(pengeluaran.tanggal, style = MaterialTheme.typography.bodySmall, color = TextLight)
+            Text(
+                pengeluaran.deskripsi,
+                style      = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.Medium,
+                color      = MaterialTheme.colorScheme.onSurface, // FIX: was TextDark
+                maxLines   = 1
+            )
+            Text(
+                pengeluaran.kategori,
+                style    = MaterialTheme.typography.bodySmall,
+                color    = MaterialTheme.colorScheme.onSurfaceVariant, // FIX: was TextLight
+                maxLines = 1
+            )
         }
         Column(horizontalAlignment = Alignment.End) {
             Text(
                 "- ${CurrencyFormatter.format(pengeluaran.totalNominal)}",
-                style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold, color = ExpenseRed
+                style      = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.SemiBold,
+                color      = ExpenseRed
             )
             if (pengeluaran.quantity > 1) {
                 Text(
                     "${pengeluaran.quantity}x ${CurrencyFormatter.format(pengeluaran.hargaSatuan)}",
-                    style = MaterialTheme.typography.bodySmall, color = TextLight
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant // FIX: was TextLight
                 )
             }
             if (!isSelectionMode) {
                 Row {
                     IconButton(onClick = onEdit, modifier = Modifier.size(28.dp)) {
-                        Icon(Icons.Default.Edit, null, tint = TextLight, modifier = Modifier.size(14.dp))
+                        Icon(
+                            Icons.Default.Edit, null,
+                            tint     = MaterialTheme.colorScheme.onSurfaceVariant, // FIX: was TextLight
+                            modifier = Modifier.size(14.dp)
+                        )
                     }
                     IconButton(onClick = onDelete, modifier = Modifier.size(28.dp)) {
                         Icon(Icons.Default.Delete, null, tint = ExpenseRed, modifier = Modifier.size(14.dp))

@@ -1,3 +1,5 @@
+//FundFlowTextField.kt
+
 package com.example.fundflow.ui.components
 
 import androidx.compose.foundation.layout.Column
@@ -29,6 +31,7 @@ fun FundFlowTextField(
     placeholder: String = "",
     leadingIcon: ImageVector? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
     isError: Boolean = false,
     errorMessage: String? = null,
     enabled: Boolean = true,
@@ -49,6 +52,7 @@ fun FundFlowTextField(
                 { Icon(imageVector = leadingIcon, contentDescription = null, tint = TextLight) }
             } else null,
             trailingIcon   = trailingIcon,
+            visualTransformation = visualTransformation,
             isError        = isError,
             enabled        = enabled,
             singleLine     = singleLine,

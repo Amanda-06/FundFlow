@@ -1,6 +1,3 @@
-// ============================================================
-// feature/iuran/presentation/IuranScreen.kt
-// ============================================================
 package com.example.fundflow.feature.iuran.presentation
 
 import androidx.compose.foundation.background
@@ -47,32 +44,37 @@ fun IuranScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Text("Iuran Anggota", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.SemiBold, color = TextDark)
+                    Text(
+                        "Iuran Anggota",
+                        style      = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.SemiBold,
+                        color      = MaterialTheme.colorScheme.onBackground // FIX: was TextDark
+                    )
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = AppBackground)
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.background // FIX: was AppBackground
+                )
             )
         },
         floatingActionButton = {
             FloatingActionButton(
                 onClick        = onNavigateToAnggota,
-                containerColor = NavBackground,
-                contentColor   = CardWhite
+                containerColor = MaterialTheme.colorScheme.inverseSurface, // FIX: was NavBackground
+                contentColor   = MaterialTheme.colorScheme.inverseOnSurface // FIX: was CardWhite
             ) {
                 Icon(Icons.Default.Group, contentDescription = "Manajemen Anggota")
             }
         },
-        containerColor = AppBackground
+        containerColor = MaterialTheme.colorScheme.background // FIX: was AppBackground
     ) { padding ->
         Column(modifier = Modifier.fillMaxSize().padding(padding)) {
 
-            // ── Month Selector ──────────────────────────────────
             MonthSelector(
-                label   = uiState.selectedMonth?.label ?: "Pilih Periode",
-                onClick = viewModel::onShowMonthPicker,
+                label    = uiState.selectedMonth?.label ?: "Pilih Periode",
+                onClick  = viewModel::onShowMonthPicker,
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
             )
 
-            // ── Summary Cards ────────────────────────────────────
             SummaryRow(
                 lunas      = uiState.summary.lunasCount,
                 belumBayar = uiState.summary.belumBayarCount,
@@ -80,7 +82,6 @@ fun IuranScreen(
                 modifier   = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
             )
 
-            // ── Search ────────────────────────────────────────
             FundFlowTextField(
                 value         = uiState.searchQuery,
                 onValueChange = viewModel::onSearchChange,
@@ -91,28 +92,26 @@ fun IuranScreen(
                     .padding(horizontal = 16.dp, vertical = 4.dp)
             )
 
-            // ── Filter chips ──────────────────────────────────
             Row(
-                modifier            = Modifier
+                modifier              = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 6.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                FilterChipItem("Semua", uiState.activeFilter == IuranFilter.SEMUA) { viewModel.onFilterChange(IuranFilter.SEMUA) }
-                FilterChipItem("Lunas", uiState.activeFilter == IuranFilter.LUNAS) { viewModel.onFilterChange(IuranFilter.LUNAS) }
-                FilterChipItem("Belum Bayar", uiState.activeFilter == IuranFilter.BELUM_BAYAR) { viewModel.onFilterChange(IuranFilter.BELUM_BAYAR) }
+                FilterChipItem("Semua",      uiState.activeFilter == IuranFilter.SEMUA)      { viewModel.onFilterChange(IuranFilter.SEMUA) }
+                FilterChipItem("Lunas",      uiState.activeFilter == IuranFilter.LUNAS)      { viewModel.onFilterChange(IuranFilter.LUNAS) }
+                FilterChipItem("Belum Bayar",uiState.activeFilter == IuranFilter.BELUM_BAYAR){ viewModel.onFilterChange(IuranFilter.BELUM_BAYAR) }
             }
 
-            // ── List anggota ──────────────────────────────────
             if (uiState.isLoading) {
                 Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     CircularProgressIndicator(color = PrimaryLime)
                 }
             } else if (uiState.filteredList.isEmpty()) {
                 EmptyStateView(
-                    icon    = Icons.Default.Receipt,
-                    title   = "Tidak ada data",
-                    message = "Tidak ada anggota yang sesuai dengan pencarian/filter.",
+                    icon     = Icons.Default.Receipt,
+                    title    = "Tidak ada data",
+                    message  = "Tidak ada anggota yang sesuai dengan pencarian/filter.",
                     modifier = Modifier.fillMaxSize()
                 )
             } else {
@@ -128,7 +127,6 @@ fun IuranScreen(
         }
     }
 
-    // ── Month Picker Dialog ────────────────────────────────────
     if (uiState.showMonthPicker) {
         MonthPickerDialog(
             options   = uiState.availableMonths,
@@ -138,7 +136,6 @@ fun IuranScreen(
         )
     }
 
-    // ── Bottom Sheet Edit Detail Iuran ─────────────────────────
     if (uiState.showDetailSheet && uiState.selectedIuran != null) {
         IuranDetailSheet(uiState = uiState, viewModel = viewModel)
     }
@@ -150,21 +147,37 @@ private fun MonthSelector(label: String, onClick: () -> Unit, modifier: Modifier
     Card(
         modifier  = modifier.fillMaxWidth(),
         onClick   = onClick,
-        colors    = CardDefaults.cardColors(containerColor = CardWhite),
+        colors    = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface // FIX: was CardWhite
+        ),
         shape     = RoundedCornerShape(10.dp),
         elevation = CardDefaults.cardElevation(1.dp)
     ) {
         Row(
-            modifier          = Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 10.dp),
-            verticalAlignment = Alignment.CenterVertically,
+            modifier              = Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 10.dp),
+            verticalAlignment     = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(Icons.Default.CalendarMonth, contentDescription = null, tint = TextDark, modifier = Modifier.size(18.dp))
+                Icon(
+                    Icons.Default.CalendarMonth,
+                    contentDescription = null,
+                    tint     = MaterialTheme.colorScheme.onSurface, // FIX: was TextDark
+                    modifier = Modifier.size(18.dp)
+                )
                 Spacer(Modifier.width(8.dp))
-                Text(label, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold, color = TextDark)
+                Text(
+                    label,
+                    style      = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    color      = MaterialTheme.colorScheme.onSurface // FIX: was TextDark
+                )
             }
-            Icon(Icons.Default.ExpandMore, contentDescription = null, tint = TextLight)
+            Icon(
+                Icons.Default.ExpandMore,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant // FIX: was TextLight
+            )
         }
     }
 }
@@ -174,19 +187,21 @@ private fun MonthSelector(label: String, onClick: () -> Unit, modifier: Modifier
 private fun SummaryRow(lunas: Int, belumBayar: Int, terkumpul: Double, modifier: Modifier = Modifier) {
     Card(
         modifier  = modifier.fillMaxWidth(),
-        colors    = CardDefaults.cardColors(containerColor = CardWhite),
+        colors    = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface // FIX: was CardWhite
+        ),
         shape     = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(1.dp)
     ) {
         Row(
-            modifier          = Modifier.fillMaxWidth().padding(vertical = 14.dp),
+            modifier              = Modifier.fillMaxWidth().padding(vertical = 14.dp),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            SummaryItem(value = "$lunas", label = "Lunas", color = IncomeGreen)
-            VerticalDivider(modifier = Modifier.height(36.dp), color = BorderGray)
-            SummaryItem(value = "$belumBayar", label = "Belum Bayar", color = ExpenseRed)
-            VerticalDivider(modifier = Modifier.height(36.dp), color = BorderGray)
-            SummaryItem(value = CurrencyFormatter.formatShort(terkumpul), label = "Terkumpul", color = IuranBlue)
+            SummaryItem(value = "$lunas",                                        label = "Lunas",      color = IncomeGreen)
+            VerticalDivider(modifier = Modifier.height(36.dp), color = MaterialTheme.colorScheme.outline) // FIX: was BorderGray
+            SummaryItem(value = "$belumBayar",                                   label = "Belum Bayar",color = ExpenseRed)
+            VerticalDivider(modifier = Modifier.height(36.dp), color = MaterialTheme.colorScheme.outline)
+            SummaryItem(value = CurrencyFormatter.formatShort(terkumpul),        label = "Terkumpul",  color = IuranBlue)
         }
     }
 }
@@ -195,26 +210,29 @@ private fun SummaryRow(lunas: Int, belumBayar: Int, terkumpul: Double, modifier:
 private fun SummaryItem(value: String, label: String, color: Color) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(value, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = color)
-        Text(label, style = MaterialTheme.typography.labelSmall, color = TextLight)
+        Text(
+            label,
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant // FIX: was TextLight
+        )
     }
 }
 
 // ── Filter Chip ──────────────────────────────────────────────────
 @Composable
 fun FilterChipItem(text: String, isSelected: Boolean, onClick: () -> Unit) {
+    val unselectedBg = MaterialTheme.colorScheme.surfaceVariant // FIX: was hardcoded Color(0xFFE2E8F0)
     Box(
         modifier = Modifier
             .clip(RoundedCornerShape(20.dp))
-            .background(
-                color = if (isSelected) PrimaryLime else Color(0xFFE2E8F0)
-            )
+            .background(if (isSelected) PrimaryLime else unselectedBg)
             .clickable { onClick() }
             .padding(horizontal = 16.dp, vertical = 8.dp)
     ) {
         Text(
             text       = text,
             style      = MaterialTheme.typography.labelMedium,
-            color      = if (isSelected) TextDark else TextLight,
+            color      = if (isSelected) TextDark else MaterialTheme.colorScheme.onSurfaceVariant, // FIX: was TextLight
             fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal
         )
     }
@@ -225,7 +243,6 @@ fun FilterChipItem(text: String, isSelected: Boolean, onClick: () -> Unit) {
 private fun IuranListItem(iuran: Iuran, onClick: () -> Unit) {
     FundFlowCard(onClick = onClick, elevation = 1.dp) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            // Status icon
             Box(
                 modifier = Modifier
                     .size(36.dp)
@@ -237,32 +254,40 @@ private fun IuranListItem(iuran: Iuran, onClick: () -> Unit) {
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    imageVector = if (iuran.statusBayar) Icons.Default.Check else Icons.Default.Close,
+                    imageVector        = if (iuran.statusBayar) Icons.Default.Check else Icons.Default.Close,
                     contentDescription = null,
-                    tint = if (iuran.statusBayar) IncomeGreen else ExpenseRed,
-                    modifier = Modifier.size(18.dp)
+                    tint               = if (iuran.statusBayar) IncomeGreen else ExpenseRed,
+                    modifier           = Modifier.size(18.dp)
                 )
             }
             Spacer(Modifier.width(12.dp))
-
             Column(modifier = Modifier.weight(1f)) {
-                Text(iuran.namaAnggota, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium, color = TextDark)
+                Text(
+                    iuran.namaAnggota,
+                    style      = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.Medium,
+                    color      = MaterialTheme.colorScheme.onSurface // FIX: was TextDark
+                )
                 Text(
                     text  = if (iuran.statusBayar) (iuran.tanggalBayar ?: "-") else "Belum bayar",
                     style = MaterialTheme.typography.bodySmall,
-                    color = TextLight
+                    color = MaterialTheme.colorScheme.onSurfaceVariant // FIX: was TextLight
                 )
             }
-
             Column(horizontalAlignment = Alignment.End) {
                 Text(
                     text       = if (iuran.statusBayar) CurrencyFormatter.format(iuran.nominal) else "Rp 0",
                     style      = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.SemiBold,
-                    color      = if (iuran.statusBayar) TextDark else TextMuted
+                    color      = if (iuran.statusBayar) MaterialTheme.colorScheme.onSurface // FIX: was TextDark
+                    else MaterialTheme.colorScheme.onSurfaceVariant             // FIX: was TextMuted
                 )
                 if (iuran.statusBayar && iuran.metodePembayaran.isNotBlank()) {
-                    Text(iuran.metodePembayaran, style = MaterialTheme.typography.bodySmall, color = TextLight)
+                    Text(
+                        iuran.metodePembayaran,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant // FIX: was TextLight
+                    )
                 }
             }
         }
@@ -279,7 +304,13 @@ private fun MonthPickerDialog(
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Pilih Periode", style = MaterialTheme.typography.titleLarge, color = TextDark) },
+        title = {
+            Text(
+                "Pilih Periode",
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onSurface // FIX: was TextDark
+            )
+        },
         text = {
             Box(modifier = Modifier.heightIn(max = 400.dp)) {
                 LazyColumn {
@@ -289,12 +320,14 @@ private fun MonthPickerDialog(
                             modifier = Modifier.fillMaxWidth().padding(vertical = 2.dp),
                             onClick  = { onSelect(option) },
                             shape    = MaterialTheme.shapes.small,
-                            color    = if (isSelected) PrimaryLime.copy(alpha = 0.2f) else CardWhite
+                            color    = if (isSelected) PrimaryLime.copy(alpha = 0.2f)
+                            else MaterialTheme.colorScheme.surface // FIX: was CardWhite
                         ) {
                             Text(
                                 option.label,
                                 modifier   = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
-                                color      = if (isSelected) PrimaryLimeDark else TextDark,
+                                color      = if (isSelected) PrimaryLimeDark
+                                else MaterialTheme.colorScheme.onSurface, // FIX: was TextDark
                                 fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal
                             )
                         }
@@ -303,8 +336,10 @@ private fun MonthPickerDialog(
             }
         },
         confirmButton = {
-            TextButton(onClick = onDismiss) { Text("Tutup", color = TextDark) }
+            TextButton(onClick = onDismiss) {
+                Text("Tutup", color = MaterialTheme.colorScheme.onSurface) // FIX: was TextDark
+            }
         },
-        containerColor = CardWhite
+        containerColor = MaterialTheme.colorScheme.surface // FIX: was CardWhite
     )
 }

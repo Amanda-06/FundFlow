@@ -1,3 +1,5 @@
+// feature/profile/presentation/TentangFundFlowScreen.kt
+// ============================================================
 package com.example.fundflow.feature.profile.presentation
 
 import androidx.compose.foundation.background
@@ -20,14 +22,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.fundflow.ui.components.FundFlowTopBar
-import com.example.fundflow.ui.theme.FundFlowTheme
-import com.example.fundflow.ui.theme.AppBackground
-import com.example.fundflow.ui.theme.HeaderGreen
-import com.example.fundflow.ui.theme.TextDark
-import com.example.fundflow.ui.theme.TextLight
-import com.example.fundflow.ui.theme.TextMuted
-import com.example.fundflow.ui.theme.CardWhite
-import com.example.fundflow.ui.theme.IuranBlue
+import com.example.fundflow.ui.theme.*
 
 @Composable
 fun TentangFundFlowScreen(
@@ -35,7 +30,8 @@ fun TentangFundFlowScreen(
 ) {
     Scaffold(
         topBar = { FundFlowTopBar(title = "Tentang FundFlow", onNavigateBack = onNavigateBack) },
-        containerColor = AppBackground
+        // FIX: reaktif terhadap tema
+        containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
         Column(
             modifier = Modifier
@@ -48,6 +44,7 @@ fun TentangFundFlowScreen(
             Spacer(Modifier.height(16.dp))
 
             // ── Logo ──────────────────────────────────────────
+            // Background tetap HeaderGreen: warna brand
             Box(
                 modifier = Modifier
                     .size(88.dp)
@@ -58,29 +55,42 @@ fun TentangFundFlowScreen(
                 Icon(
                     Icons.Default.AccountBalanceWallet,
                     contentDescription = null,
-                    tint               = TextDark,
-                    modifier           = Modifier.size(44.dp)
+                    tint     = TextDark,   // tetap: di atas header hijau brand
+                    modifier = Modifier.size(44.dp)
                 )
             }
 
             Spacer(Modifier.height(16.dp))
 
-            Text("FundFlow", style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold, color = TextDark)
-            Text("Versi 1.0.0", style = MaterialTheme.typography.bodySmall, color = TextLight)
+            Text(
+                "FundFlow",
+                style      = MaterialTheme.typography.headlineMedium,
+                fontWeight = FontWeight.Bold,
+                // FIX: reaktif terhadap tema
+                color      = MaterialTheme.colorScheme.onSurface
+            )
+            Text(
+                "Versi 1.0.0",
+                style = MaterialTheme.typography.bodySmall,
+                // FIX: reaktif terhadap tema
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
 
             Spacer(Modifier.height(24.dp))
 
             // ── Deskripsi ─────────────────────────────────────
             Card(
                 modifier  = Modifier.fillMaxWidth(),
-                colors    = CardDefaults.cardColors(containerColor = CardWhite),
+                // FIX: reaktif terhadap tema
+                colors    = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                 shape     = RoundedCornerShape(14.dp),
                 elevation = CardDefaults.cardElevation(2.dp)
             ) {
                 Text(
                     text      = "FundFlow adalah aplikasi mobile yang dirancang untuk membantu bendahara organisasi mengelola keuangan secara terstruktur, terpusat, dan efisien — mencakup pencatatan iuran, pemasukan, pengeluaran, hingga pelaporan otomatis.",
                     style     = MaterialTheme.typography.bodyMedium,
-                    color     = TextDark,
+                    // FIX: reaktif terhadap tema
+                    color     = MaterialTheme.colorScheme.onSurface,
                     textAlign = TextAlign.Start,
                     modifier  = Modifier.padding(16.dp),
                     lineHeight = MaterialTheme.typography.bodyMedium.lineHeight
@@ -106,8 +116,9 @@ fun TentangFundFlowScreen(
 
             Text(
                 "© 2026 FundFlow. Seluruh hak cipta dilindungi.",
-                style = MaterialTheme.typography.bodySmall,
-                color = TextMuted,
+                style     = MaterialTheme.typography.bodySmall,
+                // FIX: reaktif terhadap tema
+                color     = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center
             )
 
@@ -124,7 +135,8 @@ private fun InfoCard(
 ) {
     Card(
         modifier  = Modifier.fillMaxWidth(),
-        colors    = CardDefaults.cardColors(containerColor = CardWhite),
+        // FIX: reaktif terhadap tema
+        colors    = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         shape     = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(1.dp)
     ) {
@@ -136,15 +148,31 @@ private fun InfoCard(
                 modifier = Modifier
                     .size(40.dp)
                     .clip(RoundedCornerShape(10.dp))
-                    .background(IuranBlue.copy(alpha = 0.12f)),
+                    .background(IuranBlue.copy(alpha = 0.12f)),   // tetap: warna semantik
                 contentAlignment = Alignment.Center
             ) {
-                Icon(icon, contentDescription = null, tint = IuranBlue, modifier = Modifier.size(20.dp))
+                Icon(
+                    icon,
+                    contentDescription = null,
+                    tint     = IuranBlue,   // tetap: warna semantik
+                    modifier = Modifier.size(20.dp)
+                )
             }
             Spacer(Modifier.width(12.dp))
             Column {
-                Text(title, style = MaterialTheme.typography.labelSmall, color = TextLight)
-                Text(value, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium, color = TextDark)
+                Text(
+                    title,
+                    style = MaterialTheme.typography.labelSmall,
+                    // FIX: reaktif terhadap tema
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Text(
+                    value,
+                    style      = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.Medium,
+                    // FIX: reaktif terhadap tema
+                    color      = MaterialTheme.colorScheme.onSurface
+                )
             }
         }
     }
@@ -153,7 +181,6 @@ private fun InfoCard(
 @Preview(showBackground = true)
 @Composable
 fun TentangFundFlowScreenPreview() {
-    // Explicitly using the theme for the preview
     FundFlowTheme {
         TentangFundFlowScreen(onNavigateBack = {})
     }

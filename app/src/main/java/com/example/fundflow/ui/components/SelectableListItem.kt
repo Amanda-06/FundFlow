@@ -23,7 +23,10 @@ fun SelectableListItem(
     modifier: Modifier = Modifier,
     content: @Composable RowScope.() -> Unit
 ) {
-    val backgroundColor = if (isSelected) PrimaryLime.copy(alpha = 0.15f) else CardWhite
+    val backgroundColor = if (isSelected)
+        PrimaryLime.copy(alpha = 0.15f)
+    else
+        MaterialTheme.colorScheme.surface
 
     Row(
         modifier = modifier
