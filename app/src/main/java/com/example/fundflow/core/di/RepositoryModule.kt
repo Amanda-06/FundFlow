@@ -18,6 +18,8 @@ import com.example.fundflow.feature.profile.data.repository.ProfileRepositoryImp
 import com.example.fundflow.feature.profile.domain.repository.ProfileRepository
 import com.example.fundflow.feature.settings.data.repository.SettingsRepositoryImpl
 import com.example.fundflow.feature.settings.domain.repository.SettingsRepository
+import com.example.fundflow.feature.iuran.data.repository.PeriodeRepositoryImpl
+import com.example.fundflow.feature.iuran.domain.repository.PeriodeRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -48,6 +50,9 @@ abstract class RepositoryModule {
 
     @Binds @Singleton
     abstract fun bindLaporanRepository(impl: LaporanRepositoryImpl): LaporanRepository
+
+    @Binds @Singleton
+    abstract fun bindPeriodeRepository(impl: PeriodeRepositoryImpl): PeriodeRepository
 
     @Binds @Singleton
     abstract fun bindProfileRepository(impl: ProfileRepositoryImpl): ProfileRepository

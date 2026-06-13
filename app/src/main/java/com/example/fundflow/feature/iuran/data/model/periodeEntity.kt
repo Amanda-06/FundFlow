@@ -22,10 +22,3 @@ data class PeriodeEntity(
     @ColumnInfo(name = "created_at")
     val createdAt: Long = System.currentTimeMillis()
 )
-
-
-// ============================================================
-// feature/iuran/data/local/PeriodeDao.kt
-// ============================================================
-
- 

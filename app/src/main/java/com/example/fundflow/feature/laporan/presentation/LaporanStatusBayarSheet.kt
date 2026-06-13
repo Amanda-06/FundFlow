@@ -17,14 +17,19 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.core.os.ConfigurationCompat
 import com.example.fundflow.R
 import com.example.fundflow.core.util.CurrencyFormatter
 import com.example.fundflow.feature.laporan.domain.model.StatusBayarAnggota
 import com.example.fundflow.ui.components.FundFlowBottomSheet
 import com.example.fundflow.ui.theme.*
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -32,6 +37,40 @@ fun LaporanStatusBayarSheet(
     uiState: LaporanState,
     viewModel: LaporanViewModel
 ) {
+    // FIX: Ambil Locale sistem perangkat agar list bulan reaktif terhadap perubahan bahasa HP
+    val configuration = LocalConfiguration.current
+    val currentLocale = remember(configuration) {
+        ConfigurationCompat.getLocales(configuration).get(0) ?: Locale.getDefault()
+    }
+
+    // Helper Lambda untuk memformat key bulan ("yyyy-MM" atau "MM-yyyy") menjadi Nama Bulan dinamis sesuai bahasa HP
+    val formatMonthLabel = remember(currentLocale) {
+        { key: String, defaultLabel: String ->
+            try {
+                if (key.contains("-")) {
+                    val parts = key.split("-")
+                    if (parts[0].length == 4) { // Format: yyyy-MM
+                        val year = parts[0].toIntOrNull() ?: 2026
+                        val month = parts[1].toIntOrNull() ?: 1
+                        LocalDate.of(year, month, 1)
+                            .format(DateTimeFormatter.ofPattern("MMMM yyyy", currentLocale))
+                            .replaceFirstChar { it.uppercase() }
+                    } else { // Format: MM-yyyy
+                        val month = parts[0].toIntOrNull() ?: 1
+                        val year = parts[1].toIntOrNull() ?: 2026
+                        LocalDate.of(year, month, 1)
+                            .format(DateTimeFormatter.ofPattern("MMMM yyyy", currentLocale))
+                            .replaceFirstChar { it.uppercase() }
+                    }
+                } else {
+                    defaultLabel
+                }
+            } catch (e: Exception) {
+                defaultLabel
+            }
+        }
+    }
+
     FundFlowBottomSheet(onDismiss = viewModel::onDismissSheet) {
         Text(
             stringResource(R.string.laporan_status_bayar_kas),
@@ -67,8 +106,14 @@ fun LaporanStatusBayarSheet(
                         modifier = Modifier.size(18.dp)
                     )
                     Spacer(Modifier.width(8.dp))
+
+                    // FIX: Teks bulan terpilih dikonversi dinamis mengikuti Locale bahasa HP
+                    val selectedMonthText = uiState.selectedMonthForStatus?.let {
+                        formatMonthLabel(it.key, it.label)
+                    } ?: stringResource(R.string.pilih_bulan)
+
                     Text(
-                        uiState.selectedMonthForStatus?.label ?: stringResource(R.string.pilih_bulan),
+                        selectedMonthText,
                         style      = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.SemiBold,
                         // FIX: reaktif terhadap tema
@@ -143,6 +188,10 @@ fun LaporanStatusBayarSheet(
                     LazyColumn {
                         items(uiState.availableMonths) { month ->
                             val isSelected = month.key == uiState.selectedMonthForStatus?.key
+
+                            // FIX: Teks item list pilihan bulan dikonversi dinamis mengikuti Locale bahasa HP
+                            val localizedMonthOptionLabel = formatMonthLabel(month.key, month.label)
+
                             Surface(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -154,7 +203,7 @@ fun LaporanStatusBayarSheet(
                                 else MaterialTheme.colorScheme.surface
                             ) {
                                 Text(
-                                    month.label,
+                                    localizedMonthOptionLabel,
                                     modifier   = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
                                     // FIX: unselected text reaktif terhadap tema
                                     color      = if (isSelected) PrimaryLimeDark

@@ -5,6 +5,7 @@ package com.example.fundflow.feature.anggota.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.fundflow.feature.anggota.data.repository.AnggotaRepositoryImpl // TAMBAHAN IMPORT
 import com.example.fundflow.feature.anggota.domain.model.Anggota
 import com.example.fundflow.feature.anggota.domain.usecase.*
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +19,8 @@ class AnggotaViewModel @Inject constructor(
     private val addAnggota: AddAnggotaUseCase,
     private val updateAnggota: UpdateAnggotaUseCase,
     private val deleteAnggota: DeleteAnggotaUseCase,
-    private val deleteSelected: DeleteSelectedAnggotaUseCase
+    private val deleteSelected: DeleteSelectedAnggotaUseCase,
+    private val repository: AnggotaRepositoryImpl // TAMBAHAN REPOSITORI UNTUK SYNC
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(AnggotaState())
@@ -26,6 +28,7 @@ class AnggotaViewModel @Inject constructor(
 
     init {
         observeAnggota()
+        fetchDataDariCloud() // TAMBAHAN CALL SINKRONISASI CLOUD
     }
 
     private fun observeAnggota() {
@@ -43,6 +46,17 @@ class AnggotaViewModel @Inject constructor(
                 _uiState.update { it.copy(isLoading = false, errorMessage = e.message) }
             }
             .launchIn(viewModelScope)
+    }
+
+    // Fungsi Tambahan untuk Memicu Sinkronisasi Background
+    private fun fetchDataDariCloud() {
+        viewModelScope.launch {
+            try {
+                repository.syncWithCloud()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
     }
 
     // ── Search ────────────────────────────────────────────────

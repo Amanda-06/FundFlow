@@ -9,16 +9,22 @@ import androidx.compose.material.icons.filled.PictureAsPdf
 import androidx.compose.material.icons.filled.TableChart
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.core.os.ConfigurationCompat
 import com.example.fundflow.R
 import com.example.fundflow.core.util.CurrencyFormatter
 import com.example.fundflow.ui.components.FundFlowBottomSheet
 import com.example.fundflow.ui.theme.*
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -26,6 +32,12 @@ fun LaporanIuranBulananSheet(
     uiState: LaporanState,
     viewModel: LaporanViewModel
 ) {
+    // FIX: Dapatkan Locale sistem perangkat secara dinamis agar reaktif terhadap perubahan bahasa
+    val configuration = LocalConfiguration.current
+    val currentLocale = remember(configuration) {
+        ConfigurationCompat.getLocales(configuration).get(0) ?: Locale.getDefault()
+    }
+
     FundFlowBottomSheet(onDismiss = viewModel::onDismissSheet) {
         Text(
             stringResource(R.string.laporan_iuran_bulanan),
@@ -82,6 +94,13 @@ fun LaporanIuranBulananSheet(
                 HorizontalDivider(color = MaterialTheme.colorScheme.outline)
 
                 laporan.rincianBulan.forEachIndexed { index, rincian ->
+                    // FIX: Format data angka bulan & tahun mentah menjadi string nama bulan mengikuti bahasa sistem
+                    val formattedMonthLabel = remember(rincian, currentLocale) {
+                        LocalDate.of(rincian.tahun, rincian.bulan, 1)
+                            .format(DateTimeFormatter.ofPattern("MMMM yyyy", currentLocale))
+                            .replaceFirstChar { it.uppercase() }
+                    }
+
                     Row(
                         modifier          = Modifier.fillMaxWidth().padding(vertical = 8.dp),
                         verticalAlignment = Alignment.CenterVertically
@@ -93,7 +112,7 @@ fun LaporanIuranBulananSheet(
                             modifier = Modifier.width(32.dp)
                         )
                         Text(
-                            rincian.bulan,
+                            formattedMonthLabel, // Menggunakan label teks dinamis yang sudah diformat aman
                             style    = MaterialTheme.typography.bodySmall,
                             color    = MaterialTheme.colorScheme.onSurface,
                             modifier = Modifier.weight(1f)

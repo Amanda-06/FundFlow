@@ -22,4 +22,7 @@ interface PeriodeDao {
 
     @Query("DELETE FROM periode WHERE user_id = :userId")
     suspend fun deleteByUserId(userId: String)
+
+    @Query("DELETE FROM periode")
+    suspend fun deleteAllPeriode()
 }

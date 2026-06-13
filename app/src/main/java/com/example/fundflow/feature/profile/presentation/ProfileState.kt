@@ -1,6 +1,3 @@
-// ============================================================
-// feature/profile/presentation/ProfileState.kt
-// ============================================================
 package com.example.fundflow.feature.profile.presentation
 
 import com.example.fundflow.feature.profile.domain.model.Profile
@@ -11,8 +8,3 @@ data class ProfileState(
     val showLogoutDialog: Boolean   = false,
     val isLoggingOut: Boolean       = false
 )
-
-
-// ============================================================
-// feature/profile/presentation/ProfileViewModel.kt
-// ============================================================

@@ -1,4 +1,9 @@
 package com.example.fundflow.feature.iuran.domain.model
 
-class Periode {
-}
+data class Periode(
+    val periodeId: Int = 0,
+    val userId: String,
+    val tanggalMulai: String,
+    val tanggalSelesai: String,
+    val createdAt: Long = System.currentTimeMillis()
+)

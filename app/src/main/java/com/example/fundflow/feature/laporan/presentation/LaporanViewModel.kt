@@ -7,6 +7,14 @@ import com.example.fundflow.feature.iuran.domain.usecase.GetPeriodeMonthsUseCase
 import com.example.fundflow.feature.iuran.domain.usecase.MonthOption
 import com.example.fundflow.feature.laporan.domain.model.LaporanDetailKeuangan
 import com.example.fundflow.feature.laporan.domain.usecase.*
+
+// TAMBAHKAN IMPORT SELURUH REPOSITORI IMPLEMENTASI UNTUK SINKRONISASI MASAL
+import com.example.fundflow.feature.iuran.data.repository.PeriodeRepositoryImpl
+import com.example.fundflow.feature.iuran.data.repository.IuranRepositoryImpl
+import com.example.fundflow.feature.anggota.data.repository.AnggotaRepositoryImpl
+import com.example.fundflow.feature.pemasukan.data.repository.PemasukanRepositoryImpl
+import com.example.fundflow.feature.pengeluaran.data.repository.PengeluaranRepositoryImpl
+
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,14 +32,37 @@ class LaporanViewModel @Inject constructor(
     private val generateLaporanDetail: GenerateLaporanDetailUseCase,
     private val exportPdf: ExportPdfUseCase,
     private val exportExcel: ExportExcelUseCase,
-    private val authService: FirebaseAuthService
+    private val authService: FirebaseAuthService,
+
+    // INJECT SELURUH REPOSITORI DATA MENTAH
+    private val periodeRepository: PeriodeRepositoryImpl,
+    private val anggotaRepository: AnggotaRepositoryImpl,
+    private val iuranRepository: IuranRepositoryImpl,
+    private val pemasukanRepository: PemasukanRepositoryImpl,
+    private val pengeluaranRepository: PengeluaranRepositoryImpl
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(LaporanState())
     val uiState: StateFlow<LaporanState> = _uiState.asStateFlow()
 
     init {
+        loadInitialDataAndSync()
+    }
+
+    private fun loadInitialDataAndSync() {
         viewModelScope.launch {
+            // 1. Jalankan sinkronisasi background secara berurutan agar database lokal HP terisi penuh
+            try {
+                periodeRepository.syncWithCloud()
+                anggotaRepository.syncWithCloud()
+                iuranRepository.syncWithCloud()
+                pemasukanRepository.syncWithCloud()
+                pengeluaranRepository.syncWithCloud()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+
+            // 2. Setelah database lokal Room dipastikan terisi data cloud, baca range bulannya
             val userId = authService.currentUser?.uid.orEmpty()
             val months = getPeriodeMonths(userId)
             val currentKey = LocalDate.now().toString().substring(0, 7)
@@ -156,8 +187,12 @@ class LaporanViewModel @Inject constructor(
                     periode           = "Laporan Iuran Bulanan",
                     daftarPemasukan   = iuran.rincianBulan.map {
                         com.example.fundflow.feature.laporan.domain.model.ItemDetailKeuangan(
-                            tanggal = it.bulan, deskripsi = "Iuran ${it.bulan}", keterangan = "Iuran Anggota",
-                            nominal = it.jumlah, isIncome = true
+                            // FIX: Mengubah kombinasi angka tahun & bulan (Int) menjadi format String tanggal ISO standar ("yyyy-MM-dd")
+                            tanggal    = LocalDate.of(it.tahun, it.bulan, 1).toString(),
+                            deskripsi  = "Iuran Bulan ${it.bulan}",
+                            keterangan = "Iuran Anggota",
+                            nominal    = it.jumlah,
+                            isIncome   = true
                         )
                     },
                     daftarPengeluaran = emptyList(),

@@ -10,6 +10,10 @@ interface PemasukanDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(pemasukan: PemasukanEntity): Long
 
+    // TAMBAHAN: Fungsi Insert Massal untuk Sinkronisasi Cloud yang Efisien
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(pemasukanList: List<PemasukanEntity>)
+
     @Update
     suspend fun update(pemasukan: PemasukanEntity)
 
@@ -57,4 +61,7 @@ interface PemasukanDao {
         WHERE tanggal BETWEEN :startDate AND :endDate
     """)
     suspend fun getTotalByDateRange(startDate: String, endDate: String): Double?
+
+    @Query("DELETE FROM pemasukan")
+    suspend fun deleteAllPemasukan()
 }

@@ -71,6 +71,19 @@ class MainActivity : ComponentActivity() {
             }
         )
 
+        // ── TAMBAHAN KODE: CETAK PAKSA TOKEN FCM UNTUK PENGUJIAN ──
+        com.google.firebase.messaging.FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                android.util.Log.w("FCM_TEST", "Gagal mendapatkan token FCM", task.exception)
+                return@addOnCompleteListener
+            }
+
+            // Ambil token baru yang berhasil didapatkan
+            val token = task.result
+            android.util.Log.d("FCM_TEST", "Token FCM Saat Ini: $token")
+        }
+        // ──────────────────────────────────────────────────────────
+
         setContent {
             // Observe preferensi tema secara reaktif dari DataStore.
             // Saat isDarkTheme berubah, FundFlowTheme akan recompose

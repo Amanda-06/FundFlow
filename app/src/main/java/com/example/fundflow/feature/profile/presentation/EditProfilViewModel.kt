@@ -1,9 +1,9 @@
 // feature/profile/presentation/EditProfilViewModel.kt
-
 package com.example.fundflow.feature.profile.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.fundflow.feature.profile.data.repository.ProfileRepositoryImpl // TAMBAHAN IMPORT
 import com.example.fundflow.feature.profile.domain.model.Profile
 import com.example.fundflow.feature.profile.domain.usecase.GetProfileUseCase
 import com.example.fundflow.feature.profile.domain.usecase.UpdatePasswordUseCase
@@ -20,7 +20,8 @@ import javax.inject.Inject
 class EditProfilViewModel @Inject constructor(
     private val getProfile: GetProfileUseCase,
     private val updateProfile: UpdateProfileUseCase,
-    private val updatePassword: UpdatePasswordUseCase       // [BARU]
+    private val updatePassword: UpdatePasswordUseCase,
+    private val repository: ProfileRepositoryImpl // TAMBAHAN REPOSITORI UNTUK SYNC CLOUD
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(EditProfilState())
@@ -30,6 +31,16 @@ class EditProfilViewModel @Inject constructor(
 
     private fun loadProfile() {
         viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true) }
+
+            // 1. Sinkronisasikan profil dari cloud terlebih dahulu sebelum Form dibuka
+            try {
+                repository.syncWithCloud()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+
+            // 2. Baca data terbaru dari database lokal yang sudah ter-update
             val profile = getProfile.once()
             if (profile != null) {
                 _uiState.update {
@@ -96,7 +107,6 @@ class EditProfilViewModel @Inject constructor(
                 _uiState.update { it.copy(isSaving = false, isSuccess = true) }
 
             } catch (e: com.google.firebase.auth.FirebaseAuthInvalidCredentialsException) {
-                // Password lama salah
                 _uiState.update {
                     it.copy(
                         isSaving = false,
@@ -110,8 +120,6 @@ class EditProfilViewModel @Inject constructor(
     }
 
     // ── Validasi ─────────────────────────────────────────────
-
-    /** Validasi field nama & username. Return true jika valid. */
     private fun validateProfil(): Boolean {
         val s      = _uiState.value
         val namaErr = if (s.namaLengkap.isBlank()) "Nama lengkap tidak boleh kosong" else null
@@ -126,10 +134,6 @@ class EditProfilViewModel @Inject constructor(
         } else true
     }
 
-    /**
-     * Validasi section password. Dipanggil hanya jika salah satu field password tidak kosong.
-     * Return true jika valid.
-     */
     private fun validatePassword(): Boolean {
         val s = _uiState.value
         val saatIniErr = if (s.passwordSaatIni.isBlank()) "Password saat ini tidak boleh kosong" else null

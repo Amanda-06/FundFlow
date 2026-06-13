@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fundflow.core.firebase.FirebaseAuthService
 import com.example.fundflow.core.util.DateFormatter
+import com.example.fundflow.feature.iuran.data.repository.IuranRepositoryImpl // TAMBAHAN IMPORT
+import com.example.fundflow.feature.iuran.data.repository.PeriodeRepositoryImpl // TAMBAHAN IMPORT
 import com.example.fundflow.feature.iuran.domain.model.Iuran
 import com.example.fundflow.feature.iuran.domain.usecase.*
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +22,9 @@ class IuranViewModel @Inject constructor(
     private val getIuranSummary: GetIuranSummaryUseCase,
     private val saveIuran: SaveIuranUseCase,
     private val getPeriodeMonths: GetPeriodeMonthsUseCase,
-    private val authService: FirebaseAuthService
+    private val authService: FirebaseAuthService,
+    private val iuranRepository: IuranRepositoryImpl,  // TAMBAHAN UNTUK SYNC CLOUD IURAN
+    private val periodeRepository: PeriodeRepositoryImpl // TAMBAHAN UNTUK SYNC CLOUD PERIODE KAS
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(IuranState())
@@ -35,6 +39,16 @@ class IuranViewModel @Inject constructor(
 
     private fun loadAvailableMonths() {
         viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true) }
+
+            // SEBELUM AMBIL BULAN, UNDUH DULU PERIODE KAS & IURAN DARI CLOUD FIRESTORE
+            try {
+                periodeRepository.syncWithCloud()
+                iuranRepository.syncWithCloud()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+
             val userId = authService.currentUser?.uid.orEmpty()
             val months = getPeriodeMonths(userId)
 

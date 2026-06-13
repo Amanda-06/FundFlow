@@ -13,16 +13,22 @@ import androidx.compose.material.icons.filled.TrendingDown
 import androidx.compose.material.icons.filled.TrendingUp
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.core.os.ConfigurationCompat
 import com.example.fundflow.R
 import com.example.fundflow.core.util.CurrencyFormatter
 import com.example.fundflow.feature.laporan.domain.model.ItemDetailKeuangan
 import com.example.fundflow.ui.components.FundFlowBottomSheet
 import com.example.fundflow.ui.theme.*
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -217,6 +223,22 @@ private fun SummaryBox(
 // ── Baris transaksi ────────────────────────────────────────────
 @Composable
 private fun TransaksiRow(item: ItemDetailKeuangan) {
+    // FIX: Ambil Locale sistem perangkat agar format penulisan nama bulan pada baris item reaktif sesuai setelan HP
+    val configuration = LocalConfiguration.current
+    val currentLocale = remember(configuration) {
+        ConfigurationCompat.getLocales(configuration).get(0) ?: Locale.getDefault()
+    }
+
+    // Mengonversi data ISO string tanggal mentah ("yyyy-MM-dd") menjadi format nama bulan lokal (contoh: "14 Jun 2026")
+    val localizedDateLabel = remember(item.tanggal, currentLocale) {
+        try {
+            LocalDate.parse(item.tanggal)
+                .format(DateTimeFormatter.ofPattern("d MMM yyyy", currentLocale))
+        } catch (e: Exception) {
+            item.tanggal
+        }
+    }
+
     Card(
         modifier  = Modifier.fillMaxWidth(),
         // FIX: reaktif terhadap tema
@@ -264,8 +286,8 @@ private fun TransaksiRow(item: ItemDetailKeuangan) {
                     // AccentPurple tetap: warna brand/aksen untuk keterangan
                     Text(item.keterangan, style = MaterialTheme.typography.bodySmall, color = AccentPurple, maxLines = 1)
                     Text(
-                        // FIX: Menggunakan stringResource format agar tanda baca titik tidak hardcode
-                        text  = stringResource(R.string.laporan_detail_date_format, item.tanggal),
+                        // FIX: Menggunakan stringResource format agar tanda baca titik tidak hardcode dan memakai tanggal ter-lokalisasi
+                        text  = stringResource(R.string.laporan_detail_date_format, localizedDateLabel),
                         style = MaterialTheme.typography.bodySmall,
                         // FIX: reaktif terhadap tema
                         color = MaterialTheme.colorScheme.onSurfaceVariant

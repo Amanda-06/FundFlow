@@ -57,21 +57,3 @@ data class IuranEntity(
     @ColumnInfo(name = "created_at")
     val createdAt: Long = System.currentTimeMillis()
 )
-
-
-// ============================================================
-// feature/iuran/data/model/IuranAnggotaRow.kt
-// (POJO hasil JOIN — bukan @Entity)
-// ============================================================
-
-
-// ============================================================
-// feature/iuran/data/model/IuranSummaryRaw.kt
-// (POJO hasil agregasi — bukan @Entity)
-// ============================================================
-
-
-
-// ============================================================
-// feature/iuran/data/local/IuranDao.kt
-// ============================================================

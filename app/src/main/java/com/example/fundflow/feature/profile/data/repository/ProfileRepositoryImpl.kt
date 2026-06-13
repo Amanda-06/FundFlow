@@ -33,10 +33,10 @@ class ProfileRepositoryImpl @Inject constructor(
             if (remoteData != null) {
                 entity = com.example.fundflow.feature.auth.data.model.UserEntity(
                     userId         = uid,
-                    namaLengkap    = (remoteData["nama_lengkap"] as? String).orEmpty(),
+                    namaLengkap    = ((remoteData["nama_lengkap"] ?: remoteData["namaLengkap"]) as? String).orEmpty(),
                     username       = (remoteData["username"] as? String).orEmpty(),
                     email          = (remoteData["email"] as? String).orEmpty(),
-                    namaOrganisasi = (remoteData["nama_organisasi"] as? String).orEmpty()
+                    namaOrganisasi = ((remoteData["nama_organisasi"] ?: remoteData["namaOrganisasi"]) as? String).orEmpty()
                 )
                 userDao.insertUser(entity)
             }
@@ -58,7 +58,6 @@ class ProfileRepositoryImpl @Inject constructor(
 
     /**
      * Re-autentikasi dengan password lama, lalu update ke password baru via Firebase Auth.
-     * Melempar Exception (mis. FirebaseAuthInvalidCredentialsException) jika password lama salah.
      */
     override suspend fun updatePassword(passwordSaatIni: String, passwordBaru: String) {
         val user  = authService.currentUser
@@ -66,11 +65,36 @@ class ProfileRepositoryImpl @Inject constructor(
         val email = user.email
             ?: throw IllegalStateException("Email pengguna tidak ditemukan")
 
-        // Re-autentikasi diperlukan Firebase sebelum update credential sensitif
         val credential = EmailAuthProvider.getCredential(email, passwordSaatIni)
         user.reauthenticate(credential).await()
 
-        // Setelah re-auth berhasil, update password
         user.updatePassword(passwordBaru).await()
+    }
+
+    /**
+     * FUNGSI SINKRONISASI BARU: Memaksa aplikasi mengunduh data profil paling segar dari Firestore Cloud,
+     * lalu memperbarui cache database Room lokal HP.
+     */
+    suspend fun syncWithCloud() {
+        val uid = authService.currentUser?.uid ?: return
+        try {
+            val remoteData = remoteDataSource.fetchProfile(uid)
+            if (remoteData != null) {
+                val existing = userDao.getUserById(uid)
+                val createdAt = existing?.createdAt ?: System.currentTimeMillis()
+
+                val entity = com.example.fundflow.feature.auth.data.model.UserEntity(
+                    userId         = uid,
+                    namaLengkap    = ((remoteData["nama_lengkap"] ?: remoteData["namaLengkap"]) as? String).orEmpty(),
+                    username       = (remoteData["username"] as? String).orEmpty(),
+                    email          = (remoteData["email"] as? String).orEmpty(),
+                    namaOrganisasi = ((remoteData["nama_organisasi"] ?: remoteData["namaOrganisasi"]) as? String).orEmpty(),
+                    createdAt      = createdAt
+                )
+                userDao.insertUser(entity)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 }

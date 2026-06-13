@@ -3,6 +3,7 @@ package com.example.fundflow.feature.pengeluaran.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fundflow.core.util.DateFormatter
+import com.example.fundflow.feature.pengeluaran.data.repository.PengeluaranRepositoryImpl // TAMBAHAN IMPORT
 import com.example.fundflow.feature.pengeluaran.domain.model.Pengeluaran
 import com.example.fundflow.feature.pengeluaran.domain.usecase.*
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,13 +17,17 @@ class PengeluaranViewModel @Inject constructor(
     private val addPengeluaran: AddPengeluaranUseCase,
     private val updatePengeluaran: UpdatePengeluaranUseCase,
     private val deletePengeluaran: DeletePengeluaranUseCase,
-    private val deleteSelected: DeleteSelectedPengeluaranUseCase
+    private val deleteSelected: DeleteSelectedPengeluaranUseCase,
+    private val repository: PengeluaranRepositoryImpl // TAMBAHAN REPOSITORI UNTUK SYNC
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(PengeluaranState())
     val uiState: StateFlow<PengeluaranState> = _uiState.asStateFlow()
 
-    init { observe() }
+    init {
+        observe()
+        fetchDataDariCloud() // TAMBAHAN CALL SINKRONISASI CLOUD
+    }
 
     private fun observe() {
         getPengeluaranList()
@@ -38,6 +43,17 @@ class PengeluaranViewModel @Inject constructor(
             }
             .catch { e -> _uiState.update { it.copy(isLoading = false, errorMessage = e.message) } }
             .launchIn(viewModelScope)
+    }
+
+    // Fungsi Tambahan untuk Memicu Sinkronisasi Background
+    private fun fetchDataDariCloud() {
+        viewModelScope.launch {
+            try {
+                repository.syncWithCloud()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
     }
 
     fun onSearchChange(q: String) {

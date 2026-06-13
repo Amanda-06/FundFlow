@@ -13,6 +13,10 @@ interface AnggotaDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAnggota(anggota: AnggotaEntity): Long
 
+    // TAMBAHAN: Fungsi Insert Massal untuk Sinkronisasi Cloud yang Efisien
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAllAnggota(anggotaList: List<AnggotaEntity>)
+
     @Update
     suspend fun updateAnggota(anggota: AnggotaEntity)
 
@@ -31,4 +35,7 @@ interface AnggotaDao {
 
     @Query("SELECT COUNT(*) FROM anggota")
     suspend fun countAnggota(): Int
+
+    @Query("DELETE FROM anggota")
+    suspend fun deleteAllAnggota()
 }

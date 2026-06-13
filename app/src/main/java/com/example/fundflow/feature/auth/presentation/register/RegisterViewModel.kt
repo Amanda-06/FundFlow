@@ -7,8 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fundflow.feature.auth.domain.usecase.RegisterUseCase
 import com.example.fundflow.feature.auth.domain.usecase.ValidateInputUseCase
-import com.example.fundflow.feature.iuran.data.local.PeriodeDao
-import com.example.fundflow.feature.iuran.data.model.PeriodeEntity
+import com.example.fundflow.feature.iuran.domain.model.Periode // TAMBAHAN IMPORT DOMAIN MODEL
+import com.example.fundflow.feature.iuran.domain.repository.PeriodeRepository // REVISI: MENGGUNAKAN REPOSITORY, BUKAN DAO
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,7 +21,7 @@ import javax.inject.Inject
 class RegisterViewModel @Inject constructor(
     private val registerUseCase: RegisterUseCase,
     private val validateInput: ValidateInputUseCase,
-    private val periodeDao: PeriodeDao
+    private val periodeRepository: PeriodeRepository // REVISI: INJECT INTERFACE REPOSITORY
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(RegisterState())
@@ -60,7 +60,7 @@ class RegisterViewModel @Inject constructor(
         return listOf(namaErr, emailErr, usernameErr, passErr, confirmErr).all { it == null }
     }
 
-    /** Selesai & Mulai — validasi step 2 + daftar + simpan periode */
+    /** Selesai & Mulai — validasi step 2 + daftar + simpan periode via Repository (Auto Cloud Sync) */
     fun register() {
         val s = _uiState.value
 
@@ -82,6 +82,7 @@ class RegisterViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, errorMessage = null) }
             try {
+                // 1. Buat user baru di Firebase Auth + Profil di Firestore
                 val user = registerUseCase(
                     email          = s.email,
                     password       = s.password,
@@ -89,14 +90,16 @@ class RegisterViewModel @Inject constructor(
                     username       = s.username,
                     namaOrganisasi = s.namaOrganisasi
                 )
-                // Simpan periode kas ke Room
-                periodeDao.insertPeriode(
-                    PeriodeEntity(
+
+                // 2. Simpan periode kas via Repository agar tersimpan di lokal sekaligus otomatis terunggah ke Cloud
+                periodeRepository.savePeriode(
+                    Periode(
                         userId         = user.userId,
                         tanggalMulai   = s.periodeMulai,
                         tanggalSelesai = s.periodeSelesai
                     )
                 )
+
                 _uiState.update { it.copy(isLoading = false, isSuccess = true) }
             } catch (e: Exception) {
                 val msg = when {

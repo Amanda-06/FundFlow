@@ -33,17 +33,16 @@ class LaporanRepositoryImpl @Inject constructor(
         val rincian = mutableListOf<RincianIuranBulan>()
         var current = start
 
-        // FIX: Menggunakan Locale.getDefault() agar menyesuaikan dengan bahasa perangkat
-        val monthFormatter = DateTimeFormatter.ofPattern("MMMM yyyy", Locale.getDefault())
-
         while (!current.isAfter(end)) {
             val bulan = current.monthValue
             val tahun = current.year
             val total = iuranDao.getTotalIuranByMonth(bulan, tahun) ?: 0.0
+
+            // FIX: Memasukkan angka mentah 'bulan' (Int) dan 'tahun' (Int) sesuai struktur model baru
             rincian.add(
                 RincianIuranBulan(
-                    // Nama bulan akan otomatis jadi English jika HP diset English
-                    bulan  = current.format(monthFormatter).replaceFirstChar { it.uppercase() },
+                    bulan  = bulan,
+                    tahun  = tahun,
                     jumlah = total
                 )
             )

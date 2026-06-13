@@ -112,7 +112,9 @@ class ExportPdfUseCase @Inject constructor(
             openExportedFile(context, file, "application/pdf")
 
             file.absolutePath
-        } catch (e: Exception) { null }
+        } catch (e: Throwable) {
+            null
+        }
     }
 }
 
@@ -168,7 +170,16 @@ class ExportExcelUseCase @Inject constructor(
             sumRow3.createCell(3).setCellValue("Saldo Akhir")
             sumRow3.createCell(4).setCellValue(laporan.saldoAkhir)
 
-            (0..4).forEach { sheet.autoSizeColumn(it) }
+            // ── FIX: Set lebar kolom secara MANUAL ──────────────
+            // TIDAK pakai autoSizeColumn() — API itu butuh java.awt.Font
+            // yang tidak ada di Android dan menyebabkan crash.
+            // setColumnWidth() aman karena hanya mengubah metadata sheet.
+            // Satuan: 1/256 lebar karakter "0" pada font default.
+            sheet.setColumnWidth(0, 14 * 256)   // Tanggal
+            sheet.setColumnWidth(1, 30 * 256)   // Deskripsi
+            sheet.setColumnWidth(2, 18 * 256)   // Keterangan
+            sheet.setColumnWidth(3, 14 * 256)   // Jenis
+            sheet.setColumnWidth(4, 16 * 256)   // Nominal
 
             val dir  = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
             val file = File(dir, "laporan_fundflow_${System.currentTimeMillis()}.xls")
@@ -179,6 +190,8 @@ class ExportExcelUseCase @Inject constructor(
             openExportedFile(context, file, "application/vnd.ms-excel")
 
             file.absolutePath
-        } catch (e: Exception) { null }
+        } catch (e: Throwable) {
+            null
+        }
     }
 }

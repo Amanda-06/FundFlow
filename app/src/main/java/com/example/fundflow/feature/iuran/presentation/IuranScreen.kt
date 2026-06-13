@@ -16,9 +16,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.core.os.ConfigurationCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.fundflow.R
@@ -27,6 +29,9 @@ import com.example.fundflow.feature.iuran.domain.model.Iuran
 import com.example.fundflow.feature.iuran.domain.usecase.MonthOption
 import com.example.fundflow.ui.components.*
 import com.example.fundflow.ui.theme.*
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,11 +47,25 @@ fun IuranScreen(
         uiState.successMessage?.let { snackbarState.showSnackbar(it); viewModel.clearMessages() }
     }
 
-    // String resource dipanggil di sini (level Composable), bukan di dalam lambda
+    // FIX: Mendapatkan Locale sistem secara dinamis di level UI agar reaktif saat bahasa HP berubah
+    val configuration = LocalConfiguration.current
+    val currentLocale = remember(configuration) {
+        ConfigurationCompat.getLocales(configuration).get(0) ?: Locale.getDefault()
+    }
+
     val labelPilihPeriode  = stringResource(R.string.iuran_pilih_periode)
     val labelFilterSemua   = stringResource(R.string.iuran_filter_semua)
     val labelFilterLunas   = stringResource(R.string.iuran_filter_lunas)
     val labelFilterBelum   = stringResource(R.string.iuran_filter_belum_bayar)
+
+    // FIX: Format label bulan yang terpilih secara dinamis berdasarkan locale terbaru
+    val selectedMonthLabel = remember(uiState.selectedMonth, currentLocale) {
+        uiState.selectedMonth?.let {
+            LocalDate.of(it.tahun, it.bulan, 1)
+                .format(DateTimeFormatter.ofPattern("MMMM yyyy", currentLocale))
+                .replaceFirstChar { char -> char.uppercase() }
+        } ?: labelPilihPeriode
+    }
 
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarState) },
@@ -82,7 +101,7 @@ fun IuranScreen(
         Column(modifier = Modifier.fillMaxSize().padding(padding)) {
 
             MonthSelector(
-                label    = uiState.selectedMonth?.label ?: labelPilihPeriode,
+                label    = selectedMonthLabel, // Menggunakan label yang dinamis
                 onClick  = viewModel::onShowMonthPicker,
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
             )
@@ -141,10 +160,11 @@ fun IuranScreen(
 
     if (uiState.showMonthPicker) {
         MonthPickerDialog(
-            options   = uiState.availableMonths,
-            selected  = uiState.selectedMonth,
-            onSelect  = viewModel::onSelectMonth,
-            onDismiss = viewModel::onDismissMonthPicker
+            options       = uiState.availableMonths,
+            selected      = uiState.selectedMonth,
+            currentLocale = currentLocale, // Oper locale terkini ke dialog
+            onSelect      = viewModel::onSelectMonth,
+            onDismiss     = viewModel::onDismissMonthPicker
         )
     }
 
@@ -159,9 +179,7 @@ private fun MonthSelector(label: String, onClick: () -> Unit, modifier: Modifier
     Card(
         modifier  = modifier.fillMaxWidth(),
         onClick   = onClick,
-        colors    = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        ),
+        colors    = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         shape     = RoundedCornerShape(10.dp),
         elevation = CardDefaults.cardElevation(1.dp)
     ) {
@@ -199,9 +217,7 @@ private fun MonthSelector(label: String, onClick: () -> Unit, modifier: Modifier
 private fun SummaryRow(lunas: Int, belumBayar: Int, terkumpul: Double, modifier: Modifier = Modifier) {
     Card(
         modifier  = modifier.fillMaxWidth(),
-        colors    = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        ),
+        colors    = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         shape     = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(1.dp)
     ) {
@@ -209,29 +225,11 @@ private fun SummaryRow(lunas: Int, belumBayar: Int, terkumpul: Double, modifier:
             modifier              = Modifier.fillMaxWidth().padding(vertical = 14.dp),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            SummaryItem(
-                value = "$lunas",
-                label = stringResource(R.string.iuran_lunas),
-                color = IncomeGreen
-            )
-            VerticalDivider(
-                modifier = Modifier.height(36.dp),
-                color    = MaterialTheme.colorScheme.outline
-            )
-            SummaryItem(
-                value = "$belumBayar",
-                label = stringResource(R.string.iuran_belum_bayar),
-                color = ExpenseRed
-            )
-            VerticalDivider(
-                modifier = Modifier.height(36.dp),
-                color    = MaterialTheme.colorScheme.outline
-            )
-            SummaryItem(
-                value = CurrencyFormatter.formatShort(terkumpul),
-                label = stringResource(R.string.iuran_terkumpul),
-                color = IuranBlue
-            )
+            SummaryItem(value = "$lunas", label = stringResource(R.string.iuran_lunas), color = IncomeGreen)
+            VerticalDivider(modifier = Modifier.height(36.dp), color = MaterialTheme.colorScheme.outline)
+            SummaryItem(value = "$belumBayar", label = stringResource(R.string.iuran_belum_bayar), color = ExpenseRed)
+            VerticalDivider(modifier = Modifier.height(36.dp), color = MaterialTheme.colorScheme.outline)
+            SummaryItem(value = CurrencyFormatter.formatShort(terkumpul), label = stringResource(R.string.iuran_terkumpul), color = IuranBlue)
         }
     }
 }
@@ -239,17 +237,8 @@ private fun SummaryRow(lunas: Int, belumBayar: Int, terkumpul: Double, modifier:
 @Composable
 private fun SummaryItem(value: String, label: String, color: Color) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(
-            value,
-            style      = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold,
-            color      = color
-        )
-        Text(
-            label,
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
+        Text(value, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = color)
+        Text(label, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
     }
 }
 
@@ -276,7 +265,6 @@ fun FilterChipItem(text: String, isSelected: Boolean, onClick: () -> Unit) {
 // ── List Item Anggota ────────────────────────────────────────────
 @Composable
 private fun IuranListItem(iuran: Iuran, onClick: () -> Unit) {
-    // Ambil di sini sebelum masuk lambda FundFlowCard
     val belumBayarLabel = stringResource(R.string.iuran_belum_bayar)
 
     FundFlowCard(onClick = onClick, elevation = 1.dp) {
@@ -285,10 +273,7 @@ private fun IuranListItem(iuran: Iuran, onClick: () -> Unit) {
                 modifier = Modifier
                     .size(36.dp)
                     .clip(CircleShape)
-                    .background(
-                        if (iuran.statusBayar) IncomeGreen.copy(alpha = 0.12f)
-                        else ExpenseRed.copy(alpha = 0.12f)
-                    ),
+                    .background(if (iuran.statusBayar) IncomeGreen.copy(alpha = 0.12f) else ExpenseRed.copy(alpha = 0.12f)),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
@@ -300,12 +285,7 @@ private fun IuranListItem(iuran: Iuran, onClick: () -> Unit) {
             }
             Spacer(Modifier.width(12.dp))
             Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    iuran.namaAnggota,
-                    style      = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.Medium,
-                    color      = MaterialTheme.colorScheme.onSurface
-                )
+                Text(iuran.namaAnggota, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onSurface)
                 Text(
                     text  = if (iuran.statusBayar) (iuran.tanggalBayar ?: "-") else belumBayarLabel,
                     style = MaterialTheme.typography.bodySmall,
@@ -317,15 +297,10 @@ private fun IuranListItem(iuran: Iuran, onClick: () -> Unit) {
                     text       = if (iuran.statusBayar) CurrencyFormatter.format(iuran.nominal) else "Rp 0",
                     style      = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.SemiBold,
-                    color      = if (iuran.statusBayar) MaterialTheme.colorScheme.onSurface
-                    else MaterialTheme.colorScheme.onSurfaceVariant
+                    color      = if (iuran.statusBayar) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 if (iuran.statusBayar && iuran.metodePembayaran.isNotBlank()) {
-                    Text(
-                        iuran.metodePembayaran,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+                    Text(iuran.metodePembayaran, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
         }
@@ -337,6 +312,7 @@ private fun IuranListItem(iuran: Iuran, onClick: () -> Unit) {
 private fun MonthPickerDialog(
     options: List<MonthOption>,
     selected: MonthOption?,
+    currentLocale: Locale, // Menerima parameter locale dinamis
     onSelect: (MonthOption) -> Unit,
     onDismiss: () -> Unit
 ) {
@@ -354,20 +330,24 @@ private fun MonthPickerDialog(
                 LazyColumn {
                     items(options, key = { it.key }) { option ->
                         val isSelected = option.key == selected?.key
+
+                        // FIX: Memformat label secara on-the-fly di UI berdasarkan data tahun & bulan mentah
+                        val dynamicOptionLabel = remember(option, currentLocale) {
+                            LocalDate.of(option.tahun, option.bulan, 1)
+                                .format(DateTimeFormatter.ofPattern("MMMM yyyy", currentLocale))
+                                .replaceFirstChar { char -> char.uppercase() }
+                        }
+
                         Surface(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 2.dp),
+                            modifier = Modifier.fillMaxWidth().padding(vertical = 2.dp),
                             onClick  = { onSelect(option) },
                             shape    = MaterialTheme.shapes.small,
-                            color    = if (isSelected) PrimaryLime.copy(alpha = 0.2f)
-                            else MaterialTheme.colorScheme.surface
+                            color    = if (isSelected) PrimaryLime.copy(alpha = 0.2f) else MaterialTheme.colorScheme.surface
                         ) {
                             Text(
-                                option.label,
+                                text       = dynamicOptionLabel, // Menggunakan label dinamis
                                 modifier   = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
-                                color      = if (isSelected) PrimaryLimeDark
-                                else MaterialTheme.colorScheme.onSurface,
+                                color      = if (isSelected) PrimaryLimeDark else MaterialTheme.colorScheme.onSurface,
                                 fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal
                             )
                         }
@@ -377,10 +357,7 @@ private fun MonthPickerDialog(
         },
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text(
-                    stringResource(R.string.common_close),
-                    color = MaterialTheme.colorScheme.onSurface
-                )
+                Text(stringResource(R.string.common_close), color = MaterialTheme.colorScheme.onSurface)
             }
         },
         containerColor = MaterialTheme.colorScheme.surface

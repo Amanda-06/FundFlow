@@ -82,4 +82,7 @@ interface IuranDao {
 
     @Query("DELETE FROM iuran WHERE iuran_id = :id")
     suspend fun deleteById(id: Int)
+
+    @Query("DELETE FROM iuran")
+    suspend fun deleteAllIuran()
 }

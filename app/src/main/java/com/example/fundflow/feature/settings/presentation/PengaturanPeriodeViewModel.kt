@@ -3,6 +3,7 @@ package com.example.fundflow.feature.settings.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fundflow.core.firebase.FirebaseAuthService
+import com.example.fundflow.feature.settings.data.repository.SettingsRepositoryImpl // TAMBAHAN IMPORT
 import com.example.fundflow.feature.settings.domain.model.PeriodeKas
 import com.example.fundflow.feature.settings.domain.usecase.ObservePeriodeUseCase
 import com.example.fundflow.feature.settings.domain.usecase.UpdatePeriodeUseCase
@@ -15,7 +16,8 @@ import javax.inject.Inject
 class PengaturanPeriodeViewModel @Inject constructor(
     private val observePeriode: ObservePeriodeUseCase,
     private val updatePeriode: UpdatePeriodeUseCase,
-    private val authService: FirebaseAuthService
+    private val authService: FirebaseAuthService,
+    private val repository: SettingsRepositoryImpl // TAMBAHAN REPOSITORI UNTUK SYNC CLOUD
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(PengaturanPeriodeState())
@@ -24,6 +26,8 @@ class PengaturanPeriodeViewModel @Inject constructor(
     init {
         val userId = authService.currentUser?.uid.orEmpty()
         _uiState.update { it.copy(userId = userId) }
+
+        fetchDataDariCloud() // TAMBAHAN CALL SINKRONISASI CLOUD
 
         if (userId.isNotEmpty()) {
             observePeriode(userId)
@@ -43,6 +47,17 @@ class PengaturanPeriodeViewModel @Inject constructor(
                 .launchIn(viewModelScope)
         } else {
             _uiState.update { it.copy(isLoading = false) }
+        }
+    }
+
+    // Fungsi Tambahan untuk Memicu Sinkronisasi Background
+    private fun fetchDataDariCloud() {
+        viewModelScope.launch {
+            try {
+                repository.syncWithCloud()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 
@@ -83,8 +98,3 @@ class PengaturanPeriodeViewModel @Inject constructor(
     fun resetSuccess() = _uiState.update { it.copy(isSuccess = false) }
     fun clearError()   = _uiState.update { it.copy(errorMessage = null) }
 }
-
-
-// ============================================================
-// feature/settings/presentation/PengaturanPeriodeScreen.kt
-// ============================================================

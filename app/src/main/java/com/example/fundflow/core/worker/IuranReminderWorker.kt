@@ -1,6 +1,11 @@
+// ============================================================
+// core/worker/IuranReminderWorker.kt
+// ============================================================
 package com.example.fundflow.core.worker
 
+import android.Manifest
 import android.content.Context
+import androidx.annotation.RequiresPermission
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
@@ -37,6 +42,7 @@ class IuranReminderWorker @AssistedInject constructor(
     private val notificationHelper: NotificationHelper
 ) : CoroutineWorker(context, params) {
 
+    @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     override suspend fun doWork(): Result {
         return try {
             val calendar     = Calendar.getInstance()

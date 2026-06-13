@@ -3,6 +3,7 @@ package com.example.fundflow.feature.pemasukan.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fundflow.core.util.DateFormatter
+import com.example.fundflow.feature.pemasukan.data.repository.PemasukanRepositoryImpl // TAMBAHAN IMPORT
 import com.example.fundflow.feature.pemasukan.domain.model.Pemasukan
 import com.example.fundflow.feature.pemasukan.domain.usecase.*
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,13 +17,17 @@ class PemasukanViewModel @Inject constructor(
     private val addPemasukan: AddPemasukanUseCase,
     private val updatePemasukan: UpdatePemasukanUseCase,
     private val deletePemasukan: DeletePemasukanUseCase,
-    private val deleteSelected: DeleteSelectedPemasukanUseCase
+    private val deleteSelected: DeleteSelectedPemasukanUseCase,
+    private val repository: PemasukanRepositoryImpl // TAMBAHAN REPOSITORI UNTUK SYNC
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(PemasukanState())
     val uiState: StateFlow<PemasukanState> = _uiState.asStateFlow()
 
-    init { observePemasukan() }
+    init {
+        observePemasukan()
+        fetchDataDariCloud() // TAMBAHAN CALL SINKRONISASI CLOUD
+    }
 
     private fun observePemasukan() {
         getPemasukanList()
@@ -40,7 +45,18 @@ class PemasukanViewModel @Inject constructor(
             .launchIn(viewModelScope)
     }
 
-    // ── Search & Selection Mode (Tetap Sama) ────────────────
+    // Fungsi Tambahan untuk Memicu Sinkronisasi Background
+    private fun fetchDataDariCloud() {
+        viewModelScope.launch {
+            try {
+                repository.syncWithCloud()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    // ── Search & Selection Mode ────────────────
     fun onSearchChange(query: String) = _uiState.update { state -> state.copy(searchQuery = query, filteredList = applyFilter(state.pemasukanList, query)) }
     private fun applyFilter(list: List<Pemasukan>, query: String) = if (query.isBlank()) list else list.filter { it.deskripsi.contains(query, true) || it.sumber.contains(query, true) }
     fun onItemLongClick(id: Int) = _uiState.update { it.copy(isSelectionMode = true, selectedIds = setOf(id)) }
@@ -62,13 +78,13 @@ class PemasukanViewModel @Inject constructor(
                 formDeskripsi      = "",
                 formSumber         = "",
                 formMetode         = "",
-                formNominal        = "", // FIX
+                formNominal        = "",
                 formTanggal        = DateFormatter.formatStorage(DateFormatter.today()),
                 formCatatan        = "",
                 formDeskripsiError = null,
                 formSumberError    = null,
                 formMetodeError    = null,
-                formNominalError   = null, // FIX
+                formNominalError   = null,
                 formTanggalError   = null
             )
         }
@@ -82,7 +98,7 @@ class PemasukanViewModel @Inject constructor(
                 formDeskripsi   = pemasukan.deskripsi,
                 formSumber      = pemasukan.sumber,
                 formMetode      = pemasukan.metode,
-                formNominal     = pemasukan.nominal.toLong().toString(), // FIX: konversi nominal
+                formNominal     = pemasukan.nominal.toLong().toString(),
                 formTanggal     = pemasukan.tanggal,
                 formCatatan     = pemasukan.catatan
             )
@@ -95,7 +111,7 @@ class PemasukanViewModel @Inject constructor(
     fun onFormDeskripsiChange(v: String) = _uiState.update { it.copy(formDeskripsi = v, formDeskripsiError = null) }
     fun onFormSumberChange(v: String)    = _uiState.update { it.copy(formSumber = v, formSumberError = null) }
     fun onFormMetodeChange(v: String)    = _uiState.update { it.copy(formMetode = v, formMetodeError = null) }
-    fun onFormNominalChange(v: String)   = _uiState.update { it.copy(formNominal = v, formNominalError = null) } // FIX
+    fun onFormNominalChange(v: String)   = _uiState.update { it.copy(formNominal = v, formNominalError = null) }
     fun onFormTanggalChange(v: String)   = _uiState.update { it.copy(formTanggal = v, formTanggalError = null) }
     fun onFormCatatanChange(v: String)   = _uiState.update { it.copy(formCatatan = v) }
 
@@ -157,7 +173,7 @@ class PemasukanViewModel @Inject constructor(
         }
     }
 
-    // ── Delete (Tetap Sama) ───────────────────────────────────
+    // ── Delete ────────────────────────────────────────────────
     fun onRequestDelete(id: Int)       = _uiState.update { it.copy(showDeleteDialog = true, deleteTargetId = id) }
     fun onRequestBatchDelete()         = _uiState.update { it.copy(showDeleteDialog = true, deleteTargetId = null) }
     fun onDismissDeleteDialog()        = _uiState.update { it.copy(showDeleteDialog = false, deleteTargetId = null) }
