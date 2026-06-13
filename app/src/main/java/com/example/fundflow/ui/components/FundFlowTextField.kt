@@ -1,5 +1,4 @@
-//FundFlowTextField.kt
-
+// FundFlowTextField.kt
 package com.example.fundflow.ui.components
 
 import androidx.compose.foundation.layout.Column
@@ -14,7 +13,6 @@ import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -46,10 +44,12 @@ fun FundFlowTextField(
             onValueChange  = onValueChange,
             label          = { Text(text = label, style = MaterialTheme.typography.bodyMedium) },
             placeholder    = if (placeholder.isNotEmpty()) {
-                { Text(text = placeholder, style = MaterialTheme.typography.bodyMedium, color = TextMuted) }
+                // FIX: Menggunakan onSurfaceVariant agar dinamis di mode gelap
+                { Text(text = placeholder, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant) }
             } else null,
             leadingIcon    = if (leadingIcon != null) {
-                { Icon(imageVector = leadingIcon, contentDescription = null, tint = TextLight) }
+                // FIX: Menggunakan onSurfaceVariant
+                { Icon(imageVector = leadingIcon, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant) }
             } else null,
             trailingIcon   = trailingIcon,
             visualTransformation = visualTransformation,
@@ -62,17 +62,18 @@ fun FundFlowTextField(
             modifier       = Modifier.fillMaxWidth(),
             shape          = MaterialTheme.shapes.small,
             colors         = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor   = PrimaryLimeDark,
-                unfocusedBorderColor = BorderGray,
+                focusedBorderColor   = PrimaryLimeDark, // Tetap warna brand
+                unfocusedBorderColor = MaterialTheme.colorScheme.outline, // FIX: Dinamis
                 errorBorderColor     = ExpenseRed,
                 focusedLabelColor    = PrimaryLimeDark,
-                unfocusedLabelColor  = TextLight,
+                unfocusedLabelColor  = MaterialTheme.colorScheme.onSurfaceVariant, // FIX: Dinamis
                 cursorColor          = PrimaryLimeDark,
-                focusedTextColor     = TextDark,
-                unfocusedTextColor   = TextDark,
-                errorTextColor       = TextDark,
-                disabledTextColor    = TextMuted,
-                disabledBorderColor  = BorderGray
+                // FIX: TextColor menggunakan onSurface agar jadi putih di mode gelap dan hitam di mode terang
+                focusedTextColor     = MaterialTheme.colorScheme.onSurface,
+                unfocusedTextColor   = MaterialTheme.colorScheme.onSurface,
+                errorTextColor       = MaterialTheme.colorScheme.onSurface,
+                disabledTextColor    = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
+                disabledBorderColor  = MaterialTheme.colorScheme.outline.copy(alpha = 0.38f)
             )
         )
         if (isError && errorMessage != null) {
@@ -106,7 +107,8 @@ fun FundFlowPasswordField(
             onValueChange = onValueChange,
             label         = { Text(text = label, style = MaterialTheme.typography.bodyMedium) },
             leadingIcon   = if (leadingIcon != null) {
-                { Icon(imageVector = leadingIcon, contentDescription = null, tint = TextLight) }
+                // FIX: Dinamis
+                { Icon(imageVector = leadingIcon, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant) }
             } else null,
             trailingIcon  = {
                 IconButton(onClick = { passwordVisible = !passwordVisible }) {
@@ -115,7 +117,8 @@ fun FundFlowPasswordField(
                         else Icons.Default.VisibilityOff,
                         contentDescription = if (passwordVisible) "Sembunyikan password"
                         else "Tampilkan password",
-                        tint = TextLight
+                        // FIX: Dinamis
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             },
@@ -129,14 +132,15 @@ fun FundFlowPasswordField(
             shape         = MaterialTheme.shapes.small,
             colors        = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor   = PrimaryLimeDark,
-                unfocusedBorderColor = BorderGray,
+                unfocusedBorderColor = MaterialTheme.colorScheme.outline, // FIX: Dinamis
                 errorBorderColor     = ExpenseRed,
                 focusedLabelColor    = PrimaryLimeDark,
-                unfocusedLabelColor  = TextLight,
+                unfocusedLabelColor  = MaterialTheme.colorScheme.onSurfaceVariant, // FIX: Dinamis
                 cursorColor          = PrimaryLimeDark,
-                focusedTextColor     = TextDark,
-                unfocusedTextColor   = TextDark,
-                errorTextColor       = TextDark
+                // FIX: TextColor menggunakan onSurface agar dinamis
+                focusedTextColor     = MaterialTheme.colorScheme.onSurface,
+                unfocusedTextColor   = MaterialTheme.colorScheme.onSurface,
+                errorTextColor       = MaterialTheme.colorScheme.onSurface
             )
         )
         if (isError && errorMessage != null) {

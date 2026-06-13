@@ -28,7 +28,7 @@ class GetPeriodeMonthsUseCase @Inject constructor(
         val start = LocalDate.parse("$startStr-01")
         val end   = LocalDate.parse("$endStr-01")
 
-        val formatter = DateTimeFormatter.ofPattern("MMMM yyyy", Locale("id", "ID"))
+        val formatter = DateTimeFormatter.ofPattern("MMMM yyyy", Locale.getDefault())
         val result = mutableListOf<MonthOption>()
         var current = start
         while (!current.isAfter(end)) {

@@ -1,14 +1,15 @@
+// feature/laporan/data/repository/LaporanRepositoryImpl.kt
 package com.example.fundflow.feature.laporan.data.repository
 
 import com.example.fundflow.feature.anggota.data.local.AnggotaDao
-import com.example.fundflow.feature.anggota.data.mapper.toDomain // BARU: Import mapper untuk konversi Entity ke Domain
+import com.example.fundflow.feature.anggota.data.mapper.toDomain
 import com.example.fundflow.feature.iuran.data.local.IuranDao
 import com.example.fundflow.feature.laporan.domain.model.*
 import com.example.fundflow.feature.laporan.domain.repository.LaporanRepository
 import com.example.fundflow.feature.pemasukan.data.local.PemasukanDao
 import com.example.fundflow.feature.pengeluaran.data.local.PengeluaranDao
 import com.example.fundflow.core.util.DateFormatter
-import kotlinx.coroutines.flow.first // BARU: Import untuk mengambil emisi pertama dari Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import java.time.LocalDate
@@ -22,8 +23,6 @@ class LaporanRepositoryImpl @Inject constructor(
     private val pengeluaranDao: PengeluaranDao
 ) : LaporanRepository {
 
-    private val monthFormatter = DateTimeFormatter.ofPattern("MMMM yyyy", Locale("id", "ID"))
-
     override suspend fun generateLaporanIuranBulanan(
         startDate: String,
         endDate: String
@@ -34,13 +33,17 @@ class LaporanRepositoryImpl @Inject constructor(
         val rincian = mutableListOf<RincianIuranBulan>()
         var current = start
 
+        // FIX: Menggunakan Locale.getDefault() agar menyesuaikan dengan bahasa perangkat
+        val monthFormatter = DateTimeFormatter.ofPattern("MMMM yyyy", Locale.getDefault())
+
         while (!current.isAfter(end)) {
             val bulan = current.monthValue
             val tahun = current.year
             val total = iuranDao.getTotalIuranByMonth(bulan, tahun) ?: 0.0
             rincian.add(
                 RincianIuranBulan(
-                    bulan  = current.format(monthFormatter),
+                    // Nama bulan akan otomatis jadi English jika HP diset English
+                    bulan  = current.format(monthFormatter).replaceFirstChar { it.uppercase() },
                     jumlah = total
                 )
             )
@@ -57,31 +60,30 @@ class LaporanRepositoryImpl @Inject constructor(
         bulan: Int,
         tahun: Int
     ): LaporanStatusBayar {
-        // PERBAIKAN: Ambil snapshot data list saat ini dengan .first() lalu petakan ke objek Domain (Anggota) lewat .toDomain()
+        // Ambil snapshot data list saat ini dengan .first() lalu petakan ke objek Domain (Anggota) lewat .toDomain()
         val allAnggota = anggotaDao.getAllAnggota().first().map { it.toDomain() }
 
         val iuranList      = iuranDao.getIuranByMonth(bulan, tahun)
         val iuranMap       = iuranList.associateBy { it.anggotaId }
 
-        // Sekarang .map di bawah ini murni milik Kotlin Collections List biasa, bukan milik Flow lagi
         val rincian = allAnggota.map { anggota ->
             val iuran = iuranMap[anggota.anggotaId]
             StatusBayarAnggota(
-                namaAnggota  = anggota.namaAnggota, // Sekarang variabel aman dan terdefinisi dengan benar
+                namaAnggota  = anggota.namaAnggota,
                 statusBayar  = iuran?.statusBayar ?: false,
                 nominal      = iuran?.nominal ?: 0.0,
                 tanggalBayar = iuran?.tanggalBayar
             )
         }
 
-        // Membersihkan boilerplate Calendar yang tidak terpakai dan mengoptimalkan label bulan dengan LocalDate
-        val formatter = DateTimeFormatter.ofPattern("MMMM yyyy", Locale("id", "ID"))
-        val bulanLabel = LocalDate.of(tahun, bulan, 1).format(formatter)
+        // FIX: Menggunakan Locale.getDefault() agar menyesuaikan dengan bahasa perangkat
+        val formatter = DateTimeFormatter.ofPattern("MMMM yyyy", Locale.getDefault())
+        val bulanLabel = LocalDate.of(tahun, bulan, 1).format(formatter).replaceFirstChar { it.uppercase() }
 
         return LaporanStatusBayar(
             bulan           = bulanLabel,
             tahun           = tahun,
-            rincianAnggota  = rincian, // Casting manual "as List<...>" dihapus karena otomatis sudah berupa List murni
+            rincianAnggota  = rincian,
             totalLunas      = rincian.count { it.statusBayar },
             totalBelumBayar = rincian.count { !it.statusBayar },
             totalTerkumpul  = rincian.filter { it.statusBayar }.sumOf { it.nominal }

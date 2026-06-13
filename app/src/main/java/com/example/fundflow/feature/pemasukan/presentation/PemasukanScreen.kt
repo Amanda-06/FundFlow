@@ -38,25 +38,33 @@ fun PemasukanScreen(
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarState) },
         topBar = {
-            if (uiState.isSelectionMode) {
-                FundFlowSelectionTopBar(
-                    selectedCount = uiState.selectedIds.size,
-                    totalCount    = uiState.filteredList.size,
-                    onSelectAll   = viewModel::onSelectAll,
-                    onDelete      = viewModel::onRequestBatchDelete,
-                    onCancel      = viewModel::onCancelSelection
-                )
-            } else {
-                Text(
-                    text       = stringResource(R.string.pemasukan_title),
-                    style      = MaterialTheme.typography.headlineSmall,
-                    fontWeight = FontWeight.Bold,
-                    color      = MaterialTheme.colorScheme.onBackground,
-                    modifier   = Modifier
-                        .fillMaxWidth()
-                        .background(MaterialTheme.colorScheme.background)
-                        .padding(horizontal = 16.dp, vertical = 16.dp)
-                )
+            // FIX: Bungkus topBar dengan Column dan beri statusBarsPadding()
+            // agar aman dari tumpang tindih indikator HP (Edge-to-Edge).
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.background)
+                    .statusBarsPadding()
+            ) {
+                if (uiState.isSelectionMode) {
+                    FundFlowSelectionTopBar(
+                        selectedCount = uiState.selectedIds.size,
+                        totalCount    = uiState.filteredList.size,
+                        onSelectAll   = viewModel::onSelectAll,
+                        onDelete      = viewModel::onRequestBatchDelete,
+                        onCancel      = viewModel::onCancelSelection
+                    )
+                } else {
+                    Text(
+                        text       = stringResource(R.string.pemasukan_title),
+                        style      = MaterialTheme.typography.headlineSmall,
+                        fontWeight = FontWeight.Bold,
+                        color      = MaterialTheme.colorScheme.onBackground,
+                        modifier   = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 16.dp)
+                    )
+                }
             }
         },
         floatingActionButton = {

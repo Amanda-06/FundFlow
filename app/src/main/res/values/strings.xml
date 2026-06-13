@@ -90,7 +90,7 @@
     <!-- ═══════════════════════════════════════════════════════
          HOME (DASHBOARD)
     ═══════════════════════════════════════════════════════ -->
-    <string name="home_greeting">Halo, %1$s 👋</string>
+    <string name="home_greeting">Halo 👋</string>
     <string name="home_total_saldo">Total Saldo</string>
     <string name="home_pemasukan">Pemasukan</string>
     <string name="home_pengeluaran">Pengeluaran</string>
@@ -278,7 +278,7 @@
     <string name="profile_logout">Keluar</string>
     <string name="profile_logout_confirm_title">Keluar dari Akun?</string>
     <string name="profile_logout_confirm_message">Anda perlu masuk kembali untuk mengakses data keuangan organisasi.</string>
-    <string name="profile_version">Versi %1$s</string>
+    <string name="profile_version">Versi 1.0.0</string>
     <string name="profile_versi_1_0_0">Versi 1.0.0</string>
     <string name="profile_batal">Batal</string>
     <string name="profile_keluar">Keluar</string>
