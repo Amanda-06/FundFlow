@@ -14,10 +14,10 @@ data class PeriodeEntity(
     val userId: String,
 
     @ColumnInfo(name = "tanggal_mulai")
-    val tanggalMulai: String,      // format "yyyy-MM", contoh: "2026-03"
+    val tanggalMulai: String,
 
     @ColumnInfo(name = "tanggal_selesai")
-    val tanggalSelesai: String,    // format "yyyy-MM"
+    val tanggalSelesai: String,
 
     @ColumnInfo(name = "created_at")
     val createdAt: Long = System.currentTimeMillis()

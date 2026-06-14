@@ -11,6 +11,5 @@ class PusatBantuanViewModel @Inject constructor(
     getFaqList: GetFaqListUseCase
 ) : ViewModel() {
 
-    /** Daftar FAQ statis — sudah mengikuti bahasa aktif via string resource */
     val faqList: List<FaqItem> = getFaqList()
 }

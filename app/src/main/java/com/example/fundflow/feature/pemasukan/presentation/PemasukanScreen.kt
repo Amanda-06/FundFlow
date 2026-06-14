@@ -38,8 +38,6 @@ fun PemasukanScreen(
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarState) },
         topBar = {
-            // FIX: Bungkus topBar dengan Column dan beri statusBarsPadding()
-            // agar aman dari tumpang tindih indikator HP (Edge-to-Edge).
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -85,7 +83,6 @@ fun PemasukanScreen(
             contentPadding      = PaddingValues(start = 16.dp, top = 8.dp, end = 16.dp, bottom = 80.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            // ── Kartu total pemasukan — tetap IncomeGreen (warna brand) ──
             item {
                 Card(
                     modifier  = Modifier.fillMaxWidth(),

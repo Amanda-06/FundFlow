@@ -1,5 +1,3 @@
-// feature/home/presentation/HomeScreen.kt
-// ============================================================
 package com.example.fundflow.feature.home.presentation
 
 import androidx.compose.foundation.background
@@ -48,7 +46,6 @@ fun HomeScreen(
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            // REVISI: Menggunakan warna background yang dinamis
             .background(MaterialTheme.colorScheme.background),
         contentPadding = PaddingValues(bottom = 100.dp)
     ) {
@@ -114,7 +111,6 @@ fun HomeScreen(
                 text       = labelTransaksiTerakhir,
                 style      = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
-                // REVISI: Dinamis mengikuti tema
                 color      = MaterialTheme.colorScheme.onBackground,
                 modifier   = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
             )
@@ -142,7 +138,6 @@ fun HomeScreen(
                 ) {
                     Text(
                         text  = labelBelumAdaTransaksi,
-                        // REVISI: Dinamis mengikuti tema
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         style = MaterialTheme.typography.bodyMedium
                     )
@@ -171,7 +166,6 @@ private fun HomeTopBar(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            // REVISI: Dinamis mengikuti tema
             .background(MaterialTheme.colorScheme.background)
             .statusBarsPadding()
             .padding(horizontal = 16.dp, vertical = 12.dp),
@@ -184,14 +178,12 @@ private fun HomeTopBar(
                     text       = "FundFlow",
                     style      = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
-                    // REVISI: Dinamis mengikuti tema
                     color      = MaterialTheme.colorScheme.onBackground
                 )
             }
             Text(
                 text  = greeting,
                 style = MaterialTheme.typography.bodySmall,
-                // REVISI: Dinamis mengikuti tema
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
@@ -208,14 +200,12 @@ private fun HomeTopBar(
                     modifier = Modifier
                         .size(36.dp)
                         .clip(CircleShape)
-                        // REVISI: Dinamis mengikuti tema
                         .background(MaterialTheme.colorScheme.surfaceVariant),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
                         Icons.Default.Person,
                         contentDescription = stringResource(R.string.profile_title),
-                        // REVISI: Dinamis mengikuti tema
                         tint               = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier           = Modifier.size(20.dp)
                     )
@@ -233,7 +223,6 @@ private fun SaldoCard(
 ) {
     Card(
         modifier  = modifier,
-        // REVISI: Menggunakan primaryContainer agar menyesuaikan dark mode
         colors    = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         shape     = RoundedCornerShape(16.dp)
@@ -242,7 +231,6 @@ private fun SaldoCard(
             Text(
                 text  = stringResource(R.string.home_total_saldo),
                 style = MaterialTheme.typography.bodyMedium,
-                // REVISI: Dinamis mengikuti warna kontainer
                 color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f)
             )
             Spacer(Modifier.height(4.dp))
@@ -267,7 +255,7 @@ private fun SaldoCard(
                         text       = "+ ${CurrencyFormatter.format(summary.totalPemasukan)}",
                         style      = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.SemiBold,
-                        color      = IncomeGreen // Teks aksen tetap brand color
+                        color      = IncomeGreen
                     )
                 }
                 Column(horizontalAlignment = Alignment.End) {
@@ -280,7 +268,7 @@ private fun SaldoCard(
                         text       = "- ${CurrencyFormatter.format(summary.totalPengeluaran)}",
                         style      = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.SemiBold,
-                        color      = ExpenseRed // Teks aksen tetap brand color
+                        color      = ExpenseRed
                     )
                 }
             }
@@ -298,7 +286,6 @@ private fun IuranStatusCard(
 ) {
     Card(
         modifier  = modifier,
-        // REVISI: Dinamis menggunakan surface color
         colors    = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         shape     = RoundedCornerShape(12.dp)
@@ -314,7 +301,6 @@ private fun IuranStatusCard(
                     text       = stringResource(R.string.home_status_iuran),
                     style      = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
-                    // REVISI: Dinamis
                     color      = MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(Modifier.height(4.dp))
@@ -325,7 +311,6 @@ private fun IuranStatusCard(
                         lunasCount + belumBayarCount
                     ),
                     style = MaterialTheme.typography.bodySmall,
-                    // REVISI: Dinamis
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
@@ -333,7 +318,7 @@ private fun IuranStatusCard(
                 onClick = onTagihClick,
                 colors  = ButtonDefaults.buttonColors(
                     containerColor = PrimaryLime,
-                    contentColor   = Color.Black // Teks di atas PrimaryLime bagusnya tetap gelap
+                    contentColor   = Color.Black
                 ),
                 shape          = RoundedCornerShape(8.dp),
                 contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
@@ -362,7 +347,6 @@ private fun HolidayCard(
 
     Card(
         modifier  = modifier,
-        // REVISI: Menggunakan Surface agar lebih netral, dengan sedikit warna iuran blue
         colors    = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
         shape     = RoundedCornerShape(12.dp)
@@ -395,13 +379,11 @@ private fun HolidayCard(
                     text       = holiday.localName,
                     style      = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.Bold,
-                    // REVISI: Dinamis
                     color      = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
                     text  = formattedDate,
                     style = MaterialTheme.typography.bodySmall,
-                    // REVISI: Dinamis
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
@@ -417,7 +399,6 @@ private fun RecentTransactionItem(
 ) {
     Card(
         modifier  = modifier,
-        // REVISI: Dinamis
         colors    = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
         shape     = RoundedCornerShape(10.dp)

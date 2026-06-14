@@ -1,5 +1,3 @@
-// feature/laporan/presentation/LaporanDetailKeuanganSheet.kt
-// ============================================================
 package com.example.fundflow.feature.laporan.presentation
 
 import androidx.compose.foundation.background
@@ -41,7 +39,6 @@ fun LaporanDetailKeuanganSheet(
             stringResource(R.string.laporan_detail_keuangan_laporan_detail_keuangan),
             style      = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.SemiBold,
-            // FIX: reaktif terhadap tema
             color      = MaterialTheme.colorScheme.onSurface
         )
         Spacer(Modifier.height(4.dp))
@@ -60,7 +57,6 @@ fun LaporanDetailKeuanganSheet(
         Text(
             laporan.periode,
             style = MaterialTheme.typography.bodySmall,
-            // FIX: reaktif terhadap tema
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
 
@@ -71,7 +67,6 @@ fun LaporanDetailKeuanganSheet(
             modifier              = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            // color (IncomeGreen / ExpenseRed) tetap: warna semantik
             SummaryBox(
                 modifier = Modifier.weight(1f),
                 label    = stringResource(R.string.laporan_detail_keuangan_pemasukan),
@@ -91,7 +86,6 @@ fun LaporanDetailKeuanganSheet(
         Spacer(Modifier.height(8.dp))
 
         // ── Saldo Akhir ────────────────────────────────────────
-        // HeaderGreen tetap: warna brand
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors   = CardDefaults.cardColors(containerColor = HeaderGreen.copy(alpha = 0.25f)),
@@ -108,14 +102,12 @@ fun LaporanDetailKeuanganSheet(
                     stringResource(R.string.laporan_detail_keuangan_saldo_akhir),
                     style      = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
-                    // FIX: reaktif terhadap tema
                     color      = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
                     CurrencyFormatter.format(laporan.saldoAkhir),
                     style      = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
-                    // FIX: reaktif terhadap tema
                     color      = MaterialTheme.colorScheme.onSurface
                 )
             }
@@ -162,7 +154,6 @@ fun LaporanDetailKeuanganSheet(
                         ) {
                             Text(
                                 stringResource(R.string.laporan_detail_keuangan_belum_ada_transaksi_pada_periode_ini),
-                                // FIX: reaktif terhadap tema
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 style = MaterialTheme.typography.bodySmall
                             )
@@ -184,10 +175,9 @@ private fun SummaryBox(
     modifier: Modifier = Modifier,
     label: String,
     value: String,
-    color: androidx.compose.ui.graphics.Color,   // warna semantik dari caller
+    color: androidx.compose.ui.graphics.Color,
     icon: androidx.compose.ui.graphics.vector.ImageVector
 ) {
-    // Background color.copy(alpha) tetap: warna semantik per kategori
     Card(
         modifier = modifier,
         colors   = CardDefaults.cardColors(containerColor = color.copy(alpha = 0.10f)),
@@ -198,14 +188,13 @@ private fun SummaryBox(
                 Icon(
                     icon,
                     contentDescription = null,
-                    tint     = color,   // tetap: warna semantik
+                    tint     = color,
                     modifier = Modifier.size(16.dp)
                 )
                 Spacer(Modifier.width(6.dp))
                 Text(
                     label,
                     style = MaterialTheme.typography.labelSmall,
-                    // FIX: reaktif terhadap tema
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
@@ -214,7 +203,7 @@ private fun SummaryBox(
                 value,
                 style      = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
-                color      = color   // tetap: warna semantik
+                color      = color
             )
         }
     }
@@ -241,7 +230,6 @@ private fun TransaksiRow(item: ItemDetailKeuangan) {
 
     Card(
         modifier  = Modifier.fillMaxWidth(),
-        // FIX: reaktif terhadap tema
         colors    = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         shape     = RoundedCornerShape(10.dp),
         elevation = CardDefaults.cardElevation(1.dp)
@@ -256,7 +244,6 @@ private fun TransaksiRow(item: ItemDetailKeuangan) {
                 modifier = Modifier
                     .size(28.dp)
                     .background(
-                        // tetap: warna semantik income/expense
                         if (item.isIncome) IncomeGreen.copy(alpha = 0.12f) else ExpenseRed.copy(
                             alpha = 0.12f
                         ),
@@ -267,7 +254,6 @@ private fun TransaksiRow(item: ItemDetailKeuangan) {
                 Icon(
                     imageVector        = if (item.isIncome) Icons.Default.TrendingUp else Icons.Default.TrendingDown,
                     contentDescription = null,
-                    // tetap: warna semantik income/expense
                     tint     = if (item.isIncome) IncomeGreen else ExpenseRed,
                     modifier = Modifier.size(14.dp)
                 )
@@ -278,18 +264,14 @@ private fun TransaksiRow(item: ItemDetailKeuangan) {
                     item.deskripsi,
                     style      = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Medium,
-                    // FIX: reaktif terhadap tema
                     color      = MaterialTheme.colorScheme.onSurface,
                     maxLines   = 1
                 )
                 Row {
-                    // AccentPurple tetap: warna brand/aksen untuk keterangan
                     Text(item.keterangan, style = MaterialTheme.typography.bodySmall, color = AccentPurple, maxLines = 1)
                     Text(
-                        // FIX: Menggunakan stringResource format agar tanda baca titik tidak hardcode dan memakai tanggal ter-lokalisasi
                         text  = stringResource(R.string.laporan_detail_date_format, localizedDateLabel),
                         style = MaterialTheme.typography.bodySmall,
-                        // FIX: reaktif terhadap tema
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
@@ -298,7 +280,6 @@ private fun TransaksiRow(item: ItemDetailKeuangan) {
                 "${if (item.isIncome) "+" else "-"} ${CurrencyFormatter.format(item.nominal)}",
                 style      = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.SemiBold,
-                // tetap: warna semantik income/expense
                 color      = if (item.isIncome) IncomeGreen else ExpenseRed
             )
         }

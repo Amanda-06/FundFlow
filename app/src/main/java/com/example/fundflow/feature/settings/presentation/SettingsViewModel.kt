@@ -24,8 +24,8 @@ class SettingsViewModel @Inject constructor(
     private val setDarkTheme: SetDarkThemeUseCase,
     private val setLanguage: SetLanguageUseCase,
     private val setNotificationEnabled: SetNotificationEnabledUseCase,
-    private val firebaseMessaging: FirebaseMessaging, // INJECT FCM YANG SUDAH ADA DI DI MODULE
-    @ApplicationContext private val context: Context // INJECT CONTEXT UNTUK WORKMANAGER
+    private val firebaseMessaging: FirebaseMessaging,
+    @ApplicationContext private val context: Context
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SettingsState())
@@ -86,7 +86,7 @@ class SettingsViewModel @Inject constructor(
 
     fun onRestartHandled() = _uiState.update { it.copy(needsRestart = false) }
 
-    // ── Notifikasi (REVISI BESAR INTEGRASI FCM & WORKMANAGER) ──
+    // Notifikasi
     fun onToggleNotification(enabled: Boolean) {
         viewModelScope.launch {
             // 1. Simpan preferensi ke DataStore lokal
@@ -115,7 +115,7 @@ class SettingsViewModel @Inject constructor(
      */
     private fun setupPeriodicIuranWorker() {
         val constraints = Constraints.Builder()
-            .setRequiredNetworkType(NetworkType.NOT_REQUIRED) // Worker Anda diset berjalan tanpa internet (baca Room)
+            .setRequiredNetworkType(NetworkType.NOT_REQUIRED)
             .build()
 
         val request = PeriodicWorkRequestBuilder<IuranReminderWorker>(1, TimeUnit.DAYS)
@@ -124,7 +124,7 @@ class SettingsViewModel @Inject constructor(
 
         WorkManager.getInstance(context).enqueueUniquePeriodicWork(
             WORK_NAME_IURAN,
-            ExistingPeriodicWorkPolicy.KEEP, // KEEP memastikan jadwal tidak tumpang tindih jika sudah berjalan
+            ExistingPeriodicWorkPolicy.KEEP,
             request
         )
     }

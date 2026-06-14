@@ -1,5 +1,3 @@
-// feature/onboarding/presentation/OnboardingScreen.kt
-// ============================================================
 package com.example.fundflow.feature.onboarding.presentation
 
 import androidx.compose.animation.core.animateDpAsState
@@ -37,19 +35,19 @@ private data class OnboardingPage(
 private val pages = listOf(
     OnboardingPage(
         icon        = Icons.Default.AccountBalance,
-        iconTint    = IuranBlue,   // tetap: warna semantik
+        iconTint    = IuranBlue,
         title       = "Kelola Keuangan Organisasi",
         description = "Catat iuran, pemasukan, dan pengeluaran\norganisasi kamu dengan mudah dan terstruktur."
     ),
     OnboardingPage(
         icon        = Icons.Default.GroupAdd,
-        iconTint    = IncomeGreen,   // tetap: warna semantik
+        iconTint    = IncomeGreen,
         title       = "Monitor Status Anggota",
         description = "Pantau siapa saja yang sudah dan belum\nmembayar iuran bulanan secara real-time."
     ),
     OnboardingPage(
         icon        = Icons.Default.Assessment,
-        iconTint    = ReportOrange,   // tetap: warna semantik
+        iconTint    = ReportOrange,
         title       = "Laporan Otomatis",
         description = "Hasilkan laporan keuangan secara otomatis\ndan ekspor ke PDF atau Excel kapan saja."
     )
@@ -68,7 +66,6 @@ fun OnboardingScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            // FIX: reaktif terhadap tema
             .background(MaterialTheme.colorScheme.background)
             .systemBarsPadding()
     ) {
@@ -97,7 +94,6 @@ fun OnboardingScreen(
                         .height(8.dp)
                         .width(width)
                         .clip(CircleShape)
-                        // PrimaryLime tetap: warna brand. Unselected FIX: reaktif
                         .background(if (isSelected) PrimaryLime else MaterialTheme.colorScheme.outline)
                 )
             }
@@ -121,8 +117,8 @@ fun OnboardingScreen(
                         .fillMaxWidth()
                         .height(52.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = PrimaryLime,   // tetap: warna brand
-                        contentColor   = TextDark       // tetap: di atas PrimaryLime
+                        containerColor = PrimaryLime,
+                        contentColor   = TextDark
                     ),
                     shape = MaterialTheme.shapes.medium
                 ) {
@@ -186,7 +182,6 @@ private fun OnboardingPageContent(page: OnboardingPage) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        // Ikon dalam lingkaran — warna iconTint tetap: warna semantik per halaman
         Box(
             modifier = Modifier
                 .size(120.dp)
@@ -208,7 +203,6 @@ private fun OnboardingPageContent(page: OnboardingPage) {
             text       = page.title,
             style      = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
-            // FIX: reaktif terhadap tema
             color      = MaterialTheme.colorScheme.onSurface,
             textAlign  = TextAlign.Center
         )
@@ -218,7 +212,6 @@ private fun OnboardingPageContent(page: OnboardingPage) {
         Text(
             text       = page.description,
             style      = MaterialTheme.typography.bodyLarge,
-            // FIX: reaktif terhadap tema
             color      = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign  = TextAlign.Center,
             lineHeight = MaterialTheme.typography.bodyLarge.lineHeight

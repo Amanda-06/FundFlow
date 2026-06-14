@@ -10,7 +10,6 @@ interface PengeluaranDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(pengeluaran: PengeluaranEntity): Long
 
-    // TAMBAHAN: Fungsi Insert Massal untuk Sinkronisasi Cloud yang Efisien
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(pengeluaranList: List<PengeluaranEntity>)
 

@@ -25,7 +25,6 @@ class AuthRepositoryImpl @Inject constructor(
     private val userDao: UserDao,
     private val settingsDataStore: SettingsDataStore,
 
-    // SUNTIKKAN SELURUH DAO KE KONS-TRUKTOR
     private val anggotaDao: AnggotaDao,
     private val iuranDao: IuranDao,
     private val periodeDao: PeriodeDao,
@@ -75,22 +74,18 @@ class AuthRepositoryImpl @Inject constructor(
         return entity.toDomain()
     }
 
-    /**
-     * LOGOUT: Bersihkan seluruh riwayat sesi autentikasi cloud Firebase
-     * dan hapus bersih seluruh isi tabel database lokal demi keamanan data.
-     */
     override suspend fun logout() {
         // 1. Keluar dari sesi Firebase Cloud
         remoteDataSource.logout()
 
         // 2. Bersihkan total seluruh isi tabel Room DB lokal di HP demi mencegah data leak
         try {
-            userDao.clearAll()                    // Hapus tabel users
-            periodeDao.deleteAllPeriode()         // Hapus tabel periode
-            anggotaDao.deleteAllAnggota()         // Hapus tabel anggota
-            iuranDao.deleteAllIuran()             // Hapus tabel iuran
-            pemasukanDao.deleteAllPemasukan()     // Hapus tabel pemasukan
-            pengeluaranDao.deleteAllPengeluaran() // Hapus tabel pengeluaran
+            userDao.clearAll()
+            periodeDao.deleteAllPeriode()
+            anggotaDao.deleteAllAnggota()
+            iuranDao.deleteAllIuran()
+            pemasukanDao.deleteAllPemasukan()
+            pengeluaranDao.deleteAllPengeluaran()
         } catch (e: Exception) {
             e.printStackTrace()
         }

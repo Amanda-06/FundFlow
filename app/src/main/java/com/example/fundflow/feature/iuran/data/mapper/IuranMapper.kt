@@ -1,6 +1,3 @@
-// ============================================================
-// feature/iuran/data/mapper/IuranMapper.kt
-// ============================================================
 package com.example.fundflow.feature.iuran.data.mapper
 
 import com.example.fundflow.feature.iuran.data.model.IuranAnggotaRow
@@ -31,8 +28,3 @@ fun IuranSummaryRaw.toDomain(): IuranSummary = IuranSummary(
     belumBayarCount = belumBayarCount,
     totalTerkumpul  = totalTerkumpul
 )
-
-
-// ============================================================
-// feature/iuran/data/repository/IuranRepositoryImpl.kt
-// ============================================================

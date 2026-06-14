@@ -50,16 +50,10 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // FIX BUG 3:
-        // Baca isDarkTheme secara sinkron SATU KALI di sini, hanya untuk
-        // menentukan warna status bar awal di enableEdgeToEdge().
-        // Setelah ini, tema dikelola secara reaktif oleh StateFlow di setContent.
         val initialDarkTheme = runBlocking {
             settingsDataStore.isDarkTheme.first()
         }
 
-        // Terapkan SystemBarStyle yang sesuai agar warna icon status bar
-        // (putih untuk dark mode, hitam untuk light mode) sudah benar sejak awal.
         enableEdgeToEdge(
             statusBarStyle = if (initialDarkTheme) {
                 SystemBarStyle.dark(android.graphics.Color.TRANSPARENT)
@@ -71,24 +65,17 @@ class MainActivity : ComponentActivity() {
             }
         )
 
-        // ── TAMBAHAN KODE: CETAK PAKSA TOKEN FCM UNTUK PENGUJIAN ──
         com.google.firebase.messaging.FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
             if (!task.isSuccessful) {
                 android.util.Log.w("FCM_TEST", "Gagal mendapatkan token FCM", task.exception)
                 return@addOnCompleteListener
             }
 
-            // Ambil token baru yang berhasil didapatkan
             val token = task.result
             android.util.Log.d("FCM_TEST", "Token FCM Saat Ini: $token")
         }
-        // ──────────────────────────────────────────────────────────
 
         setContent {
-            // Observe preferensi tema secara reaktif dari DataStore.
-            // Saat isDarkTheme berubah, FundFlowTheme akan recompose
-            // dan seluruh UI yang memakai MaterialTheme.colorScheme
-            // akan ikut berubah secara otomatis.
             val isDarkTheme by settingsDataStore.isDarkTheme
                 .collectAsStateWithLifecycle(initialValue = initialDarkTheme)
 

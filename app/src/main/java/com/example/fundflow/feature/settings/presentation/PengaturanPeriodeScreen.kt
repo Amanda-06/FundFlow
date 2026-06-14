@@ -1,5 +1,3 @@
-// feature/settings/presentation/PengaturanPeriodeKasScreen.kt
-// ============================================================
 package com.example.fundflow.feature.settings.presentation
 
 import androidx.compose.foundation.layout.*
@@ -34,7 +32,6 @@ fun PengaturanPeriodeScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val snackbarState = remember { SnackbarHostState() }
 
-    // FIX: Lokalisasi teks pesan sukses di snackbar
     val successMessage = stringResource(R.string.settings_period_success)
     LaunchedEffect(uiState.isSuccess) {
         if (uiState.isSuccess) {
@@ -50,13 +47,11 @@ fun PengaturanPeriodeScreen(
     var showSelesaiPicker by remember { mutableStateOf(false) }
     val currentYear = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR)
 
-    // FIX: Mendapatkan Locale sistem yang sedang aktif saat runtime agar nama bulan berubah secara dinamis
     val configuration = LocalConfiguration.current
     val currentLocale = remember(configuration) {
         ConfigurationCompat.getLocales(configuration).get(0) ?: Locale.getDefault()
     }
 
-    // Pembuatan daftar bulan disesuaikan dengan Locale dinamis perangkat
     val monthOptions = remember(currentLocale) {
         val monthsList = (1..12).map { month ->
             val num  = month.toString().padStart(2, '0')
@@ -72,10 +67,7 @@ fun PengaturanPeriodeScreen(
 
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarState) },
-        // FIX: Lokalisasi judul TopBar
         topBar = { FundFlowTopBar(title = stringResource(R.string.settings_period_title), onNavigateBack = onNavigateBack) },
-        // FIX: reaktif terhadap tema
-        containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
         if (uiState.isLoading) {
             Box(Modifier.fillMaxSize().padding(padding), contentAlignment = Alignment.Center) {
@@ -92,8 +84,6 @@ fun PengaturanPeriodeScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             // ── Info Card ───────────────────────────────────────
-            // Info card ini pakai warna semantik IuranBlue yang sama di kedua tema,
-            // hanya teks di dalamnya yang perlu reaktif.
             Card(
                 colors = CardDefaults.cardColors(containerColor = IuranBlue.copy(alpha = 0.10f)),
                 shape  = RoundedCornerShape(12.dp)
@@ -102,15 +92,13 @@ fun PengaturanPeriodeScreen(
                     Icon(
                         Icons.Default.Info,
                         contentDescription = null,
-                        tint     = IuranBlue,    // tetap: warna semantik
+                        tint     = IuranBlue,
                         modifier = Modifier.size(20.dp)
                     )
                     Spacer(Modifier.width(10.dp))
                     Text(
-                        // FIX: Lokalisasi teks informasi peringatan periode kas
                         text  = stringResource(R.string.settings_period_info),
                         style = MaterialTheme.typography.bodySmall,
-                        // FIX: reaktif terhadap tema
                         color = MaterialTheme.colorScheme.onSurface
                     )
                 }
@@ -118,11 +106,9 @@ fun PengaturanPeriodeScreen(
 
             // ── Periode Mulai ─────────────────────────────────
             Text(
-                // FIX: Lokalisasi label Periode Bulan Mulai
                 text       = stringResource(R.string.settings_period_label_start),
                 style      = MaterialTheme.typography.labelLarge,
                 fontWeight = FontWeight.Medium,
-                // FIX: reaktif terhadap tema
                 color      = MaterialTheme.colorScheme.onSurface
             )
             val mulaiLabel = monthOptions.find { it.first == uiState.bulanMulai }?.second ?: stringResource(R.string.settings_period_placeholder)
@@ -134,14 +120,12 @@ fun PengaturanPeriodeScreen(
                 Icon(
                     Icons.Default.CalendarMonth,
                     contentDescription = null,
-                    // FIX: reaktif terhadap tema
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Spacer(Modifier.width(8.dp))
                 Text(
                     mulaiLabel,
                     modifier = Modifier.weight(1f),
-                    // FIX: reaktif terhadap tema
                     color    = MaterialTheme.colorScheme.onSurface
                 )
             }
@@ -151,11 +135,9 @@ fun PengaturanPeriodeScreen(
 
             // ── Periode Selesai ───────────────────────────────
             Text(
-                // FIX: Lokalisasi label Periode Bulan Berakhir
                 text       = stringResource(R.string.settings_period_label_end),
                 style      = MaterialTheme.typography.labelLarge,
                 fontWeight = FontWeight.Medium,
-                // FIX: reaktif terhadap tema
                 color      = MaterialTheme.colorScheme.onSurface
             )
             val selesaiLabel = monthOptions.find { it.first == uiState.bulanSelesai }?.second ?: stringResource(R.string.settings_period_placeholder)
@@ -167,14 +149,12 @@ fun PengaturanPeriodeScreen(
                 Icon(
                     Icons.Default.CalendarMonth,
                     contentDescription = null,
-                    // FIX: reaktif terhadap tema
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Spacer(Modifier.width(8.dp))
                 Text(
                     selesaiLabel,
                     modifier = Modifier.weight(1f),
-                    // FIX: reaktif terhadap tema
                     color    = MaterialTheme.colorScheme.onSurface
                 )
             }
@@ -185,7 +165,6 @@ fun PengaturanPeriodeScreen(
             Spacer(Modifier.height(8.dp))
 
             FundFlowPrimaryButton(
-                // FIX: Lokalisasi teks tombol simpan periode
                 text      = stringResource(R.string.settings_period_btn_save),
                 onClick   = viewModel::onSave,
                 isLoading = uiState.isSaving
@@ -222,10 +201,8 @@ private fun MonthPickerDialog(
         onDismissRequest = onDismiss,
         title = {
             Text(
-                // FIX: Lokalisasi judul dialog
                 stringResource(R.string.settings_period_dialog_title),
                 style = MaterialTheme.typography.titleLarge,
-                // FIX: reaktif terhadap tema
                 color = MaterialTheme.colorScheme.onSurface
             )
         },
@@ -239,14 +216,12 @@ private fun MonthPickerDialog(
                             modifier = Modifier.fillMaxWidth().padding(vertical = 2.dp),
                             onClick  = { onSelect(key) },
                             shape    = MaterialTheme.shapes.small,
-                            // FIX: unselected background reaktif terhadap tema
                             color    = if (isSelected) PrimaryLime.copy(alpha = 0.2f)
                             else MaterialTheme.colorScheme.surface
                         ) {
                             Text(
                                 label,
                                 modifier   = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
-                                // FIX: unselected text reaktif terhadap tema
                                 color      = if (isSelected) PrimaryLimeDark
                                 else MaterialTheme.colorScheme.onSurface,
                                 fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal
@@ -258,11 +233,9 @@ private fun MonthPickerDialog(
         },
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                // FIX: Lokalisasi teks tombol konfirmasi tutup
                 Text(stringResource(R.string.settings_period_dialog_close), color = MaterialTheme.colorScheme.onSurface)
             }
         },
-        // FIX: reaktif terhadap tema
         containerColor = MaterialTheme.colorScheme.surface
     )
 }

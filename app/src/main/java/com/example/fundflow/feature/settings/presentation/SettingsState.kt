@@ -9,6 +9,5 @@ data class SettingsState(
     val showLanguageDialog: Boolean   = false,
     val showThemeDialog: Boolean      = false,
 
-    // Restart activity diperlukan saat ganti bahasa
     val needsRestart: Boolean         = false
 )

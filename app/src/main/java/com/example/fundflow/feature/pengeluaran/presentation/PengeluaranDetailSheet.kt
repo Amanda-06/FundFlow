@@ -1,4 +1,3 @@
-// feature/pengeluaran/presentation/PengeluaranDetailSheet.kt
 package com.example.fundflow.feature.pengeluaran.presentation
 
 import androidx.compose.foundation.layout.*
@@ -73,7 +72,7 @@ fun PengeluaranDetailSheet(
             DropdownField(
                 label        = stringResource(R.string.pengeluaran_kategori),
                 selectedItem = uiState.formKategori,
-                items        = kategoriOptions, // FIX: Menggunakan opsi multi-bahasa
+                items        = kategoriOptions,
                 placeholder  = stringResource(R.string.pengeluaran_kategori_hint),
                 onItemSelect = viewModel::onFormKategoriChange,
                 isError      = uiState.formKategoriError != null,
@@ -113,7 +112,7 @@ fun PengeluaranDetailSheet(
                         CurrencyFormatter.format(uiState.formTotalNominal),
                         style      = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
-                        color      = ExpenseRed // tetap — warna brand aksen pengeluaran
+                        color      = ExpenseRed
                     )
                     val qty   = uiState.formQuantity.toIntOrNull() ?: 1
                     val harga = uiState.formHargaSatuan.toDoubleOrNull() ?: 0.0
@@ -128,7 +127,7 @@ fun PengeluaranDetailSheet(
             DropdownField(
                 label        = stringResource(R.string.pengeluaran_metode_pembayaran),
                 selectedItem = uiState.formMetode,
-                items        = metodeOptions, // FIX: Menggunakan opsi multi-bahasa
+                items        = metodeOptions,
                 placeholder  = stringResource(R.string.iuran_metode_hint),
                 onItemSelect = viewModel::onFormMetodeChange,
                 isError      = uiState.formMetodeError != null,

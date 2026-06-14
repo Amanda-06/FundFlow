@@ -1,15 +1,8 @@
-// ============================================================
-// navigation/Screen.kt  (FIXED — BottomNavItem +activeColor)
-// ============================================================
 package com.example.fundflow.navigation
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 
-/**
- * Daftar seluruh route navigasi dalam aplikasi FundFlow.
- * Dikelompokkan berdasarkan alur: Auth, Main (Bottom Nav), dan Detail/Sub screens.
- */
 sealed class Screen(val route: String) {
 
     // ── Auth Flow ─────────────────────────────────────────────
@@ -38,12 +31,6 @@ sealed class Screen(val route: String) {
     data object PengaturanPeriode : Screen("pengaturan_periode")
 }
 
-/**
- * Item untuk Bottom Navigation Bar.
- * Memetakan route ke label, ikon, dan WARNA AKTIF khusus
- * (sesuai tema semantik masing-masing fitur — Iuran biru,
- * Pemasukan hijau, Pengeluaran merah, Laporan oranye, dst).
- */
 data class BottomNavItem(
     val route: String,
     val label: String,

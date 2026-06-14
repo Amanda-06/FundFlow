@@ -21,7 +21,7 @@ data class PemasukanState(
     val formDeskripsi: String           = "",
     val formSumber: String              = "",
     val formMetode: String              = "",
-    val formNominal: String             = "", // FIX: formQty dan formHargaSatuan diganti formNominal
+    val formNominal: String             = "",
     val formTanggal: String             = "",
     val formCatatan: String             = "",
 
@@ -29,7 +29,7 @@ data class PemasukanState(
     val formDeskripsiError: String?     = null,
     val formSumberError: String?        = null,
     val formMetodeError: String?        = null,
-    val formNominalError: String?       = null, // FIX: disesuaikan
+    val formNominalError: String?       = null,
     val formTanggalError: String?       = null,
 
     // Delete dialog
@@ -39,4 +39,3 @@ data class PemasukanState(
     val errorMessage: String?           = null,
     val successMessage: String?         = null
 )
-// FIX: Blok `val formTotalNominal` dihapus karena user langsung input nominal utuh.

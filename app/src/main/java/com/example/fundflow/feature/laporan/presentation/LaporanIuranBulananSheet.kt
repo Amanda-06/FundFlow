@@ -1,4 +1,3 @@
-// feature/laporan/presentation/LaporanIuranBulananSheet.kt
 package com.example.fundflow.feature.laporan.presentation
 
 import androidx.compose.foundation.background
@@ -112,7 +111,7 @@ fun LaporanIuranBulananSheet(
                             modifier = Modifier.width(32.dp)
                         )
                         Text(
-                            formattedMonthLabel, // Menggunakan label teks dinamis yang sudah diformat aman
+                            formattedMonthLabel,
                             style    = MaterialTheme.typography.bodySmall,
                             color    = MaterialTheme.colorScheme.onSurface,
                             modifier = Modifier.weight(1f)
@@ -126,7 +125,6 @@ fun LaporanIuranBulananSheet(
                     HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f))
                 }
 
-                // Total — IncomeGreen tetap: warna semantik
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -144,7 +142,7 @@ fun LaporanIuranBulananSheet(
                         CurrencyFormatter.format(laporan.totalKeseluruhan),
                         style      = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.Bold,
-                        color      = IncomeGreenDark // tetap: warna semantik
+                        color      = IncomeGreenDark
                     )
                 }
             }
@@ -175,7 +173,7 @@ fun ExportButtonsRow(uiState: LaporanState, viewModel: LaporanViewModel) {
             onClick  = viewModel::onExportExcel,
             enabled  = !uiState.isExporting,
             modifier = Modifier.weight(1f).height(48.dp),
-            colors   = ButtonDefaults.buttonColors(containerColor = IncomeGreen, contentColor = Color.White), // IncomeGreen & White tetap: warna semantik Excel
+            colors   = ButtonDefaults.buttonColors(containerColor = IncomeGreen, contentColor = Color.White),
             shape    = MaterialTheme.shapes.medium
         ) {
             if (uiState.isExporting) {

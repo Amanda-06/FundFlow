@@ -1,4 +1,3 @@
-// feature/profile/domain/usecase/UpdatePasswordUseCase.kt
 package com.example.fundflow.feature.profile.domain.usecase
 
 import com.example.fundflow.feature.profile.domain.repository.ProfileRepository

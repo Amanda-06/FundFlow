@@ -21,7 +21,7 @@ import javax.inject.Inject
 class RegisterViewModel @Inject constructor(
     private val registerUseCase: RegisterUseCase,
     private val validateInput: ValidateInputUseCase,
-    private val periodeRepository: PeriodeRepository // REVISI: INJECT INTERFACE REPOSITORY
+    private val periodeRepository: PeriodeRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(RegisterState())

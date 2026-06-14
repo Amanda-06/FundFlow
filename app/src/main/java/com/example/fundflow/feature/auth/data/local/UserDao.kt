@@ -1,6 +1,3 @@
-// ============================================================
-// feature/auth/data/local/UserDao.kt
-// ============================================================
 package com.example.fundflow.feature.auth.data.local
 
 import androidx.room.*

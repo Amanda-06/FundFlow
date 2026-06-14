@@ -47,8 +47,8 @@ class GetPeriodeMonthsUseCase @Inject constructor(
 }
 
 data class MonthOption(
-    val key: String,    // "yyyy-MM"
-    val label: String,  // "April 2026"
+    val key: String,
+    val label: String,
     val bulan: Int,
     val tahun: Int
 )

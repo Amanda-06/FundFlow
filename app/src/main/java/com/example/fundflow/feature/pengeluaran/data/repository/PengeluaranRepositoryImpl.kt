@@ -15,8 +15,8 @@ import javax.inject.Inject
 
 class PengeluaranRepositoryImpl @Inject constructor(
     private val dao: PengeluaranDao,
-    private val firestoreService: FirestoreService, // Tambahkan ini
-    private val authService: FirebaseAuthService    // Tambahkan ini
+    private val firestoreService: FirestoreService,
+    private val authService: FirebaseAuthService
 ) : PengeluaranRepository {
 
     // Helper untuk mendapatkan UID pengguna yang sedang login
@@ -116,11 +116,6 @@ class PengeluaranRepositoryImpl @Inject constructor(
     override suspend fun getByDateRange(s: String, e: String): List<Pengeluaran> =
         dao.getByDateRange(s, e).toDomainList()
 
-    /**
-     * Fungsi Sinkronisasi: Mengunduh data dari sub-koleksi 'pengeluaran' di Firestore,
-     * lalu menyimpannya ke database Room lokal HP.
-     * Panggil fungsi ini di dalam `init { }` pada PengeluaranViewModel Anda.
-     */
     suspend fun syncWithCloud() {
         val userId = currentUserId ?: return
         try {

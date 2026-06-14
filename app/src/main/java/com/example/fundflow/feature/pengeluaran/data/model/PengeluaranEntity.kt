@@ -14,13 +14,13 @@ data class PengeluaranEntity(
     val deskripsi: String,
 
     @ColumnInfo(name = "kategori")
-    val kategori: String,               // Program Kerja / Inventaris / Operasional / Konsumsi / Lainnya
+    val kategori: String,
 
     @ColumnInfo(name = "nama_program")
-    val namaProgram: String = "",       // Opsional — nama kegiatan/proker
+    val namaProgram: String = "",
 
     @ColumnInfo(name = "metode")
-    val metode: String,                 // Cash / Transfer
+    val metode: String,
 
     @ColumnInfo(name = "quantity")
     val quantity: Int = 1,
@@ -29,10 +29,10 @@ data class PengeluaranEntity(
     val hargaSatuan: Double = 0.0,
 
     @ColumnInfo(name = "total_nominal")
-    val totalNominal: Double,           // = quantity × harga_satuan
+    val totalNominal: Double,
 
     @ColumnInfo(name = "tanggal")
-    val tanggal: String,                // "yyyy-MM-dd"
+    val tanggal: String,
 
     @ColumnInfo(name = "catatan")
     val catatan: String = "",

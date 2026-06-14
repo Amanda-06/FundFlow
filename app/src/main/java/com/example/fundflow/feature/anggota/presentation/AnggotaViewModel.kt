@@ -1,6 +1,3 @@
-// ============================================================
-// feature/anggota/presentation/AnggotaViewModel.kt
-// ============================================================
 package com.example.fundflow.feature.anggota.presentation
 
 import androidx.lifecycle.ViewModel
@@ -20,7 +17,7 @@ class AnggotaViewModel @Inject constructor(
     private val updateAnggota: UpdateAnggotaUseCase,
     private val deleteAnggota: DeleteAnggotaUseCase,
     private val deleteSelected: DeleteSelectedAnggotaUseCase,
-    private val repository: AnggotaRepositoryImpl // TAMBAHAN REPOSITORI UNTUK SYNC
+    private val repository: AnggotaRepositoryImpl
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(AnggotaState())
@@ -28,7 +25,7 @@ class AnggotaViewModel @Inject constructor(
 
     init {
         observeAnggota()
-        fetchDataDariCloud() // TAMBAHAN CALL SINKRONISASI CLOUD
+        fetchDataDariCloud()
     }
 
     private fun observeAnggota() {
@@ -48,7 +45,6 @@ class AnggotaViewModel @Inject constructor(
             .launchIn(viewModelScope)
     }
 
-    // Fungsi Tambahan untuk Memicu Sinkronisasi Background
     private fun fetchDataDariCloud() {
         viewModelScope.launch {
             try {

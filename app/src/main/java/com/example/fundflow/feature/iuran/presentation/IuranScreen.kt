@@ -47,7 +47,6 @@ fun IuranScreen(
         uiState.successMessage?.let { snackbarState.showSnackbar(it); viewModel.clearMessages() }
     }
 
-    // FIX: Mendapatkan Locale sistem secara dinamis di level UI agar reaktif saat bahasa HP berubah
     val configuration = LocalConfiguration.current
     val currentLocale = remember(configuration) {
         ConfigurationCompat.getLocales(configuration).get(0) ?: Locale.getDefault()
@@ -58,7 +57,6 @@ fun IuranScreen(
     val labelFilterLunas   = stringResource(R.string.iuran_filter_lunas)
     val labelFilterBelum   = stringResource(R.string.iuran_filter_belum_bayar)
 
-    // FIX: Format label bulan yang terpilih secara dinamis berdasarkan locale terbaru
     val selectedMonthLabel = remember(uiState.selectedMonth, currentLocale) {
         uiState.selectedMonth?.let {
             LocalDate.of(it.tahun, it.bulan, 1)
@@ -101,7 +99,7 @@ fun IuranScreen(
         Column(modifier = Modifier.fillMaxSize().padding(padding)) {
 
             MonthSelector(
-                label    = selectedMonthLabel, // Menggunakan label yang dinamis
+                label    = selectedMonthLabel,
                 onClick  = viewModel::onShowMonthPicker,
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
             )
@@ -162,7 +160,7 @@ fun IuranScreen(
         MonthPickerDialog(
             options       = uiState.availableMonths,
             selected      = uiState.selectedMonth,
-            currentLocale = currentLocale, // Oper locale terkini ke dialog
+            currentLocale = currentLocale,
             onSelect      = viewModel::onSelectMonth,
             onDismiss     = viewModel::onDismissMonthPicker
         )
@@ -312,7 +310,7 @@ private fun IuranListItem(iuran: Iuran, onClick: () -> Unit) {
 private fun MonthPickerDialog(
     options: List<MonthOption>,
     selected: MonthOption?,
-    currentLocale: Locale, // Menerima parameter locale dinamis
+    currentLocale: Locale,
     onSelect: (MonthOption) -> Unit,
     onDismiss: () -> Unit
 ) {
@@ -331,7 +329,6 @@ private fun MonthPickerDialog(
                     items(options, key = { it.key }) { option ->
                         val isSelected = option.key == selected?.key
 
-                        // FIX: Memformat label secara on-the-fly di UI berdasarkan data tahun & bulan mentah
                         val dynamicOptionLabel = remember(option, currentLocale) {
                             LocalDate.of(option.tahun, option.bulan, 1)
                                 .format(DateTimeFormatter.ofPattern("MMMM yyyy", currentLocale))
@@ -345,7 +342,7 @@ private fun MonthPickerDialog(
                             color    = if (isSelected) PrimaryLime.copy(alpha = 0.2f) else MaterialTheme.colorScheme.surface
                         ) {
                             Text(
-                                text       = dynamicOptionLabel, // Menggunakan label dinamis
+                                text       = dynamicOptionLabel,
                                 modifier   = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
                                 color      = if (isSelected) PrimaryLimeDark else MaterialTheme.colorScheme.onSurface,
                                 fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal

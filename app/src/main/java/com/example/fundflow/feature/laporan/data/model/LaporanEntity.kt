@@ -1,6 +1,3 @@
-// ============================================================
-// feature/laporan/data/model/LaporanEntity.kt
-// ============================================================
 package com.example.fundflow.feature.laporan.data.model
 
 import androidx.room.ColumnInfo
@@ -14,10 +11,10 @@ data class LaporanEntity(
     val laporanId: Int = 0,
 
     @ColumnInfo(name = "jenis_laporan")
-    val jenisLaporan: String,          // "iuran_bulanan" | "status_bayar" | "detail_keuangan"
+    val jenisLaporan: String,
 
     @ColumnInfo(name = "periode")
-    val periode: String,               // misal: "Maret 2026 - Desember 2026"
+    val periode: String,
 
     @ColumnInfo(name = "total_pemasukan")
     val totalPemasukan: Double = 0.0,

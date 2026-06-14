@@ -24,7 +24,6 @@ internal fun openExportedFile(context: Context, file: File, mimeType: String) {
         Toast.LENGTH_LONG
     ).show()
 
-    // ── 2. Coba buka file via system chooser (best-effort) ───────
     val uri = FileProvider.getUriForFile(
         context,
         "${context.packageName}.fileprovider",
@@ -44,8 +43,6 @@ internal fun openExportedFile(context: Context, file: File, mimeType: String) {
     try {
         context.startActivity(chooser)
     } catch (e: Exception) {
-        // Tidak ada aplikasi yang bisa membuka tipe file ini di emulator.
-        // Tidak masalah — Toast di langkah 1 sudah memberi konfirmasi.
     }
 }
 
@@ -108,7 +105,6 @@ class ExportPdfUseCase @Inject constructor(
             pdfDoc.writeTo(FileOutputStream(file))
             pdfDoc.close()
 
-            // Buka file PDF langsung agar user mendapat feedback nyata
             openExportedFile(context, file, "application/pdf")
 
             file.absolutePath
@@ -124,11 +120,6 @@ class ExportPdfUseCase @Inject constructor(
 class ExportExcelUseCase @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
-    /**
-     * Hasilkan file Excel (.xls) dari data laporan detail keuangan,
-     * lalu langsung BUKA via system chooser (Excel/Sheets viewer).
-     * Return path file jika berhasil, null jika gagal.
-     */
     operator fun invoke(laporan: LaporanDetailKeuangan): String? {
         return try {
             val workbook = HSSFWorkbook()
@@ -170,23 +161,17 @@ class ExportExcelUseCase @Inject constructor(
             sumRow3.createCell(3).setCellValue("Saldo Akhir")
             sumRow3.createCell(4).setCellValue(laporan.saldoAkhir)
 
-            // ── FIX: Set lebar kolom secara MANUAL ──────────────
-            // TIDAK pakai autoSizeColumn() — API itu butuh java.awt.Font
-            // yang tidak ada di Android dan menyebabkan crash.
-            // setColumnWidth() aman karena hanya mengubah metadata sheet.
-            // Satuan: 1/256 lebar karakter "0" pada font default.
-            sheet.setColumnWidth(0, 14 * 256)   // Tanggal
-            sheet.setColumnWidth(1, 30 * 256)   // Deskripsi
-            sheet.setColumnWidth(2, 18 * 256)   // Keterangan
-            sheet.setColumnWidth(3, 14 * 256)   // Jenis
-            sheet.setColumnWidth(4, 16 * 256)   // Nominal
+            sheet.setColumnWidth(0, 14 * 256)
+            sheet.setColumnWidth(1, 30 * 256)
+            sheet.setColumnWidth(2, 18 * 256)
+            sheet.setColumnWidth(3, 14 * 256)
+            sheet.setColumnWidth(4, 16 * 256)
 
             val dir  = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
             val file = File(dir, "laporan_fundflow_${System.currentTimeMillis()}.xls")
             FileOutputStream(file).use { workbook.write(it) }
             workbook.close()
 
-            // Buka file Excel langsung agar user mendapat feedback nyata
             openExportedFile(context, file, "application/vnd.ms-excel")
 
             file.absolutePath

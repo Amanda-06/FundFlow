@@ -16,8 +16,8 @@ import javax.inject.Inject
 class SettingsRepositoryImpl @Inject constructor(
     private val settingsDataStore: SettingsDataStore,
     private val periodeDao: PeriodeDao,
-    private val firestoreService: FirestoreService, // TAMBAHAN INJECT
-    private val authService: FirebaseAuthService    // TAMBAHAN INJECT
+    private val firestoreService: FirestoreService,
+    private val authService: FirebaseAuthService
 ) : SettingsRepository {
 
     private val currentUserId: String?
@@ -94,10 +94,6 @@ class SettingsRepositoryImpl @Inject constructor(
         }
     }
 
-    /**
-     * FUNGSI SINKRONISASI BARU: Membaca data periode dari Firestore Cloud khusus untuk halaman Settings,
-     * lalu menyimpannya ke database Room lokal HP.
-     */
     suspend fun syncWithCloud() {
         val userId = currentUserId ?: return
         try {

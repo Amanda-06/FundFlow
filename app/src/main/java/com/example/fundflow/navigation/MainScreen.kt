@@ -16,29 +16,12 @@ import com.example.fundflow.feature.pemasukan.presentation.PemasukanScreen
 import com.example.fundflow.feature.pengeluaran.presentation.PengeluaranScreen
 import com.example.fundflow.ui.theme.AppBackground
 
-/**
- * Container utama setelah login — berisi Bottom Navigation Bar
- * dan NavHost terpisah (nested graph) untuk 5 tab:
- * Home, Iuran, Pemasukan, Pengeluaran, Laporan.
- *
- * Navigasi ke layar di luar bottom nav (Anggota, Profile, Settings, dll)
- * menggunakan [rootNavController] agar bottom bar otomatis hilang
- * (karena route tersebut berada di luar graph "main").
- *
- * @param rootNavController NavController dari AppNavGraph (top-level)
- */
 @Composable
 fun MainScreen(
     rootNavController: NavHostController
 ) {
     val bottomNavController = rememberNavController()
 
-    /**
-     * Helper navigasi antar-tab — dipakai juga oleh BottomNavBar.
-     * Disamakan di sini agar perilaku "Tagih" (Home -> Iuran)
-     * konsisten dengan tap langsung di bottom nav (state tab lain
-     * tetap tersimpan via saveState/restoreState).
-     */
     fun navigateToTab(route: String) {
         bottomNavController.navigate(route) {
             popUpTo(bottomNavController.graph.findStartDestination().id) {
@@ -53,15 +36,6 @@ fun MainScreen(
         bottomBar = { FundFlowBottomNavBar(navController = bottomNavController) },
         containerColor = AppBackground
     ) { innerPadding ->
-        // ── FIX TOP PADDING ──────────────────────────────────────
-        // Hanya ambil padding BAWAH (untuk bottom nav bar) dari
-        // outer Scaffold. Padding ATAS (status bar) TIDAK diambil
-        // di sini karena setiap screen tab (Home via
-        // .statusBarsPadding(), atau Iuran/Pemasukan/Pengeluaran/
-        // Laporan via Scaffold+TopAppBar masing-masing) SUDAH
-        // menangani inset status bar sendiri. Jika top padding
-        // outer Scaffold ikut diterapkan di sini, hasilnya jarak
-        // ke status bar jadi DOBEL (terlalu jauh ke bawah).
         NavHost(
             navController    = bottomNavController,
             startDestination = Screen.Home.route,

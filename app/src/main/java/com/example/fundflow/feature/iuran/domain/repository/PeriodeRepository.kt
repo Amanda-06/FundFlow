@@ -8,5 +8,5 @@ interface PeriodeRepository {
     suspend fun getPeriodeByUserId(userId: String): Periode?
     fun observePeriode(userId: String): Flow<Periode?>
     suspend fun deleteByUserId(userId: String)
-    suspend fun syncWithCloud() // Untuk sinkronisasi otomatis antar-perangkat
+    suspend fun syncWithCloud()
 }

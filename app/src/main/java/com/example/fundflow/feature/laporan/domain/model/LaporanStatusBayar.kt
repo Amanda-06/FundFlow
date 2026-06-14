@@ -11,7 +11,7 @@ data class LaporanStatusBayar(
 
 data class StatusBayarAnggota(
     val namaAnggota: String,
-    val statusBayar: Boolean,  // true = lunas
+    val statusBayar: Boolean,
     val nominal: Double,
     val tanggalBayar: String?
 )

@@ -21,7 +21,7 @@ class EditProfilViewModel @Inject constructor(
     private val getProfile: GetProfileUseCase,
     private val updateProfile: UpdateProfileUseCase,
     private val updatePassword: UpdatePasswordUseCase,
-    private val repository: ProfileRepositoryImpl // TAMBAHAN REPOSITORI UNTUK SYNC CLOUD
+    private val repository: ProfileRepositoryImpl
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(EditProfilState())

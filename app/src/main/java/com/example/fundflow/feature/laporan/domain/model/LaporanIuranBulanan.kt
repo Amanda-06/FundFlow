@@ -6,7 +6,7 @@ data class LaporanIuranBulanan(
 )
 
 data class RincianIuranBulan(
-    val bulan: Int,   // ganti jadi Int (contoh: 3 untuk Maret)
-    val tahun: Int,   // tambahkan field tahun agar lengkap
+    val bulan: Int,
+    val tahun: Int,
     val jumlah: Double
 )

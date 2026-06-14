@@ -31,9 +31,7 @@ fun TentangFundFlowScreen(
     onNavigateBack: () -> Unit
 ) {
     Scaffold(
-        // FIX: Lokalisasi judul halaman TopBar
         topBar = { FundFlowTopBar(title = stringResource(R.string.about_title), onNavigateBack = onNavigateBack) },
-        // FIX: reaktif terhadap tema
         containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
         Column(
@@ -47,7 +45,6 @@ fun TentangFundFlowScreen(
             Spacer(Modifier.height(16.dp))
 
             // ── Logo ──────────────────────────────────────────
-            // Background tetap HeaderGreen: warna brand
             Box(
                 modifier = Modifier
                     .size(88.dp)
@@ -58,7 +55,7 @@ fun TentangFundFlowScreen(
                 Icon(
                     Icons.Default.AccountBalanceWallet,
                     contentDescription = null,
-                    tint     = TextDark,   // tetap: di atas header hijau brand
+                    tint     = TextDark,
                     modifier = Modifier.size(44.dp)
                 )
             }
@@ -66,18 +63,14 @@ fun TentangFundFlowScreen(
             Spacer(Modifier.height(16.dp))
 
             Text(
-                // FIX: Menggunakan stringResource app_name yang sudah terdefinisi di proyek
                 stringResource(R.string.app_name),
                 style      = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold,
-                // FIX: reaktif terhadap tema
                 color      = MaterialTheme.colorScheme.onSurface
             )
             Text(
-                // FIX: Lokalisasi nomor versi aplikasi
                 stringResource(R.string.about_version),
                 style = MaterialTheme.typography.bodySmall,
-                // FIX: reaktif terhadap tema
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
 
@@ -86,16 +79,13 @@ fun TentangFundFlowScreen(
             // ── Deskripsi ─────────────────────────────────────
             Card(
                 modifier  = Modifier.fillMaxWidth(),
-                // FIX: reaktif terhadap tema
                 colors    = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                 shape     = RoundedCornerShape(14.dp),
                 elevation = CardDefaults.cardElevation(2.dp)
             ) {
                 Text(
-                    // FIX: Lokalisasi paragraf teks deskripsi aplikasi
                     text      = stringResource(R.string.about_description),
                     style     = MaterialTheme.typography.bodyMedium,
-                    // FIX: reaktif terhadap tema
                     color     = MaterialTheme.colorScheme.onSurface,
                     textAlign = TextAlign.Start,
                     modifier  = Modifier.padding(16.dp),
@@ -108,14 +98,12 @@ fun TentangFundFlowScreen(
             // ── Pengembang ────────────────────────────────────
             InfoCard(
                 icon  = Icons.Default.Code,
-                // FIX: Lokalisasi teks label dan nama pengembang
                 title = stringResource(R.string.about_label_developed_by),
                 value = stringResource(R.string.about_value_developers)
             )
             Spacer(Modifier.height(10.dp))
             InfoCard(
                 icon  = Icons.Default.School,
-                // FIX: Lokalisasi teks label institusi dan nama universitas
                 title = stringResource(R.string.about_label_university),
                 value = stringResource(R.string.about_value_university)
             )
@@ -123,10 +111,8 @@ fun TentangFundFlowScreen(
             Spacer(Modifier.height(24.dp))
 
             Text(
-                // FIX: Lokalisasi teks hak cipta (copyright)
                 text      = stringResource(R.string.about_copyright),
                 style     = MaterialTheme.typography.bodySmall,
-                // FIX: reaktif terhadap tema
                 color     = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center
             )
@@ -144,7 +130,6 @@ private fun InfoCard(
 ) {
     Card(
         modifier  = Modifier.fillMaxWidth(),
-        // FIX: reaktif terhadap tema
         colors    = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         shape     = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(1.dp)
@@ -157,13 +142,13 @@ private fun InfoCard(
                 modifier = Modifier
                     .size(40.dp)
                     .clip(RoundedCornerShape(10.dp))
-                    .background(IuranBlue.copy(alpha = 0.12f)),   // tetap: warna semantik
+                    .background(IuranBlue.copy(alpha = 0.12f)),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     icon,
                     contentDescription = null,
-                    tint     = IuranBlue,   // tetap: warna semantik
+                    tint     = IuranBlue,
                     modifier = Modifier.size(20.dp)
                 )
             }
@@ -172,14 +157,12 @@ private fun InfoCard(
                 Text(
                     title,
                     style = MaterialTheme.typography.labelSmall,
-                    // FIX: reaktif terhadap tema
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Text(
                     value,
                     style      = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Medium,
-                    // FIX: reaktif terhadap tema
                     color      = MaterialTheme.colorScheme.onSurface
                 )
             }

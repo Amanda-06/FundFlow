@@ -1,6 +1,3 @@
-// ============================================================
-// feature/home/domain/usecase/GetDashboardSummaryUseCase.kt
-// ============================================================
 package com.example.fundflow.feature.home.domain.usecase
 
 import com.example.fundflow.feature.home.domain.model.DashboardSummary

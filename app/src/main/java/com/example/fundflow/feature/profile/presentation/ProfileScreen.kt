@@ -1,5 +1,3 @@
-// feature/profile/presentation/ProfileScreen.kt
-// ============================================================
 package com.example.fundflow.feature.profile.presentation
 
 import androidx.compose.foundation.background
@@ -40,13 +38,10 @@ fun ProfileScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            // FIX: reaktif terhadap tema
             .background(MaterialTheme.colorScheme.background)
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
 
-            // ── Header hijau dengan avatar ────────────────────
-            // HeaderGreen tetap dipakai: ini warna brand yang sama di light/dark
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -58,8 +53,6 @@ fun ProfileScreen(
                     onClick  = onNavigateBack,
                     modifier = Modifier.padding(start = 4.dp, top = 4.dp)
                 ) {
-                    // TextDark tetap: icon di atas header hijau brand
-                    // FIX: Mengubah contentDescription "Kembali" menjadi stringResource
                     Icon(
                         imageVector        = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = stringResource(R.string.common_back),
@@ -81,7 +74,6 @@ fun ProfileScreen(
                     )
                     Spacer(Modifier.height(16.dp))
 
-                    // Avatar — background putih tetap agar kontras di header hijau
                     Box(
                         modifier = Modifier
                             .size(80.dp)
@@ -92,7 +84,7 @@ fun ProfileScreen(
                         Icon(
                             Icons.Default.Person,
                             contentDescription = null,
-                            tint     = HeaderGreen,   // tetap: warna brand
+                            tint     = HeaderGreen,
                             modifier = Modifier.size(48.dp)
                         )
                     }
@@ -101,22 +93,21 @@ fun ProfileScreen(
                     if (uiState.isLoading) {
                         CircularProgressIndicator(
                             modifier    = Modifier.size(20.dp),
-                            color       = TextDark,   // tetap: di atas header hijau
+                            color       = TextDark,
                             strokeWidth = 2.dp
                         )
                     } else {
                         Text(
-                            // FIX: Mengubah hardcode nama fallback menjadi stringResource
                             text       = uiState.profile?.namaLengkap?.ifBlank { stringResource(R.string.profile_default_user) }
                                 ?: stringResource(R.string.profile_default_user),
                             style      = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.Bold,
-                            color      = TextDark   // tetap: di atas header hijau
+                            color      = TextDark
                         )
                         Text(
                             text  = stringResource(R.string.profile_role_bendahara),
                             style = MaterialTheme.typography.bodySmall,
-                            color = TextDark.copy(alpha = 0.7f)   // tetap: di atas header hijau
+                            color = TextDark.copy(alpha = 0.7f)
                         )
                     }
                 }
@@ -129,7 +120,6 @@ fun ProfileScreen(
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp)
                         .padding(top = 16.dp),
-                    // FIX: reaktif terhadap tema
                     colors    = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                     shape     = RoundedCornerShape(12.dp),
                     elevation = CardDefaults.cardElevation(2.dp)
@@ -181,7 +171,6 @@ fun ProfileScreen(
             Text(
                 text      = stringResource(R.string.profile_version),
                 style     = MaterialTheme.typography.bodySmall,
-                // FIX: reaktif terhadap tema
                 color     = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier  = Modifier
                     .fillMaxWidth()
@@ -200,14 +189,12 @@ fun ProfileScreen(
                 Text(
                     stringResource(R.string.profile_logout_confirm_title),
                     style = MaterialTheme.typography.headlineSmall,
-                    // FIX: reaktif terhadap tema
                     color = MaterialTheme.colorScheme.onSurface
                 )
             },
             text  = {
                 Text(
                     stringResource(R.string.profile_logout_confirm_message),
-                    // FIX: reaktif terhadap tema
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             },
@@ -228,11 +215,9 @@ fun ProfileScreen(
             },
             dismissButton = {
                 OutlinedButton(onClick = viewModel::onDismissLogoutDialog) {
-                    // FIX: reaktif terhadap tema
                     Text(stringResource(R.string.profile_batal), color = MaterialTheme.colorScheme.onSurface)
                 }
             },
-            // FIX: reaktif terhadap tema
             containerColor = MaterialTheme.colorScheme.surface
         )
     }
@@ -245,7 +230,6 @@ private fun InfoRow(icon: ImageVector, text: String) {
         Icon(
             icon,
             contentDescription = null,
-            // FIX: reaktif terhadap tema
             tint     = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.size(18.dp)
         )
@@ -253,7 +237,6 @@ private fun InfoRow(icon: ImageVector, text: String) {
         Text(
             text,
             style = MaterialTheme.typography.bodyMedium,
-            // FIX: reaktif terhadap tema
             color = MaterialTheme.colorScheme.onSurface
         )
     }
@@ -264,14 +247,12 @@ private fun ProfileMenuItem(
     icon: ImageVector,
     label: String,
     onClick: () -> Unit,
-    // FIX: default value pakai lambda agar ambil warna dari MaterialTheme saat render
     iconTint: Color  = Color.Unspecified,
     textColor: Color = Color.Unspecified
 ) {
     Card(
         modifier  = Modifier.fillMaxWidth(),
         onClick   = onClick,
-        // FIX: reaktif terhadap tema
         colors    = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         shape     = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(1.dp)
@@ -285,7 +266,6 @@ private fun ProfileMenuItem(
             Icon(
                 icon,
                 contentDescription = null,
-                // FIX: gunakan onSurface jika tidak ada override warna eksplisit
                 tint     = if (iconTint == Color.Unspecified)
                     MaterialTheme.colorScheme.onSurface
                 else iconTint,
@@ -296,7 +276,6 @@ private fun ProfileMenuItem(
                 label,
                 style      = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Medium,
-                // FIX: gunakan onSurface jika tidak ada override warna eksplisit
                 color      = if (textColor == Color.Unspecified)
                     MaterialTheme.colorScheme.onSurface
                 else textColor,
@@ -305,7 +284,6 @@ private fun ProfileMenuItem(
             Icon(
                 Icons.Default.ChevronRight,
                 contentDescription = null,
-                // FIX: reaktif terhadap tema
                 tint     = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.size(20.dp)
             )

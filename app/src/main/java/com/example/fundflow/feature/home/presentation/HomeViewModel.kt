@@ -1,6 +1,3 @@
-// ============================================================
-// feature/home/presentation/HomeViewModel.kt
-// ============================================================
 package com.example.fundflow.feature.home.presentation
 
 import androidx.lifecycle.ViewModel
@@ -47,7 +44,7 @@ class HomeViewModel @Inject constructor(
             val year = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR)
             when (val result = getPublicHolidays(year)) {
                 is Resource.Success -> {
-                    val today   = LocalDate.now().toString()   // "2026-06-10"
+                    val today   = LocalDate.now().toString()
                     val upcoming = result.data
                         .filter { it.date >= today }
                         .minByOrNull { it.date }

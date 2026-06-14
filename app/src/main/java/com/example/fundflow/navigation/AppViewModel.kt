@@ -1,6 +1,3 @@
-// ============================================================
-// navigation/AppViewModel.kt
-// ============================================================
 package com.example.fundflow.navigation
 
 import androidx.lifecycle.ViewModel
@@ -13,12 +10,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
-/**
- * Status awal aplikasi — menentukan start destination
- * pada [AppNavGraph] berdasarkan kombinasi:
- *  - hasSeenOnboarding (DataStore)
- *  - isLoggedIn        (DataStore, di-set oleh AuthRepositoryImpl saat login/logout)
- */
 data class AppStartState(
     val hasSeenOnboarding: Boolean = false,
     val isLoggedIn: Boolean        = false,

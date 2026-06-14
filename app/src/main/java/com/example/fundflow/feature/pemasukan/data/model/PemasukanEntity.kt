@@ -1,6 +1,3 @@
-// ============================================================
-// feature/pemasukan/data/model/PemasukanEntity.kt
-// ============================================================
 package com.example.fundflow.feature.pemasukan.data.model
 
 import androidx.room.ColumnInfo
@@ -17,16 +14,16 @@ data class PemasukanEntity(
     val deskripsi: String,
 
     @ColumnInfo(name = "sumber")
-    val sumber: String,                  // Iuran Anggota / Program Kerja / Sponsorship / Donasi / Lainnya
+    val sumber: String,
 
     @ColumnInfo(name = "metode")
-    val metode: String,                  // Cash / Transfer
+    val metode: String,
 
     @ColumnInfo(name = "nominal")
-    val nominal: Double,                 // = qty × harga_satuan
+    val nominal: Double,
 
     @ColumnInfo(name = "tanggal")
-    val tanggal: String,                 // "yyyy-MM-dd"
+    val tanggal: String,
 
     @ColumnInfo(name = "catatan")
     val catatan: String = "",

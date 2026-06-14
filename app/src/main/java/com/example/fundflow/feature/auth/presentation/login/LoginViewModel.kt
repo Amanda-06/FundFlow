@@ -1,6 +1,3 @@
-// ============================================================
-// feature/auth/presentation/login/LoginViewModel.kt
-// ============================================================
 package com.example.fundflow.feature.auth.presentation.login
 
 import androidx.lifecycle.ViewModel

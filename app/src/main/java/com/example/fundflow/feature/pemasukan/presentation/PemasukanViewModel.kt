@@ -18,7 +18,7 @@ class PemasukanViewModel @Inject constructor(
     private val updatePemasukan: UpdatePemasukanUseCase,
     private val deletePemasukan: DeletePemasukanUseCase,
     private val deleteSelected: DeleteSelectedPemasukanUseCase,
-    private val repository: PemasukanRepositoryImpl // TAMBAHAN REPOSITORI UNTUK SYNC
+    private val repository: PemasukanRepositoryImpl
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(PemasukanState())
@@ -26,7 +26,7 @@ class PemasukanViewModel @Inject constructor(
 
     init {
         observePemasukan()
-        fetchDataDariCloud() // TAMBAHAN CALL SINKRONISASI CLOUD
+        fetchDataDariCloud()
     }
 
     private fun observePemasukan() {

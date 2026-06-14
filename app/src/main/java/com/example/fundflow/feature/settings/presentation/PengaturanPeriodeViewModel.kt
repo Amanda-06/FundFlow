@@ -17,7 +17,7 @@ class PengaturanPeriodeViewModel @Inject constructor(
     private val observePeriode: ObservePeriodeUseCase,
     private val updatePeriode: UpdatePeriodeUseCase,
     private val authService: FirebaseAuthService,
-    private val repository: SettingsRepositoryImpl // TAMBAHAN REPOSITORI UNTUK SYNC CLOUD
+    private val repository: SettingsRepositoryImpl
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(PengaturanPeriodeState())
@@ -27,7 +27,7 @@ class PengaturanPeriodeViewModel @Inject constructor(
         val userId = authService.currentUser?.uid.orEmpty()
         _uiState.update { it.copy(userId = userId) }
 
-        fetchDataDariCloud() // TAMBAHAN CALL SINKRONISASI CLOUD
+        fetchDataDariCloud()
 
         if (userId.isNotEmpty()) {
             observePeriode(userId)

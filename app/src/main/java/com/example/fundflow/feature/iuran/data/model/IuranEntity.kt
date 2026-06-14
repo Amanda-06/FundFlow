@@ -14,7 +14,7 @@ import com.example.fundflow.feature.anggota.data.model.AnggotaEntity
             entity        = AnggotaEntity::class,
             parentColumns = ["anggota_id"],
             childColumns  = ["anggota_id"],
-            onDelete      = ForeignKey.CASCADE   // hapus anggota -> hapus semua iuran-nya
+            onDelete      = ForeignKey.CASCADE
         )
     ],
     indices = [
@@ -31,7 +31,7 @@ data class IuranEntity(
     val anggotaId: Int,
 
     @ColumnInfo(name = "bulan")
-    val bulan: Int,                  // 1-12
+    val bulan: Int,
 
     @ColumnInfo(name = "tahun")
     val tahun: Int,
@@ -46,10 +46,10 @@ data class IuranEntity(
     val terlambat: Boolean = false,
 
     @ColumnInfo(name = "metode_pembayaran")
-    val metodePembayaran: String = "",   // "Cash" | "Transfer"
+    val metodePembayaran: String = "",
 
     @ColumnInfo(name = "tanggal_bayar")
-    val tanggalBayar: String? = null,    // "yyyy-MM-dd"
+    val tanggalBayar: String? = null,
 
     @ColumnInfo(name = "catatan")
     val catatan: String = "",

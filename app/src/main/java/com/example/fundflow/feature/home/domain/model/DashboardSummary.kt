@@ -1,7 +1,3 @@
-
-// ============================================================
-// feature/home/domain/model/DashboardSummary.kt
-// ============================================================
 package com.example.fundflow.feature.home.domain.model
 
 import com.example.fundflow.feature.iuran.domain.model.IuranSummary
@@ -19,6 +15,6 @@ data class RecentTransaction(
     val title: String,
     val subtitle: String,
     val amount: Double,
-    val isIncome: Boolean,   // true = pemasukan / iuran, false = pengeluaran
+    val isIncome: Boolean,
     val date: String
 )

@@ -1,6 +1,3 @@
-// ============================================================
-// feature/iuran/presentation/IuranState.kt
-// ============================================================
 package com.example.fundflow.feature.iuran.presentation
 
 import com.example.fundflow.feature.iuran.domain.model.Iuran

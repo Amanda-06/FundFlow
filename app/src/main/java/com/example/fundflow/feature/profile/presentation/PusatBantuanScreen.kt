@@ -1,5 +1,3 @@
-// feature/profile/presentation/PusatBantuanScreen.kt
-// ============================================================
 package com.example.fundflow.feature.profile.presentation
 
 import androidx.compose.animation.animateContentSize
@@ -33,9 +31,7 @@ fun PusatBantuanScreen(
     val faqList = viewModel.faqList
 
     Scaffold(
-        // FIX: Lokalisasi judul halaman TopBar
         topBar = { FundFlowTopBar(title = stringResource(R.string.help_title), onNavigateBack = onNavigateBack) },
-        // FIX: reaktif terhadap tema
         containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
         LazyColumn(
@@ -45,11 +41,9 @@ fun PusatBantuanScreen(
         ) {
             item {
                 Text(
-                    // FIX: Lokalisasi header bagian Pertanyaan Umum (FAQ)
                     text       = stringResource(R.string.help_faq_header),
                     style      = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
-                    // FIX: reaktif terhadap tema
                     color      = MaterialTheme.colorScheme.onSurface,
                     modifier   = Modifier.padding(bottom = 4.dp)
                 )
@@ -63,11 +57,9 @@ fun PusatBantuanScreen(
 
             item {
                 Text(
-                    // FIX: Lokalisasi header bagian Hubungi Kami
                     text       = stringResource(R.string.help_contact_header),
                     style      = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
-                    // FIX: reaktif terhadap tema
                     color      = MaterialTheme.colorScheme.onSurface,
                     modifier   = Modifier.padding(bottom = 4.dp)
                 )
@@ -76,7 +68,6 @@ fun PusatBantuanScreen(
             item {
                 Card(
                     modifier  = Modifier.fillMaxWidth(),
-                    // FIX: reaktif terhadap tema
                     colors    = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                     shape     = RoundedCornerShape(12.dp),
                     elevation = CardDefaults.cardElevation(1.dp)
@@ -89,7 +80,6 @@ fun PusatBantuanScreen(
                         Spacer(Modifier.width(12.dp))
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
-                                // FIX: Lokalisasi teks label Email Dukungan
                                 text       = stringResource(R.string.help_support_email_label),
                                 style      = MaterialTheme.typography.bodyMedium,
                                 fontWeight = FontWeight.Medium,
@@ -97,9 +87,8 @@ fun PusatBantuanScreen(
                                 color      = MaterialTheme.colorScheme.onSurface
                             )
                             Text(
-                                "support.fundflow@gmail.com", // Alamat email tetap literal karena merupakan nama entitas/tujuan alamat resmi
+                                "support.fundflow@gmail.com",
                                 style = MaterialTheme.typography.bodySmall,
-                                // FIX: reaktif terhadap tema
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
@@ -119,7 +108,6 @@ private fun FaqCard(faq: FaqItem) {
             .fillMaxWidth()
             .animateContentSize()
             .clickable { expanded = !expanded },
-        // FIX: reaktif terhadap tema
         colors    = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         shape     = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(1.dp)
@@ -131,26 +119,23 @@ private fun FaqCard(faq: FaqItem) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    faq.question, // Nilai teks diambil secara dinamis dari object domain/API, sudah aman
+                    faq.question,
                     style      = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Medium,
-                    // FIX: reaktif terhadap tema
                     color      = MaterialTheme.colorScheme.onSurface,
                     modifier   = Modifier.weight(1f)
                 )
                 Icon(
                     imageVector        = if (expanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
                     contentDescription = null,
-                    // FIX: reaktif terhadap tema
                     tint               = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
             if (expanded) {
                 Spacer(Modifier.height(8.dp))
                 Text(
-                    faq.answer, // Nilai teks diambil secara dinamis dari object domain/API, sudah aman
+                    faq.answer,
                     style      = MaterialTheme.typography.bodySmall,
-                    // FIX: reaktif terhadap tema
                     color      = MaterialTheme.colorScheme.onSurfaceVariant,
                     lineHeight = MaterialTheme.typography.bodySmall.lineHeight
                 )

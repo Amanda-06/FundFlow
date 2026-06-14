@@ -1,6 +1,3 @@
-// ============================================================
-// feature/home/presentation/HomeState.kt
-// ============================================================
 package com.example.fundflow.feature.home.presentation
 
 import com.example.fundflow.feature.home.domain.model.DashboardSummary

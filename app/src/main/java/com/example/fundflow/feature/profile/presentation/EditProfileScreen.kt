@@ -1,5 +1,3 @@
-// feature/profile/presentation/EditProfilScreen.kt
-// ============================================================
 package com.example.fundflow.feature.profile.presentation
 
 import androidx.compose.foundation.layout.*
@@ -33,7 +31,6 @@ fun EditProfilScreen(
     val uiState      by viewModel.uiState.collectAsStateWithLifecycle()
     val snackbarState = remember { SnackbarHostState() }
 
-    // FIX: Lokalisasi teks pesan sukses di snackbar
     val successMessage = stringResource(R.string.edit_profile_success)
     LaunchedEffect(uiState.isSuccess) {
         if (uiState.isSuccess) {
@@ -51,7 +48,6 @@ fun EditProfilScreen(
 
     Scaffold(
         snackbarHost   = { SnackbarHost(snackbarState) },
-        // FIX: Lokalisasi judul TopBar
         topBar         = { FundFlowTopBar(title = stringResource(R.string.edit_profile_title), onNavigateBack = onNavigateBack) },
         containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
@@ -81,7 +77,6 @@ fun EditProfilScreen(
             FundFlowTextField(
                 value         = uiState.namaLengkap,
                 onValueChange = viewModel::onNamaLengkapChange,
-                // FIX: Lokalisasi label Nama Lengkap
                 label         = stringResource(R.string.edit_profile_label_nama_lengkap),
                 leadingIcon   = Icons.Default.Person,
                 isError       = uiState.namaLengkapError != null,
@@ -91,7 +86,6 @@ fun EditProfilScreen(
             FundFlowTextField(
                 value         = uiState.username,
                 onValueChange = viewModel::onUsernameChange,
-                // FIX: Lokalisasi label Username
                 label         = stringResource(R.string.edit_profile_label_username),
                 leadingIcon   = Icons.Default.AlternateEmail,
                 isError       = uiState.usernameError != null,
@@ -102,7 +96,6 @@ fun EditProfilScreen(
             FundFlowTextField(
                 value         = uiState.email,
                 onValueChange = {},
-                // FIX: Lokalisasi label Email
                 label         = stringResource(R.string.edit_profile_label_email),
                 leadingIcon   = Icons.Default.AlternateEmail,
                 enabled       = false
@@ -111,7 +104,6 @@ fun EditProfilScreen(
             FundFlowTextField(
                 value         = uiState.namaOrganisasi,
                 onValueChange = viewModel::onNamaOrganisasiChange,
-                // FIX: Lokalisasi label Nama Organisasi
                 label         = stringResource(R.string.edit_profile_label_nama_organisasi),
                 leadingIcon   = Icons.Default.Business
             )
@@ -122,14 +114,12 @@ fun EditProfilScreen(
             Spacer(Modifier.height(4.dp))
 
             Text(
-                // FIX: Lokalisasi judul section ubah password
                 text  = stringResource(R.string.edit_profile_section_ubah_password),
                 style = MaterialTheme.typography.titleSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
 
             Text(
-                // FIX: Lokalisasi teks keterangan peringatan password
                 text  = stringResource(R.string.edit_profile_password_warning),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -139,7 +129,6 @@ fun EditProfilScreen(
             FundFlowTextField(
                 value         = uiState.passwordSaatIni,
                 onValueChange = viewModel::onPasswordSaatIniChange,
-                // FIX: Lokalisasi label password saat ini
                 label         = stringResource(R.string.edit_profile_label_password_saat_ini),
                 leadingIcon   = Icons.Default.Lock,
                 isError       = uiState.passwordSaatIniError != null,
@@ -155,7 +144,6 @@ fun EditProfilScreen(
                                 Icons.Default.VisibilityOff
                             else
                                 Icons.Default.Visibility,
-                            // FIX: Lokalisasi contentDescription keterbacaan password
                             contentDescription = if (uiState.passwordSaatIniVisible)
                                 stringResource(R.string.common_hide_password)
                             else
@@ -169,7 +157,6 @@ fun EditProfilScreen(
             FundFlowTextField(
                 value         = uiState.passwordBaru,
                 onValueChange = viewModel::onPasswordBaruChange,
-                // FIX: Lokalisasi label password baru
                 label         = stringResource(R.string.edit_profile_label_password_baru),
                 leadingIcon   = Icons.Default.Lock,
                 isError       = uiState.passwordBaruError != null,
@@ -185,7 +172,6 @@ fun EditProfilScreen(
                                 Icons.Default.VisibilityOff
                             else
                                 Icons.Default.Visibility,
-                            // FIX: Lokalisasi contentDescription keterbacaan password baru
                             contentDescription = if (uiState.passwordBaruVisible)
                                 stringResource(R.string.common_hide_password)
                             else
@@ -199,7 +185,6 @@ fun EditProfilScreen(
             FundFlowTextField(
                 value         = uiState.konfirmasiPassword,
                 onValueChange = viewModel::onKonfirmasiPasswordChange,
-                // FIX: Lokalisasi label konfirmasi password
                 label         = stringResource(R.string.edit_profile_label_konfirmasi_password),
                 leadingIcon   = Icons.Default.Lock,
                 isError       = uiState.konfirmasiPasswordError != null,
@@ -215,7 +200,6 @@ fun EditProfilScreen(
                                 Icons.Default.VisibilityOff
                             else
                                 Icons.Default.Visibility,
-                            // FIX: Lokalisasi contentDescription keterbacaan konfirmasi password
                             contentDescription = if (uiState.konfirmasiPasswordVisible)
                                 stringResource(R.string.common_hide_password)
                             else
@@ -228,7 +212,6 @@ fun EditProfilScreen(
             Spacer(Modifier.height(8.dp))
 
             FundFlowPrimaryButton(
-                // FIX: Lokalisasi teks tombol simpan
                 text      = stringResource(R.string.edit_profile_btn_simpan),
                 onClick   = viewModel::onSave,
                 isLoading = uiState.isSaving

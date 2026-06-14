@@ -1,4 +1,3 @@
-// feature/pengeluaran/presentation/PengeluaranScreen.kt
 package com.example.fundflow.feature.pengeluaran.presentation
 
 import androidx.compose.foundation.background
@@ -39,8 +38,6 @@ fun PengeluaranScreen(
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarState) },
         topBar = {
-            // FIX: Bungkus seluruh topBar dengan Column dan beri statusBarsPadding()
-            // agar judul tidak menabrak bar atas HP (Edge-to-Edge).
             Column(
                 modifier = Modifier
                     .fillMaxWidth()

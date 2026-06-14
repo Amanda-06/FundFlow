@@ -17,7 +17,7 @@ data class RegisterState(
 
     // Step 2 — setup organisasi
     val namaOrganisasi: String        = "",
-    val periodeMulai: String          = "",    // format: "yyyy-MM" contoh: "2026-01"
+    val periodeMulai: String          = "",
     val periodeSelesai: String        = "",
 
     // Step 2 errors

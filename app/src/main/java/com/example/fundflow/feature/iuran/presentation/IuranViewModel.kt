@@ -1,6 +1,3 @@
-// ============================================================
-// feature/iuran/presentation/IuranViewModel.kt
-// ============================================================
 package com.example.fundflow.feature.iuran.presentation
 
 import androidx.lifecycle.ViewModel
@@ -23,8 +20,8 @@ class IuranViewModel @Inject constructor(
     private val saveIuran: SaveIuranUseCase,
     private val getPeriodeMonths: GetPeriodeMonthsUseCase,
     private val authService: FirebaseAuthService,
-    private val iuranRepository: IuranRepositoryImpl,  // TAMBAHAN UNTUK SYNC CLOUD IURAN
-    private val periodeRepository: PeriodeRepositoryImpl // TAMBAHAN UNTUK SYNC CLOUD PERIODE KAS
+    private val iuranRepository: IuranRepositoryImpl,
+    private val periodeRepository: PeriodeRepositoryImpl
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(IuranState())

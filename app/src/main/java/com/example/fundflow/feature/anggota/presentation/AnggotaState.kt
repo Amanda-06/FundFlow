@@ -1,6 +1,3 @@
-// ============================================================
-// feature/anggota/presentation/AnggotaState.kt
-// ============================================================
 package com.example.fundflow.feature.anggota.presentation
 
 import com.example.fundflow.feature.anggota.domain.model.Anggota
@@ -15,13 +12,13 @@ data class AnggotaState(
 
     // Form tambah/edit
     val showAddDialog: Boolean      = false,
-    val editTarget: Anggota?        = null,    // null = tambah baru, non-null = edit
+    val editTarget: Anggota?        = null,
     val inputNama: String           = "",
     val inputNamaError: String?     = null,
 
     // Delete dialog
     val showDeleteDialog: Boolean   = false,
-    val deleteTargetId: Int?        = null,    // null = batch delete dari selectedIds
+    val deleteTargetId: Int?        = null,
 
     val errorMessage: String?       = null
 )

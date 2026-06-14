@@ -1,4 +1,3 @@
-// feature/profile/data/repository/ProfileRepositoryImpl.kt
 package com.example.fundflow.feature.profile.data.repository
 
 import com.example.fundflow.feature.auth.data.local.UserDao
@@ -71,10 +70,6 @@ class ProfileRepositoryImpl @Inject constructor(
         user.updatePassword(passwordBaru).await()
     }
 
-    /**
-     * FUNGSI SINKRONISASI BARU: Memaksa aplikasi mengunduh data profil paling segar dari Firestore Cloud,
-     * lalu memperbarui cache database Room lokal HP.
-     */
     suspend fun syncWithCloud() {
         val uid = authService.currentUser?.uid ?: return
         try {

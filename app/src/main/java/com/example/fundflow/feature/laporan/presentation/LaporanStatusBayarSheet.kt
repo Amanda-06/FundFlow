@@ -1,5 +1,3 @@
-// feature/laporan/presentation/LaporanStatusBayarSheet.kt
-// ============================================================
 package com.example.fundflow.feature.laporan.presentation
 
 import androidx.compose.foundation.background
@@ -76,7 +74,6 @@ fun LaporanStatusBayarSheet(
             stringResource(R.string.laporan_status_bayar_kas),
             style      = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.SemiBold,
-            // FIX: reaktif terhadap tema
             color      = MaterialTheme.colorScheme.onSurface
         )
         Spacer(Modifier.height(12.dp))
@@ -85,7 +82,6 @@ fun LaporanStatusBayarSheet(
         Card(
             modifier  = Modifier.fillMaxWidth(),
             onClick   = viewModel::onShowStatusMonthPicker,
-            // FIX: reaktif terhadap tema
             colors    = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
             shape     = RoundedCornerShape(10.dp),
             elevation = CardDefaults.cardElevation(1.dp)
@@ -101,7 +97,6 @@ fun LaporanStatusBayarSheet(
                     Icon(
                         Icons.Default.CalendarMonth,
                         contentDescription = null,
-                        // FIX: reaktif terhadap tema
                         tint     = MaterialTheme.colorScheme.onSurface,
                         modifier = Modifier.size(18.dp)
                     )
@@ -116,14 +111,12 @@ fun LaporanStatusBayarSheet(
                         selectedMonthText,
                         style      = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.SemiBold,
-                        // FIX: reaktif terhadap tema
                         color      = MaterialTheme.colorScheme.onSurface
                     )
                 }
                 Icon(
                     Icons.Default.ExpandMore,
                     contentDescription = null,
-                    // FIX: reaktif terhadap tema
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
@@ -143,7 +136,6 @@ fun LaporanStatusBayarSheet(
         val laporan = uiState.laporanStatus
 
         // ── Summary ───────────────────────────────────────────
-        // Warna value (IncomeGreen, ExpenseRed, IuranBlue) tetap: warna semantik
         Row(
             modifier              = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
@@ -198,14 +190,12 @@ fun LaporanStatusBayarSheet(
                                     .padding(vertical = 2.dp),
                                 onClick  = { viewModel.onSelectStatusMonth(month) },
                                 shape    = MaterialTheme.shapes.small,
-                                // FIX: unselected background reaktif terhadap tema
                                 color    = if (isSelected) PrimaryLime.copy(alpha = 0.2f)
                                 else MaterialTheme.colorScheme.surface
                             ) {
                                 Text(
                                     localizedMonthOptionLabel,
                                     modifier   = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
-                                    // FIX: unselected text reaktif terhadap tema
                                     color      = if (isSelected) PrimaryLimeDark
                                     else MaterialTheme.colorScheme.onSurface,
                                     fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal
@@ -217,11 +207,9 @@ fun LaporanStatusBayarSheet(
             },
             confirmButton = {
                 TextButton(onClick = viewModel::onDismissStatusMonthPicker) {
-                    // FIX: reaktif terhadap tema
                     Text(stringResource(R.string.laporan_status_bayar_kas_tutup), color = MaterialTheme.colorScheme.onSurface)
                 }
             },
-            // FIX: reaktif terhadap tema
             containerColor = MaterialTheme.colorScheme.surface
         )
     }
@@ -231,7 +219,7 @@ fun LaporanStatusBayarSheet(
 private fun StatusSummaryItem(
     value: String,
     label: String,
-    color: androidx.compose.ui.graphics.Color   // warna semantik, tetap dari caller
+    color: androidx.compose.ui.graphics.Color
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(value, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = color)
@@ -248,7 +236,6 @@ private fun StatusSummaryItem(
 private fun StatusBayarRow(item: StatusBayarAnggota) {
     Card(
         modifier  = Modifier.fillMaxWidth(),
-        // FIX: reaktif terhadap tema
         colors    = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         shape     = RoundedCornerShape(10.dp),
         elevation = CardDefaults.cardElevation(1.dp)
@@ -263,7 +250,6 @@ private fun StatusBayarRow(item: StatusBayarAnggota) {
                 modifier = Modifier
                     .size(28.dp)
                     .background(
-                        // tetap: warna semantik status bayar
                         if (item.statusBayar) IncomeGreen.copy(alpha = 0.12f) else ExpenseRed.copy(
                             alpha = 0.12f
                         ),
@@ -274,7 +260,6 @@ private fun StatusBayarRow(item: StatusBayarAnggota) {
                 Icon(
                     imageVector        = if (item.statusBayar) Icons.Default.Check else Icons.Default.Close,
                     contentDescription = null,
-                    // tetap: warna semantik status bayar
                     tint     = if (item.statusBayar) IncomeGreen else ExpenseRed,
                     modifier = Modifier.size(14.dp)
                 )
@@ -283,7 +268,6 @@ private fun StatusBayarRow(item: StatusBayarAnggota) {
             Text(
                 item.namaAnggota,
                 style    = MaterialTheme.typography.bodyMedium,
-                // FIX: reaktif terhadap tema
                 color    = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.weight(1f)
             )
@@ -291,7 +275,6 @@ private fun StatusBayarRow(item: StatusBayarAnggota) {
                 if (item.statusBayar) CurrencyFormatter.format(item.nominal) else "-",
                 style      = MaterialTheme.typography.bodySmall,
                 fontWeight = FontWeight.SemiBold,
-                // Lunas → TextDark sudah tidak dipakai; FIX reaktif. Belum bayar → onSurfaceVariant
                 color      = if (item.statusBayar) MaterialTheme.colorScheme.onSurface
                 else MaterialTheme.colorScheme.onSurfaceVariant
             )

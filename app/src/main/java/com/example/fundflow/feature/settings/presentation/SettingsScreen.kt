@@ -1,5 +1,3 @@
-// settings/presentation/SettingsScreen.kt
-
 package com.example.fundflow.feature.settings.presentation
 
 import androidx.compose.foundation.layout.*

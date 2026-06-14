@@ -1,6 +1,3 @@
-// ============================================================
-// feature/laporan/presentation/LaporanState.kt
-// ============================================================
 package com.example.fundflow.feature.laporan.presentation
 
 import com.example.fundflow.feature.laporan.domain.model.LaporanDetailKeuangan

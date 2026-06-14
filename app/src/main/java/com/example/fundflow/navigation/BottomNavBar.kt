@@ -1,6 +1,3 @@
-// ============================================================
-// navigation/BottomNavBar.kt
-// ============================================================
 package com.example.fundflow.navigation
 
 import androidx.compose.material.icons.Icons
@@ -18,12 +15,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.fundflow.R
 import com.example.fundflow.ui.theme.*
 
-/**
- * Daftar item bottom navigation sesuai 5 tab utama FundFlow.
- * Label disimpan sebagai String statis hanya untuk fallback —
- * label yang ditampilkan ke user diambil dari stringResource()
- * di dalam composable agar mengikuti bahasa aktif aplikasi.
- */
 private val bottomNavItems = listOf(
     BottomNavItem(
         route          = Screen.Home.route,
@@ -62,11 +53,6 @@ private val bottomNavItems = listOf(
     )
 )
 
-/**
- * FIX: Mapping route → string resource ID.
- * Label diselesaikan di dalam composable via stringResource()
- * agar mengikuti locale aktif saat Activity recreate.
- */
 private fun labelResForRoute(route: String): Int = when (route) {
     Screen.Home.route        -> R.string.nav_home
     Screen.Iuran.route       -> R.string.nav_iuran
@@ -76,11 +62,6 @@ private fun labelResForRoute(route: String): Int = when (route) {
     else                     -> R.string.nav_home
 }
 
-/**
- * Bottom Navigation Bar FundFlow.
- *
- * @param navController NavController untuk graph bottom-nav (tabs only).
- */
 @Composable
 fun FundFlowBottomNavBar(navController: NavHostController) {
     val navBackStackEntry    by navController.currentBackStackEntryAsState()
@@ -93,8 +74,6 @@ fun FundFlowBottomNavBar(navController: NavHostController) {
         bottomNavItems.forEach { item ->
             val isSelected = currentDestination?.hierarchy?.any { it.route == item.route } == true
 
-            // FIX: label diambil dari stringResource sesuai locale aktif,
-            // bukan dari field `label` yang nilainya hardcoded.
             val resolvedLabel = stringResource(labelResForRoute(item.route))
 
             NavigationBarItem(

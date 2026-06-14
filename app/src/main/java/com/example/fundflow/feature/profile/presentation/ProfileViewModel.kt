@@ -14,14 +14,14 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(
     private val getProfile: GetProfileUseCase,
     private val logoutUseCase: LogoutUseCase,
-    private val repository: ProfileRepositoryImpl // TAMBAHAN REPOSITORI UNTUK SYNC CLOUD
+    private val repository: ProfileRepositoryImpl
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ProfileState())
     val uiState: StateFlow<ProfileState> = _uiState.asStateFlow()
 
     init {
-        fetchProfileDataDariCloud() // TAMBAHAN CALL SINKRONISASI
+        fetchProfileDataDariCloud()
 
         getProfile()
             .onEach { profile -> _uiState.update { it.copy(profile = profile, isLoading = false) } }

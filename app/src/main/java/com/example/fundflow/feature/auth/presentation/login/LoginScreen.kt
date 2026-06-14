@@ -1,5 +1,3 @@
-// feature/auth/presentation/login/LoginScreen.kt
-// ============================================================
 package com.example.fundflow.feature.auth.presentation.login
 
 import androidx.compose.foundation.background
@@ -65,11 +63,9 @@ fun LoginScreen(
                 )
                 Spacer(Modifier.width(8.dp))
                 Text(
-                    // FIX: Menggunakan stringResource app_name yang sudah terdefinisi di proyek
                     text       = stringResource(R.string.app_name),
                     style      = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold,
-                    // FIX: reaktif terhadap tema
                     color      = MaterialTheme.colorScheme.onSurface
                 )
             }
@@ -82,19 +78,15 @@ fun LoginScreen(
                 horizontalAlignment = Alignment.Start
             ) {
                 Text(
-                    // FIX: Lokalisasi judul selamat datang kembali
                     text       = stringResource(R.string.login_welcome_title),
                     style      = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold,
-                    // FIX: reaktif terhadap tema
                     color      = MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(Modifier.height(4.dp))
                 Text(
-                    // FIX: Lokalisasi teks instruksi login
                     text  = stringResource(R.string.login_welcome_subtitle),
                     style = MaterialTheme.typography.bodyMedium,
-                    // FIX: reaktif terhadap tema
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
@@ -105,7 +97,6 @@ fun LoginScreen(
             FundFlowTextField(
                 value           = uiState.email,
                 onValueChange   = viewModel::onEmailChange,
-                // FIX: Lokalisasi label Email atau Username
                 label           = stringResource(R.string.login_label_email_username),
                 leadingIcon     = Icons.Default.AlternateEmail,
                 isError         = uiState.emailError != null,
@@ -118,7 +109,6 @@ fun LoginScreen(
             FundFlowPasswordField(
                 value         = uiState.password,
                 onValueChange = viewModel::onPasswordChange,
-                // FIX: Lokalisasi label Kata Sandi
                 label         = stringResource(R.string.login_label_password),
                 leadingIcon   = Icons.Default.Lock,
                 isError       = uiState.passwordError != null,
@@ -128,7 +118,6 @@ fun LoginScreen(
             // Lupa kata sandi
             Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
                 FundFlowTextButton(
-                    // FIX: Lokalisasi teks tombol lupa kata sandi
                     text    = stringResource(R.string.login_btn_forgot_password),
                     onClick = { /* TODO: forgot password flow */ },
                     color   = PrimaryLimeDark   // tetap: warna brand
@@ -157,7 +146,6 @@ fun LoginScreen(
             }
 
             FundFlowPrimaryButton(
-                // FIX: Lokalisasi teks tombol Masuk
                 text      = stringResource(R.string.login_btn_submit),
                 onClick   = viewModel::login,
                 isLoading = uiState.isLoading
@@ -171,14 +159,11 @@ fun LoginScreen(
                 verticalAlignment     = Alignment.CenterVertically
             ) {
                 Text(
-                    // FIX: Lokalisasi teks kaki footer ajakan daftar
                     text  = stringResource(R.string.login_footer_no_account),
                     style = MaterialTheme.typography.bodyMedium,
-                    // FIX: reaktif terhadap tema
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 FundFlowTextButton(
-                    // FIX: Lokalisasi teks tombol tautan daftar sekarang
                     text    = stringResource(R.string.login_footer_register_now),
                     onClick = onNavigateToRegister,
                     color   = PrimaryLimeDark   // tetap: warna brand

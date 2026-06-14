@@ -1,6 +1,3 @@
-// ============================================================
-// navigation/AppNavGraph.kt  (FIXED VERSION)
-// ============================================================
 package com.example.fundflow.navigation
 
 import androidx.compose.foundation.layout.Box
@@ -32,25 +29,9 @@ import com.example.fundflow.feature.settings.presentation.PengaturanPeriodeScree
 import com.example.fundflow.feature.settings.presentation.SettingsScreen
 import com.example.fundflow.ui.theme.PrimaryLime
 
-/**
- * Route untuk nested graph alur registrasi.
- * RegisterStep1 dan RegisterStep2 berada DI DALAM graph ini agar
- * keduanya bisa berbagi satu instance [RegisterViewModel] yang sama
- * (lihat penjelasan di bagian REGISTER FLOW di bawah).
- */
+
 private const val REGISTER_GRAPH_ROUTE = "register_graph"
 
-/**
- * Root NavGraph aplikasi FundFlow.
- *
- * Start destination ditentukan secara dinamis berdasarkan [AppViewModel]:
- *  - hasSeenOnboarding == false -> Onboarding
- *  - hasSeenOnboarding == true && isLoggedIn == false -> Login
- *  - hasSeenOnboarding == true && isLoggedIn == true  -> Main (bottom nav)
- *
- * @param onLanguageChanged callback untuk recreate Activity saat bahasa diganti
- *                          (lihat MainActivity.recreateActivity())
- */
 @Composable
 fun AppNavGraph(
     onLanguageChanged: () -> Unit,
@@ -80,16 +61,7 @@ fun AppNavGraph(
         navController    = navController,
         startDestination = startDestination
     ) {
-
-        // ═══════════════════════════════════════════════════════
-        // ONBOARDING
-        // ═══════════════════════════════════════════════════════
-
         composable(Screen.Onboarding.route) {
-            // Onboarding hanya punya satu tombol "Masuk" -> LoginScreen.
-            // Alur ke RegisterStep1 sudah tersedia melalui link
-            // "Daftar Sekarang" di LoginScreen, jadi tidak perlu
-            // parameter onNavigateToRegister di sini.
             OnboardingScreen(
                 onNavigateToLogin = {
                     navController.navigate(Screen.Login.route) {
@@ -98,10 +70,6 @@ fun AppNavGraph(
                 }
             )
         }
-
-        // ═══════════════════════════════════════════════════════
-        // LOGIN
-        // ═══════════════════════════════════════════════════════
 
         composable(Screen.Login.route) {
             LoginScreen(
@@ -115,26 +83,6 @@ fun AppNavGraph(
                 }
             )
         }
-
-        // ═══════════════════════════════════════════════════════
-        // REGISTER FLOW (NESTED GRAPH)
-        //
-        // PENTING: RegisterStep1 dan RegisterStep2 dibungkus dalam
-        // satu nested graph "register_graph" agar keduanya bisa
-        // berbagi SATU instance RegisterViewModel yang sama.
-        //
-        // Tanpa ini, hiltViewModel() default akan membuat instance
-        // BARU untuk setiap composable destination — sehingga data
-        // yang diisi di Step 1 (email, password, dll) HILANG saat
-        // pindah ke Step 2, dan menyebabkan error Firebase
-        // "Given String is empty or null" saat register() dipanggil.
-        //
-        // Caranya: ambil NavBackStackEntry milik PARENT GRAPH
-        // ("register_graph"), lalu minta hiltViewModel() dengan
-        // viewModelStoreOwner = parentEntry tersebut. Karena parent
-        // entry sama untuk Step 1 maupun Step 2, ViewModel yang
-        // didapat juga instance yang sama.
-        // ═══════════════════════════════════════════════════════
 
         navigation(
             startDestination = Screen.RegisterStep1.route,
@@ -180,17 +128,9 @@ fun AppNavGraph(
             }
         }
 
-        // ═══════════════════════════════════════════════════════
-        // MAIN (BOTTOM NAV CONTAINER)
-        // ═══════════════════════════════════════════════════════
-
         composable(Screen.Main.route) {
             MainScreen(rootNavController = navController)
         }
-
-        // ═══════════════════════════════════════════════════════
-        // SUB / DETAIL SCREENS (top-level, tanpa bottom nav)
-        // ═══════════════════════════════════════════════════════
 
         composable(Screen.Anggota.route) {
             AnggotaScreen(

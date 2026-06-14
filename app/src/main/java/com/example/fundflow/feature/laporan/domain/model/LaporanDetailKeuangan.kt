@@ -12,7 +12,7 @@ data class LaporanDetailKeuangan(
 data class ItemDetailKeuangan(
     val tanggal: String,
     val deskripsi: String,
-    val keterangan: String,    // sumber / kategori
+    val keterangan: String,
     val nominal: Double,
     val isIncome: Boolean
 )

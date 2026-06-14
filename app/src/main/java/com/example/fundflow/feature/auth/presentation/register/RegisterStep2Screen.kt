@@ -1,5 +1,3 @@
-// feature/auth/presentation/register/RegisterStep2Screen.kt
-// ============================================================
 package com.example.fundflow.feature.auth.presentation.register
 
 import androidx.compose.foundation.background
@@ -46,7 +44,6 @@ fun RegisterStep2Screen(
     var showSelesaiPicker by remember { mutableStateOf(false) }
     val currentYear       = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR)
 
-    // FIX: Mendapatkan Locale sistem secara dinamis agar nama bulan berubah mengikuti pengaturan bahasa perangkat
     val configuration = LocalConfiguration.current
     val currentLocale = remember(configuration) {
         ConfigurationCompat.getLocales(configuration).get(0) ?: Locale.getDefault()
@@ -71,7 +68,6 @@ fun RegisterStep2Screen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            // FIX: reaktif terhadap tema (menggantikan BackgroundKrem yang hardcoded)
             .background(MaterialTheme.colorScheme.background)
             .systemBarsPadding()
     ) {
@@ -119,7 +115,6 @@ fun RegisterStep2Screen(
                 horizontalAlignment = Alignment.Start
             ) {
                 Text(
-                    // FIX: Lokalisasi judul Setup Organisasi
                     text       = stringResource(R.string.register_step2_title),
                     style      = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold,
@@ -128,10 +123,8 @@ fun RegisterStep2Screen(
                 )
                 Spacer(Modifier.height(4.dp))
                 Text(
-                    // FIX: Lokalisasi sub-judul instruksi periode kepengurusan
                     text  = stringResource(R.string.register_step2_subtitle),
                     style = MaterialTheme.typography.bodyMedium,
-                    // FIX: reaktif terhadap tema
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
@@ -142,7 +135,6 @@ fun RegisterStep2Screen(
             FundFlowTextField(
                 value         = uiState.namaOrganisasi,
                 onValueChange = viewModel::onNamaOrganisasiChange,
-                // FIX: Lokalisasi label Nama Organisasi
                 label         = stringResource(R.string.register_step2_label_org),
                 leadingIcon   = Icons.Default.Business,
                 isError       = uiState.namaOrganisasiError != null,
@@ -153,10 +145,8 @@ fun RegisterStep2Screen(
 
             // ── Periode Mulai ─────────────────────────────────
             Text(
-                // FIX: Lokalisasi label Periode Bulan Mulai
                 text       = stringResource(R.string.register_step2_label_start),
                 style      = MaterialTheme.typography.labelLarge,
-                // FIX: reaktif terhadap tema
                 color      = MaterialTheme.colorScheme.onSurface,
                 fontWeight = FontWeight.Medium
             )
@@ -170,7 +160,6 @@ fun RegisterStep2Screen(
                 modifier = Modifier.fillMaxWidth().height(56.dp),
                 shape    = MaterialTheme.shapes.small,
                 colors   = ButtonDefaults.outlinedButtonColors(
-                    // FIX: reaktif terhadap tema
                     contentColor = if (uiState.periodeMulai.isEmpty())
                         MaterialTheme.colorScheme.onSurfaceVariant
                     else MaterialTheme.colorScheme.onSurface
@@ -179,7 +168,6 @@ fun RegisterStep2Screen(
                 Icon(
                     Icons.Default.CalendarMonth,
                     contentDescription = null,
-                    // FIX: reaktif terhadap tema
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Spacer(Modifier.width(8.dp))
@@ -188,7 +176,7 @@ fun RegisterStep2Screen(
             if (uiState.periodeMulaiError != null) {
                 Text(
                     uiState.periodeMulaiError!!,
-                    color    = ExpenseRed,   // tetap: warna semantik
+                    color    = ExpenseRed,
                     style    = MaterialTheme.typography.labelSmall,
                     modifier = Modifier.padding(top = 4.dp, start = 4.dp)
                 )
@@ -198,10 +186,8 @@ fun RegisterStep2Screen(
 
             // ── Periode Selesai ───────────────────────────────
             Text(
-                // FIX: Lokalisasi label Periode Bulan Berakhir
                 text       = stringResource(R.string.register_step2_label_end),
                 style      = MaterialTheme.typography.labelLarge,
-                // FIX: reaktif terhadap tema
                 color      = MaterialTheme.colorScheme.onSurface,
                 fontWeight = FontWeight.Medium
             )
@@ -215,7 +201,6 @@ fun RegisterStep2Screen(
                 modifier = Modifier.fillMaxWidth().height(56.dp),
                 shape    = MaterialTheme.shapes.small,
                 colors   = ButtonDefaults.outlinedButtonColors(
-                    // FIX: reaktif terhadap tema
                     contentColor = if (uiState.periodeSelesai.isEmpty())
                         MaterialTheme.colorScheme.onSurfaceVariant
                     else MaterialTheme.colorScheme.onSurface
@@ -224,7 +209,6 @@ fun RegisterStep2Screen(
                 Icon(
                     Icons.Default.CalendarMonth,
                     contentDescription = null,
-                    // FIX: reaktif terhadap tema
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Spacer(Modifier.width(8.dp))
@@ -233,7 +217,7 @@ fun RegisterStep2Screen(
             if (uiState.periodeSelesaiError != null) {
                 Text(
                     uiState.periodeSelesaiError!!,
-                    color    = ExpenseRed,   // tetap: warna semantik
+                    color    = ExpenseRed,
                     style    = MaterialTheme.typography.labelSmall,
                     modifier = Modifier.padding(top = 4.dp, start = 4.dp)
                 )
@@ -259,7 +243,6 @@ fun RegisterStep2Screen(
             Spacer(Modifier.height(32.dp))
 
             FundFlowPrimaryButton(
-                // FIX: Lokalisasi teks tombol Selesai & Mulai
                 text      = stringResource(R.string.register_step2_btn_submit),
                 onClick   = viewModel::register,
                 isLoading = uiState.isLoading
@@ -307,7 +290,6 @@ private fun MonthPickerSheet(
 ) {
     FundFlowBottomSheet(onDismiss = onDismiss) {
         Text(
-            // FIX: Lokalisasi judul bottom sheet Pilih Bulan
             text       = stringResource(R.string.register_step2_dialog_title),
             style      = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.SemiBold,
@@ -323,7 +305,6 @@ private fun MonthPickerSheet(
                     .padding(vertical = 2.dp),
                 onClick  = { onSelect(key) },
                 shape    = MaterialTheme.shapes.small,
-                // FIX: unselected background reaktif terhadap tema
                 color    = if (isSelected) PrimaryLime.copy(alpha = 0.2f)
                 else MaterialTheme.colorScheme.surface
             ) {
@@ -334,7 +315,6 @@ private fun MonthPickerSheet(
                     Text(
                         text       = label,
                         style      = MaterialTheme.typography.bodyMedium,
-                        // FIX: unselected text reaktif terhadap tema
                         color      = if (isSelected) PrimaryLimeDark
                         else MaterialTheme.colorScheme.onSurface,
                         fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,

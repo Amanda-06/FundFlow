@@ -1,4 +1,3 @@
-// feature/laporan/data/repository/LaporanRepositoryImpl.kt
 package com.example.fundflow.feature.laporan.data.repository
 
 import com.example.fundflow.feature.anggota.data.local.AnggotaDao
@@ -38,7 +37,6 @@ class LaporanRepositoryImpl @Inject constructor(
             val tahun = current.year
             val total = iuranDao.getTotalIuranByMonth(bulan, tahun) ?: 0.0
 
-            // FIX: Memasukkan angka mentah 'bulan' (Int) dan 'tahun' (Int) sesuai struktur model baru
             rincian.add(
                 RincianIuranBulan(
                     bulan  = bulan,

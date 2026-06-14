@@ -1,6 +1,3 @@
-// ============================================================
-// feature/auth/data/mapper/UserMapper.kt
-// ============================================================
 package com.example.fundflow.feature.auth.data.mapper
 
 import com.example.fundflow.feature.auth.data.model.UserEntity

@@ -1,5 +1,3 @@
-// feature/anggota/presentation/AnggotaScreen.kt
-// ============================================================
 package com.example.fundflow.feature.anggota.presentation
 
 import androidx.compose.foundation.background
@@ -186,11 +184,9 @@ private fun AnggotaListItem(
         onClick         = onClick,
         onLongClick     = onLongClick
     ) {
-        // Avatar inisial
         Box(
             modifier = Modifier
                 .size(40.dp)
-                // FIX: pakai inverseSurface agar kontras di kedua mode
                 .background(
                     MaterialTheme.colorScheme.inverseSurface,
                     MaterialTheme.shapes.extraLarge
@@ -200,7 +196,6 @@ private fun AnggotaListItem(
             Text(
                 text       = anggota.namaAnggota.take(1).uppercase(),
                 style      = MaterialTheme.typography.titleSmall,
-                // FIX: inverseOnSurface kontras terhadap inverseSurface
                 color      = MaterialTheme.colorScheme.inverseOnSurface,
                 fontWeight = FontWeight.Bold
             )
@@ -210,18 +205,14 @@ private fun AnggotaListItem(
             text       = anggota.namaAnggota,
             style      = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Medium,
-            // FIX: reaktif terhadap tema
             color      = MaterialTheme.colorScheme.onSurface,
             modifier   = Modifier.weight(1f)
         )
-        // Aksi edit / delete — hanya tampil saat bukan selection mode
         if (!isSelectionMode) {
             IconButton(onClick = onEdit, modifier = Modifier.size(32.dp)) {
                 Icon(
                     Icons.Default.Edit,
-                    // FIX: Mengubah contentDescription "Edit" menjadi stringResource
                     contentDescription = stringResource(R.string.common_edit),
-                    // FIX: reaktif terhadap tema
                     tint     = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.size(16.dp)
                 )
@@ -229,9 +220,7 @@ private fun AnggotaListItem(
             IconButton(onClick = onDelete, modifier = Modifier.size(32.dp)) {
                 Icon(
                     Icons.Default.Delete,
-                    // FIX: Mengubah contentDescription "Hapus" menjadi stringResource
                     contentDescription = stringResource(R.string.common_delete),
-                    tint     = ExpenseRed,   // tetap: warna brand/semantik
                     modifier = Modifier.size(16.dp)
                 )
             }

@@ -1,4 +1,3 @@
-// feature/profile/domain/repository/ProfileRepository.kt
 package com.example.fundflow.feature.profile.domain.repository
 
 import com.example.fundflow.feature.profile.domain.model.Profile

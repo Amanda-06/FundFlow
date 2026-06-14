@@ -1,6 +1,3 @@
-// ============================================================
-// feature/onboarding/presentation/OnboardingViewModel.kt
-// ============================================================
 package com.example.fundflow.feature.onboarding.presentation
 
 import androidx.lifecycle.ViewModel
@@ -15,8 +12,6 @@ class OnboardingViewModel @Inject constructor(
     private val settingsDataStore: SettingsDataStore
 ) : ViewModel() {
 
-    /** Dipanggil saat user menekan tombol "Mulai" atau "Daftar Akun Baru".
-     *  Tandai onboarding sudah dilihat agar tidak tampil lagi. */
     fun markOnboardingDone() {
         viewModelScope.launch {
             settingsDataStore.setHasSeenOnboarding(true)

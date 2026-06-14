@@ -15,8 +15,8 @@ import javax.inject.Inject
 
 class PemasukanRepositoryImpl @Inject constructor(
     private val dao: PemasukanDao,
-    private val firestoreService: FirestoreService, // Tambahkan ini
-    private val authService: FirebaseAuthService    // Tambahkan ini
+    private val firestoreService: FirestoreService,
+    private val authService: FirebaseAuthService
 ) : PemasukanRepository {
 
     // Helper untuk mendapatkan UID pengguna yang sedang login

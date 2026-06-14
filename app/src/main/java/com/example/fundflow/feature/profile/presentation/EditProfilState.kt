@@ -1,5 +1,3 @@
-// feature/profile/presentation/EditProfilState.kt
-
 package com.example.fundflow.feature.profile.presentation
 
 data class EditProfilState(
@@ -21,7 +19,6 @@ data class EditProfilState(
     val passwordSaatIniVisible: Boolean  = false,
     val passwordBaruVisible: Boolean     = false,
     val konfirmasiPasswordVisible: Boolean = false,
-    // ─────────────────────────────────────────────────────────
 
     val namaLengkapError: String? = null,
     val usernameError: String?    = null,

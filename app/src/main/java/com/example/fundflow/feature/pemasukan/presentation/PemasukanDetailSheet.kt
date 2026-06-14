@@ -1,5 +1,3 @@
-// feature/pemasukan/presentation/PemasukanDetailSheet.kt
-// ============================================================
 package com.example.fundflow.feature.pemasukan.presentation
 
 import androidx.compose.foundation.background
@@ -88,7 +86,6 @@ fun PemasukanDetailSheet(
                 errorMessage = uiState.formSumberError
             )
 
-            // REVISI: Qty dan Harga Satuan dihapus, diganti langsung dengan input Total Nominal
             FundFlowTextField(
                 value           = uiState.formNominal,
                 onValueChange   = viewModel::onFormNominalChange,
