@@ -1,6 +1,3 @@
-// ============================================================
-// feature/anggota/domain/model/Anggota.kt
-// ============================================================
 package com.example.fundflow.feature.anggota.domain.model
 
 data class Anggota(

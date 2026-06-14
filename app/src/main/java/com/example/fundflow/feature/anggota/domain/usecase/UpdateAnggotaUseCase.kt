@@ -1,6 +1,3 @@
-// ============================================================
-// feature/anggota/domain/usecase/UpdateAnggotaUseCase.kt
-// ============================================================
 package com.example.fundflow.feature.anggota.domain.usecase
 
 import com.example.fundflow.feature.anggota.domain.model.Anggota

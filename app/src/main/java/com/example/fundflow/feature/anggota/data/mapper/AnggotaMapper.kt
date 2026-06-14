@@ -1,6 +1,3 @@
-// ============================================================
-// feature/anggota/data/mapper/AnggotaMapper.kt
-// ============================================================
 package com.example.fundflow.feature.anggota.data.mapper
 
 import com.example.fundflow.feature.anggota.data.model.AnggotaEntity

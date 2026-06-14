@@ -1,6 +1,3 @@
-// ============================================================
-// feature/anggota/domain/repository/AnggotaRepository.kt
-// ============================================================
 package com.example.fundflow.feature.anggota.domain.repository
 
 import com.example.fundflow.feature.anggota.domain.model.Anggota

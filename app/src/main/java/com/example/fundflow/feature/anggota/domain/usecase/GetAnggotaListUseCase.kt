@@ -1,5 +1,3 @@
-// feature/anggota/domain/usecase/GetAnggotaListUseCase.kt
-// ============================================================
 package com.example.fundflow.feature.anggota.domain.usecase
 
 import com.example.fundflow.feature.anggota.domain.model.Anggota

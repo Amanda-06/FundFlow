@@ -282,11 +282,10 @@ private fun AnggotaFormDialog(
         },
         dismissButton = {
             OutlinedButton(onClick = onDismiss) {
-                // FIX: reaktif terhadap tema
+
                 Text(stringResource(R.string.anggota_batal), color = MaterialTheme.colorScheme.onSurface)
             }
         },
-        // FIX: reaktif terhadap tema
         containerColor = MaterialTheme.colorScheme.surface
     )
 }

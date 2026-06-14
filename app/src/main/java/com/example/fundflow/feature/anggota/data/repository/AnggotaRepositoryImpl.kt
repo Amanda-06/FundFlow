@@ -1,6 +1,3 @@
-// ============================================================
-// feature/anggota/data/repository/AnggotaRepositoryImpl.kt
-// ============================================================
 package com.example.fundflow.feature.anggota.data.repository
 
 import com.example.fundflow.core.firebase.FirebaseAuthService

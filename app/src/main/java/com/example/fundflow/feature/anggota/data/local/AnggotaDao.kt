@@ -1,6 +1,3 @@
-// ============================================================
-// feature/anggota/data/local/AnggotaDao.kt
-// ============================================================
 package com.example.fundflow.feature.anggota.data.local
 
 import androidx.room.*

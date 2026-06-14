@@ -1,6 +1,3 @@
-// ============================================================
-// feature/anggota/data/model/AnggotaEntity.kt
-// ============================================================
 package com.example.fundflow.feature.anggota.data.model
 
 import androidx.room.ColumnInfo
