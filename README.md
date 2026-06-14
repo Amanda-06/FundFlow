@@ -16,7 +16,7 @@
   3. Push Notification: Menggunakan Firebase Cloud Messaging (FCM) dan WorkManager untuk notifikasi pengingat kas.
   4. Personalisasi Tema & Bahasa: Mendukung perpindahan ke Mode Gelap (Dark Mode) dan pengaturan preferensi Bahasa (Indonesia/Inggris) yang disimpan secara lokal via DataStore.
 
-**Cara Instlasi**
+**Cara Instalasi**
 1. Patikan komputer sudah terinstal Android Studio
 2. Buka terminal atau command prompt, lalu clone repository ini menggunakan perintah: git clone [https://github.com/Amanda-06/FundFlow.git]
 3. Buka Android Studio, pilih menu File > Open, lalu arahkan ke folder hasil clone repository FundFlow.
