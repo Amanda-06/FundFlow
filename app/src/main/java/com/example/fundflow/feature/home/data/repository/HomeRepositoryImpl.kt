@@ -1,6 +1,3 @@
-// ============================================================
-// feature/home/data/repository/HomeRepositoryImpl.kt
-// ============================================================
 package com.example.fundflow.feature.home.data.repository
 
 import com.example.fundflow.core.util.Resource
@@ -52,7 +49,6 @@ class HomeRepositoryImpl @Inject constructor(
                 totalTerkumpul   = iuranTerkumpul
             )
 
-            // Gabungkan pemasukan + pengeluaran → sort by tanggal DESC → ambil 5 teratas
             val allRecent = (
                     recentMasuk.map {
                         RecentTransaction(

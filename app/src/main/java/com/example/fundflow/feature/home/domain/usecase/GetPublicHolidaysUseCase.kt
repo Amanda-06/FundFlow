@@ -1,6 +1,3 @@
-// ============================================================
-// feature/home/domain/usecase/GetPublicHolidaysUseCase.kt
-// ============================================================
 package com.example.fundflow.feature.home.domain.usecase
 
 import com.example.fundflow.core.util.Resource
@@ -16,5 +13,3 @@ class GetPublicHolidaysUseCase @Inject constructor(
         year: Int = Calendar.getInstance().get(Calendar.YEAR)
     ): Resource<List<Holiday>> = repository.getPublicHolidays(year)
 }
-
-

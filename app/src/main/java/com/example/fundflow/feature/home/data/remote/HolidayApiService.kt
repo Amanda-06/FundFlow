@@ -1,6 +1,3 @@
-// ============================================================
-// feature/home/data/remote/HolidayApiService.kt
-// ============================================================
 package com.example.fundflow.feature.home.data.remote
 
 import com.example.fundflow.feature.home.data.model.HolidayResponse
@@ -10,7 +7,7 @@ import retrofit2.http.Path
 interface HolidayApiService {
     /**
      * Ambil hari libur nasional berdasarkan tahun dan kode negara.
-     * Contoh: GET https://date.nager.at/api/v3/PublicHolidays/2026/ID
+     * URL Utama: GET https://date.nager.at/api/v3/PublicHolidays/{year}/{countryCode}
      */
     @GET("PublicHolidays/{year}/{countryCode}")
     suspend fun getPublicHolidays(
@@ -18,4 +15,3 @@ interface HolidayApiService {
         @Path("countryCode") countryCode: String = "ID"
     ): List<HolidayResponse>
 }
-

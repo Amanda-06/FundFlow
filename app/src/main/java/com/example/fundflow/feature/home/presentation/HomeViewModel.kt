@@ -61,6 +61,8 @@ class HomeViewModel @Inject constructor(
                     }
                 }
                 is Resource.Error -> {
+                    android.util.Log.e("HOLIDAY_ERROR", "Penyebab Gagal: ${result.message}")
+
                     _uiState.update {
                         it.copy(isLoadingHolidays = false, holidayError = result.message)
                     }

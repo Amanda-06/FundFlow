@@ -1,6 +1,3 @@
-// ============================================================
-// feature/home/data/remote/HolidayRemoteDataSource.kt
-// ============================================================
 package com.example.fundflow.feature.home.data.remote
 
 import com.example.fundflow.core.network.safeApiCall
@@ -14,4 +11,3 @@ class HolidayRemoteDataSource @Inject constructor(
     suspend fun getPublicHolidays(year: Int): Resource<List<HolidayResponse>> =
         safeApiCall { apiService.getPublicHolidays(year, "ID") }
 }
-
